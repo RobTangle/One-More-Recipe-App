@@ -11,3 +11,13 @@
 //? Crear desde psql una base de datos llamada food.
 
 // El contenido de client fue creado usando: Create React App.
+
+//? 1) Crear los models.
+
+//? 2) Crear rutas.
+
+//? 3) Crear Base de Datos con Postgres, SQL Shell.
+
+//? 4) Sincronizar BD con los models.
+
+//? 5) Testear con Postman.
