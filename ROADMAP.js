@@ -1,7 +1,9 @@
 // API Key de Spoontacular:
 // 08627e517b4943fe9b66893317a91541
 
-//?En api crear un archivo llamado: .env que tenga la siguiente forma:
+const server = require("./api/src/app");
+
+//? En api crear un archivo llamado: .env que tenga la siguiente forma:
 // DB_USER=usuariodepostgres
 // DB_PASSWORD=passwordDePostgres
 // DB_HOST=localhost
@@ -12,12 +14,14 @@
 
 // El contenido de client fue creado usando: Create React App.
 
-//? 1) Crear los models.
+//*Pensar bien la estructura de cada app, pensar el rol de cada componente, micro y macro, Detallar y escribir los detalles de cada parte de la app. Esto me va a ayudar a entender bien todo.
+//h 1) Crear los models.
 
-//? 2) Crear rutas.
+//h 2) Crear rutas. Cada ruta con su propio archivo adentro de /routes.
+//h El archivo app.js importa el objeto de rutas y lo usa  como middleware o algo así, con un server.use(router)
 
-//? 3) Crear Base de Datos con Postgres, SQL Shell.
+//h 3) Crear Base de Datos con Postgres, SQL Shell. llamada food
 
-//? 4) Sincronizar BD con los models.
+//h 4) Sincronizar BD con los models. Esto creo que ya se hace automáticamente en el archivo db.js
 
-//? 5) Testear con Postman.
+//h 5) Testear con Postman.
