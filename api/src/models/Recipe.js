@@ -29,7 +29,11 @@ module.exports = (sequelize) => {
     steps: {
       type: DataTypes.TEXT,
     },
-    // diet: {}
+    diet: {
+      //Testeando este atributo:
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     //Tengo que usar ese método tipo addModels() para asociar dietas a una receta? Entra como argumento a ese método un array de PKs. Y los PK tienen que ser los de las dietas!
     //Le digo onda: si dietArray.length > 0, entonces pasá los PK de ese array como argumento del método que tengo que usar para asociar!! Creo que re va!!!!
     // podría recibir un número que represente el id de la dieta en cuestión,
