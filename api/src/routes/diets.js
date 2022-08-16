@@ -50,6 +50,7 @@ router.post("/", async (req, res) => {
       console.log("newDiet creada");
       return res.status(202).send(newDiet);
     }
+    //Podría reemplazar lo de abajo con un bulkCreate() ? Creo que sí.
     arrDietas = req.body;
     for (let i = 0; i < arrDietas.length; i++) {
       let nuevaDieta = await Diet.create(arrDietas[i]);
