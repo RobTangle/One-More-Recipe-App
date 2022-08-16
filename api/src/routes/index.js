@@ -15,9 +15,8 @@ router.use("/diets", dietsRouter);
 //   res.status(255).send({ hola: "Hello!!!!" });
 // });
 
-router.get("/", async (req, res) => {
-  const { name } = req.query;
-});
+// router.get("/", async (req, res) => {
+// });
 
 router.post("/postear", async (req, res) => {
   const { name, description } = req.body;
@@ -26,7 +25,7 @@ router.post("/postear", async (req, res) => {
       .status(400)
       .send(`name or description missing: ${name} y ${description}`);
   }
-  return res.status(399).send(`OK. Recibidos ${name} y ${description}`);
+  return res.status(299).send(`OK. Recibidos ${name} y ${description}`);
 });
 //!-----------------------------
 
