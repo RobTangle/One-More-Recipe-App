@@ -1,6 +1,10 @@
 const { Router } = require("express");
 const { Recipe } = require("../db");
 // const Recipe = require("../models/Recipe");
+// const { MY_API_KEY } = process.env;
+const MI_API_KEY = "08627e517b4943fe9b66893317a91541";
+const axios = require("axios");
+const { Op } = require("sequelize");
 
 const router = Router();
 
@@ -12,20 +16,68 @@ const router = Router();
 // Si no existe ninguna receta mostrar un mensaje adecuado:
 router.get("/", async (req, res) => {
   const { name } = req.query;
+  //! Acá en realidad tengo que pasar por el "where" todas las key-values que me pasan por query.
+
   if (!name) {
     return res.status(400).send("No recibí un name por query");
   }
   try {
     const busqueda = await Recipe.findAll({
-      //h tendrías que hacer que incluya en el name la palabra que me llega por query, en vez de buscar exactamente ese name.
+      //h tendría que hacer que incluya en el name la palabra que me llega por query, en vez de buscar exactamente ese name.
       where: { name: name },
     });
+    //! después de obtener "busqueda", concatenar con lo que me traiga la API
     console.log(busqueda.length);
     console.log("Soy la busqueda: ", busqueda.toJSON);
     console.log(busqueda[0].dataValues);
     return res.status(200).send(busqueda);
   } catch (error) {
     res.status(404).send(error.message);
+  }
+});
+
+//h-------------------------------
+function fromQueryToURL(obj) {
+  let urleado = "";
+  for (const [key, value] of Object.entries(obj)) {
+    urleado += `${key}=${value}&`;
+  }
+  return urleado;
+}
+//h------------------------------
+
+//h---probando get para querys:
+router.get("/query", async (req, res) => {
+  //cómo busco con un "includes" en cada atributo?
+
+  let queryToURL = fromQueryToURL(req.query);
+
+  try {
+    // si me envian algo por query:
+    if (queryToURL.length >= 2) {
+      let axiado = await axios.get(
+        `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}apiKey=${MI_API_KEY}`
+      );
+      //traer también lo que haya en la DB:
+      // let fromDB = [];
+      console.log("ENtré al >= 2");
+      console.log(queryToURL);
+      console.log(
+        `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}apiKey=${MI_API_KEY}`
+      );
+      return res.status(208).send(axiado.data);
+    } else {
+      let axiadoSinQuery = await axios.get(
+        `https://api.spoonacular.com/recipes/complexSearch?apiKey=${MI_API_KEY}`
+      );
+      return res.status(201).send(axiadoSinQuery.data);
+    }
+  } catch (error) {
+    console.log(
+      `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}&apiKey=${MI_API_KEY}`
+    );
+    console.log("ERROR ACÄ!!!: ", error.message);
+    return res.send(error.message);
   }
 });
 
@@ -39,15 +91,43 @@ router.get("/:idReceta", async (req, res) => {
     return res.status(404).send("Debe ingresar por params el id de la receta");
   }
   try {
-    let recetaEncontrada = await Recipe.findByPk(idReceta);
-    if (recetaEncontrada === null) {
-      return res.status(399).send("No se encontró ninguna receta con ese id");
+    let recetaEncontrada;
+    if (idReceta.length > 31) {
+      recetaEncontrada = await Recipe.findByPk(idReceta);
     }
+    if (!recetaEncontrada) {
+      let axiado = await axios.get(
+        `https://api.spoonacular.com/recipes/${idReceta}1/information?apiKey=${MI_API_KEY}`
+      );
+      console.log("Receta buscada en API");
+      return res.status(200).send(axiado.data);
+    }
+    console.log("Receta buscada en DB");
     return res.status(200).send(recetaEncontrada);
   } catch (error) {
     return res.send(error.message);
   }
 });
+
+//!----prueba con axios a la API ----:
+// router.get("/:idReceta", async (req, res) => {
+//   const idReceta = req.params.idReceta;
+//   try {
+//     const axiado = await axios.get(
+//       `https://api.spoonacular.com/recipes/${idReceta}1/information?apiKey=${MI_API_KEY}`
+//     );
+//     if (axiado.status >= 400) {
+//       //revisar DB?
+//     }
+//     // console.log(axiado.data);
+//     return res.status(200).send(axiado.data);
+//   } catch (error) {
+//     console.log(error.message);
+//     res.status(401).send("Error en el get!!!!");
+//   }
+// });
+
+//!---------
 
 // POST /recipes:
 // Recibe los datos recolectados desde el formulario controlado de la ruta de creación de recetas por body
