@@ -29,6 +29,7 @@ const server = require("./api/src/app");
 // Base de datos
 // El modelo de la base de datos deberá tener las siguientes entidades (Aquellas propiedades marcadas con asterisco deben ser obligatorias):
 //?Tener presente que no se tienen que mezclar los id de mis instancias en la BD con la de la API de spoontacular.
+//? Quizás en vez de buscar que los id de la db sean distintos a los de la API, podría.......?
 //  Receta con las siguientes propiedades:
 // ID: *
 // Nombre *
@@ -56,3 +57,17 @@ const server = require("./api/src/app");
 //DONE: 3) Crear Base de Datos con Postgres, SQL Shell. llamada food
 //DONE 4) Sincronizar BD con los models. Esto creo que ya se hace automáticamente en el archivo db.js
 //h 5) Testear con Postman.
+
+//FUNCIÓN PARA PASAR LOS QUERY A STRING QUE VA A IR A LA URL:
+
+let query = {
+  name: "Veggie",
+  healthScore: 82,
+};
+function fromQueryToURL(obj) {
+  let urleado = "";
+  for (const [key, value] of Object.entries(obj)) {
+    urleado += `${key}=${value}&`;
+  }
+  return urleado;
+}
