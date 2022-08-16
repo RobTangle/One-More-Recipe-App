@@ -8,33 +8,8 @@ const { Op } = require("sequelize");
 
 const router = Router();
 
-//!Los request que me llegan los tengo que conectar con la base de datos o mandar a buscar a la api?
-//! A la api podría mandar directamente desde el front?
-
-// GET /recipes?name="...":
-// Obtener un listado de las recetas que contengan la palabra ingresada como query parameter
-// Si no existe ninguna receta mostrar un mensaje adecuado:
-router.get("/", async (req, res) => {
-  const { name } = req.query;
-  //! Acá en realidad tengo que pasar por el "where" todas las key-values que me pasan por query.
-
-  if (!name) {
-    return res.status(400).send("No recibí un name por query");
-  }
-  try {
-    const busqueda = await Recipe.findAll({
-      //h tendría que hacer que incluya en el name la palabra que me llega por query, en vez de buscar exactamente ese name.
-      where: { name: name },
-    });
-    //! después de obtener "busqueda", concatenar con lo que me traiga la API
-    console.log(busqueda.length);
-    console.log("Soy la busqueda: ", busqueda.toJSON);
-    console.log(busqueda[0].dataValues);
-    return res.status(200).send(busqueda);
-  } catch (error) {
-    res.status(404).send(error.message);
-  }
-});
+//Los request que me llegan los tengo que conectar con la base de datos o mandar a buscar a la api?
+// A la api podría mandar directamente desde el front?
 
 //h-------------------------------
 function fromQueryToURL(obj) {
@@ -46,45 +21,58 @@ function fromQueryToURL(obj) {
 }
 //h------------------------------
 
-//h---probando get para querys:
-router.get("/query", async (req, res) => {
-  //cómo busco con un "includes" en cada atributo?
-
+//!----- hacer con suma de DB y API:
+// GET /recipes?name="...":
+// Obtener un listado de las recetas que contengan la palabra ingresada como query parameter
+// Si no existe ninguna receta mostrar un mensaje adecuado:
+//cómo busco con un "includes" en cada atributo? Con el Op.
+//h Acá faltaría el "Si no existe ninguna receta mostrar un mensaje adecuado".
+router.get("/", async (req, res) => {
   let queryToURL = fromQueryToURL(req.query);
-
+  let fromDB = [];
+  let concatAPIyDB = [];
   try {
     // si me envian algo por query:
     if (queryToURL.length >= 2) {
       let axiado = await axios.get(
         `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}apiKey=${MI_API_KEY}`
       );
-      //traer también lo que haya en la DB:
-      // let fromDB = [];
+
       console.log("ENtré al >= 2");
       console.log(queryToURL);
       console.log(
         `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}apiKey=${MI_API_KEY}`
       );
-      return res.status(208).send(axiado.data);
+      //traer también lo que haya en la DB:
+      fromDB = await Recipe.findAll({
+        where: req.query,
+      });
+      console.log(fromDB);
+      concatAPIyDB = [...fromDB, ...axiado.data.results];
+      return res.status(208).send(concatAPIyDB);
     } else {
       let axiadoSinQuery = await axios.get(
         `https://api.spoonacular.com/recipes/complexSearch?apiKey=${MI_API_KEY}`
       );
-      return res.status(201).send(axiadoSinQuery.data);
+      fromDB = await Recipe.findAll();
+      concatAPIyDB = [...fromDB, ...axiadoSinQuery.data.results];
+      return res.status(201).send(concatAPIyDB);
     }
   } catch (error) {
     console.log(
-      `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}&apiKey=${MI_API_KEY}`
+      `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}apiKey=${MI_API_KEY}`
     );
     console.log("ERROR ACÄ!!!: ", error.message);
     return res.send(error.message);
   }
 });
 
+//!---------------------------------------------------------------------
+
 //  GET /recipes/{idReceta}:
 // Obtener el detalle de una receta en particular
 //? what?!: Debe traer solo los datos pedidos en la ruta de detalle de receta
-// Incluir los tipos de dieta asociados
+// Incluir los tipos de dieta asociados (esto ya deberia venir en la data)
 router.get("/:idReceta", async (req, res) => {
   const idReceta = req.params.idReceta;
   if (!idReceta) {
@@ -93,9 +81,11 @@ router.get("/:idReceta", async (req, res) => {
   try {
     let recetaEncontrada;
     if (idReceta.length > 31) {
+      //(si la PK es UUIDV4):
       recetaEncontrada = await Recipe.findByPk(idReceta);
     }
     if (!recetaEncontrada) {
+      //(si no encuentro la receta en la DB:)
       let axiado = await axios.get(
         `https://api.spoonacular.com/recipes/${idReceta}1/information?apiKey=${MI_API_KEY}`
       );
@@ -108,6 +98,89 @@ router.get("/:idReceta", async (req, res) => {
     return res.send(error.message);
   }
 });
+
+// POST /recipes:
+// Recibe los datos recolectados desde el formulario controlado de la ruta de creación de recetas por body
+// Crea una receta en la base de datos relacionada con sus tipos de dietas.
+//? Cómo relaciono sus tipos de dietas?
+
+router.post("/", async (req, res) => {
+  const { title, summary, healthScore, diet } = req.body;
+  if (!title || !summary) {
+    return res.status(400).send("title and summary are mandatory");
+  }
+  try {
+    //agregar a la db:
+    const data = { title, summary, healthScore, diet };
+    const newRecipe = await Recipe.create(data);
+    return res.status(201).json(newRecipe);
+  } catch (error) {
+    return res.status(402).send(error.message);
+  }
+});
+
+//!CÓDIGO QUE NO SIRVE PERO DEJO LOS BACKUPS:
+
+//h---probando get para querys: ANDA JOYA CON LA API NADA MÁS!!!!!!:
+
+//?----------------------------------------
+// router.get("/query", async (req, res) => {
+//   //cómo busco con un "includes" en cada atributo?
+
+//   let queryToURL = fromQueryToURL(req.query);
+//   // let fromDB = [];
+//   try {
+//     // si me envian algo por query:
+//     if (queryToURL.length >= 2) {
+//       let axiado = await axios.get(
+//         `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}apiKey=${MI_API_KEY}`
+//       );
+
+//       console.log("ENtré al >= 2");
+//       console.log(queryToURL);
+//       console.log(
+//         `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}apiKey=${MI_API_KEY}`
+//       );
+//       //traer también lo que haya en la DB:
+//       // let fromDB = [];
+
+//       return res.status(208).send(axiado.data);
+//     } else {
+//       let axiadoSinQuery = await axios.get(
+//         `https://api.spoonacular.com/recipes/complexSearch?apiKey=${MI_API_KEY}`
+//       );
+//       return res.status(201).send(axiadoSinQuery.data);
+//     }
+//   } catch (error) {
+//     console.log(
+//       `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}&apiKey=${MI_API_KEY}`
+//     );
+//     console.log("ERROR ACÄ!!!: ", error.message);
+//     return res.send(error.message);
+//   }
+// });
+//h-----------lo de arriba anda bien para lo que está hecho!---------------------------------------
+
+// router.get("/", async (req, res) => {
+//   const { name } = req.query;
+//   //! Acá en realidad tengo que pasar por el "where" todas las key-values que me pasan por query.
+//   if (!name) {
+//     return res.status(400).send("No recibí un name por query");
+//   }
+//   try {
+//     const busqueda = await Recipe.findAll({
+//       //h tendría que hacer que incluya en el name la palabra que me llega por query, en vez de buscar exactamente ese name.
+//       where: { name: name },
+//     });
+//     //! después de obtener "busqueda", concatenar con lo que me traiga la API
+//     console.log(busqueda.length);
+//     console.log("Soy la busqueda: ", busqueda.toJSON);
+//     console.log(busqueda[0].dataValues);
+//     return res.status(200).send(busqueda);
+//   } catch (error) {
+//     res.status(404).send(error.message);
+//   }
+// });
 
 //!----prueba con axios a la API ----:
 // router.get("/:idReceta", async (req, res) => {
@@ -124,39 +197,6 @@ router.get("/:idReceta", async (req, res) => {
 //   } catch (error) {
 //     console.log(error.message);
 //     res.status(401).send("Error en el get!!!!");
-//   }
-// });
-
-//!---------
-
-// POST /recipes:
-// Recibe los datos recolectados desde el formulario controlado de la ruta de creación de recetas por body
-// Crea una receta en la base de datos relacionada con sus tipos de dietas.
-//? Cómo relaciono sus tipos de dietas?
-
-router.post("/", async (req, res) => {
-  const { name, summary, healthScore } = req.body;
-  if (!name || !summary) {
-    return res.status(400).send("name and summary are mandatory");
-  }
-  try {
-    //agregar a la db:
-    const data = { name, summary, healthScore };
-    const newRecipe = await Recipe.create(data);
-    return res.status(201).json(newRecipe);
-  } catch (error) {
-    return res.status(402).send(error.message);
-  }
-});
-
-// router.post("/", async (req, res) => {
-//   const { nombre, ingredientes } = req.body;
-//   try {
-//     return res
-//       .status(233)
-//       .send(`nombre es: ${nombre} e ingredientes es: ${ingredientes}`);
-//   } catch (error) {
-//     return res.error;
 //   }
 // });
 
