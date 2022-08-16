@@ -16,26 +16,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// router.post("/", async (req, res) => {
-//   const { name } = req.body;
-//   if (!name) {
-//     return res.status(400).send("Debe ingresar un name para la dieta");
-//   }
-//   try {
-//     let newDieta = await Diet.findOrCreate({
-//       where: {
-//         name: name,
-//       },
-//       default: {
-//         name: name,
-//       },
-//     });
-//     return res.status(200).send(newDieta);
-//   } catch (error) {
-//     res.status(404).send(error.message);
-//   }
-// });
-
 router.post("/", async (req, res) => {
   let arrDietas = [];
   console.log(req.body);
@@ -61,5 +41,25 @@ router.post("/", async (req, res) => {
     return res.status(400).send(error.message);
   }
 });
+
+// router.post("/", async (req, res) => {
+//   const { name } = req.body;
+//   if (!name) {
+//     return res.status(400).send("Debe ingresar un name para la dieta");
+//   }
+//   try {
+//     let newDieta = await Diet.findOrCreate({
+//       where: {
+//         name: name,
+//       },
+//       default: {
+//         name: name,
+//       },
+//     });
+//     return res.status(200).send(newDieta);
+//   } catch (error) {
+//     res.status(404).send(error.message);
+//   }
+// });
 
 module.exports = router;
