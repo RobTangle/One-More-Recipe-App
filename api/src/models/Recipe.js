@@ -5,19 +5,25 @@ module.exports = (sequelize) => {
   // defino el modelo
   //h Voy a tener que hacer que el id de estas recetas sea distinta a las id de la API.
   sequelize.define("recipe", {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      allowNull: false,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     summary: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     healthScore: {
       type: DataTypes.FLOAT,
       validate: {
         min: 0,
-        max: 10,
+        max: 100,
       },
     },
     steps: {
