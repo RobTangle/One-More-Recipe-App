@@ -10,7 +10,9 @@ const dietsRouter = require("./diets");
 router.use("/recipes", recetaRouter);
 router.use("/diets", dietsRouter);
 
-//!---- rutas de prueba: ------
+module.exports = router;
+
+//---- rutas de prueba: ------
 // router.get("/", async (req, res) => {
 //   res.status(255).send({ hola: "Hello!!!!" });
 // });
@@ -18,15 +20,13 @@ router.use("/diets", dietsRouter);
 // router.get("/", async (req, res) => {
 // });
 
-router.post("/postear", async (req, res) => {
-  const { name, description } = req.body;
-  if (!name || !description) {
-    return res
-      .status(400)
-      .send(`name or description missing: ${name} y ${description}`);
-  }
-  return res.status(299).send(`OK. Recibidos ${name} y ${description}`);
-});
+// router.post("/postear", async (req, res) => {
+//   const { name, description } = req.body;
+//   if (!name || !description) {
+//     return res
+//       .status(400)
+//       .send(`name or description missing: ${name} y ${description}`);
+//   }
+//   return res.status(299).send(`OK. Recibidos ${name} y ${description}`);
+// });
 //!-----------------------------
-
-module.exports = router;
