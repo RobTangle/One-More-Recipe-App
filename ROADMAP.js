@@ -29,9 +29,7 @@
 
 //? IDEAS: -----------------------------------------------------------------------------------------
 //? 1*
-
 //? 2*
-
 //? 3*
 //? RANDOM:
 //? Podría hacer que la PrimaryKey de mis elementos de mi DB empiece con db. O sea: db02. LO HICE DE OTRA FORMA AL FINAL.
