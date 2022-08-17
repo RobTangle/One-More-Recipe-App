@@ -8,9 +8,6 @@ const { Op } = require("sequelize");
 
 const router = Router();
 
-//Los request que me llegan los tengo que conectar con la base de datos o mandar a buscar a la api?
-// A la api podría mandar directamente desde el front?
-
 //h-------------------------------
 function fromQueryToURL(obj) {
   let urleado = "";
@@ -21,7 +18,7 @@ function fromQueryToURL(obj) {
 }
 //h------------------------------
 
-//!----- hacer con suma de DB y API:
+//*----- hacer el get con/sin query con suma de API y DB:
 // GET /recipes?name="...":
 // Obtener un listado de las recetas que contengan la palabra ingresada como query parameter
 // Si no existe ninguna receta mostrar un mensaje adecuado:
@@ -67,7 +64,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-//!---------------------------------------------------------------------
+//*---------------------------------------------------------------------
 
 //  GET /recipes/{idReceta}:
 // Obtener el detalle de una receta en particular
@@ -82,17 +79,18 @@ router.get("/:idReceta", async (req, res) => {
     let recetaEncontrada;
     if (idReceta.length > 31) {
       //(si la PK es UUIDV4):
+      console.log("Buscando recenta en DB: idReceta.length > 31");
       recetaEncontrada = await Recipe.findByPk(idReceta);
     }
     if (!recetaEncontrada) {
-      //(si no encuentro la receta en la DB:)
+      //(si no encuentro la receta en la DB, chequeo la API por si las dudas...:)
       let axiado = await axios.get(
-        `https://api.spoonacular.com/recipes/${idReceta}1/information?apiKey=${MI_API_KEY}`
+        `https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`
       );
       console.log("Receta buscada en API");
       return res.status(200).send(axiado.data);
     }
-    console.log("Receta buscada en DB");
+    console.log("Devolviendo buscada en DB..:");
     return res.status(200).send(recetaEncontrada);
   } catch (error) {
     return res.send(error.message);
@@ -119,11 +117,12 @@ router.post("/", async (req, res) => {
   }
 });
 
-//!CÓDIGO QUE NO SIRVE PERO DEJO LOS BACKUPS:
+module.exports = router;
+
+//---------------------------------------------------------------------------------------------------------------------------------
+//!CÓDIGO QUE NO SIRVE PERO DEJO LOS BACKUPS: ------------------------------------------------------------------------
 
 //h---probando get para querys: ANDA JOYA CON LA API NADA MÁS!!!!!!:
-
-//?----------------------------------------
 // router.get("/query", async (req, res) => {
 //   //cómo busco con un "includes" en cada atributo?
 
@@ -199,5 +198,3 @@ router.post("/", async (req, res) => {
 //     res.status(401).send("Error en el get!!!!");
 //   }
 // });
-
-module.exports = router;
