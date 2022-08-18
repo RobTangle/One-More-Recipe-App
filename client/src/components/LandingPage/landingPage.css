@@ -1,0 +1,32 @@
+.container {
+  /* background-color: cadetblue; */
+  /* background-image: url("https://img.freepik.com/foto-gratis/ingredientes-italianos-apetitosos-frescos-sabrosos-comida-viejo-fondo-madera-rustico-listo-cocinar-inicio-italiano-comida-saludable-concepto-cocina_1220-1740.jpg?w=1380&t=st=1660847411~exp=1660848011~hmac=08a060c1ff3c2b43e78ff01065b07274953d27d69d45bea7ffb7f9eaa7f80ecc"); */
+  background-image: url("./imgs/landingPageBackgroundIMG.jpg");
+  background-position: center;
+  background-size: cover;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100vh;
+  padding-top: 50px;
+}
+
+.header {
+  background-color: rgba(229, 226, 226, 0.5);
+  text-decoration: none;
+  color: black;
+  /* margin-top: 100px; */
+}
+
+.title {
+  /* padding-top: 100px; */
+
+  /* margin-top: 100px; */
+  color: black;
+  background-color: rgba(70, 62, 62, 0.493);
+}
+
+footer {
+  font-size: smaller;
+  /* text-decoration: none; */
+}
