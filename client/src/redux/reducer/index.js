@@ -4,6 +4,7 @@ const initialState = {
   recipes: [],
   recipeDetail: {},
   newRecipe: {},
+  allFromDB: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -27,6 +28,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         newRecipe: action.payload,
+      };
+    case "GET_ALL_FROM_DB":
+      return {
+        ...state,
+        allFromDB: action.payload,
       };
     default:
       return state;
