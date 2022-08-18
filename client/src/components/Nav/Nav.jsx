@@ -7,9 +7,11 @@ export default class Nav extends Component {
   render() {
     return (
       <div className="nav">
-        <Link to="/">Home</Link>
-        <Link to="/createRecipe/">Create Recipe</Link>
-        <Link to="/recipesInDataBase/">Recipes in Data Base</Link>
+        <Link to="/">Landing page</Link>
+        <Link to="/home">Home</Link>
+        <Link to="/home/searchRecipes">Search recipes</Link>
+        <Link to="/home/createRecipe/">Create Recipe</Link>
+        <Link to="/home/recipesInDataBase/">Recipes in Data Base</Link>
       </div>
     );
   }
