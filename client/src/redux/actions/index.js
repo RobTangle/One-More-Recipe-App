@@ -21,6 +21,30 @@ export const getRecipeDetail = (id) => {
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: GET_RECIPE_DETAIL, payload: data });
+      })
+      .catch((error) => {
+        console.log(error);
+        return error;
       });
   };
 };
+
+//!No sé si está bien escrita con el async await y axios:
+export const createRecipe = (obj) => {
+  return async function (dispatch) {
+    try {
+      let response = await axios.post(`http://localhost:3001/recipes/`, obj);
+      return dispatch({ type: CREATE_RECIPE, payload: response });
+    } catch (error) {
+      return error.message;
+    }
+  };
+};
+
+// export const getRecipeDetailFIXED = (id) => {
+//   return async function (dispatch) {
+//     const response = await fetch(`http://localhost:3001/recipes/${id}`);
+//     const data = await response.json();
+//     dispatch({ type: GET_RECIPE_DETAIL, payload: data });
+//   };
+// };
