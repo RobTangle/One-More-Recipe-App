@@ -25,7 +25,7 @@
 //* Podría crear una función que devuelva true || false si un PK es de la DB o de la API. Y dependiendo de este if(funcionEsDB) ir a buscar a un lado u el otro.
 
 //H ITINERARIO: ----------------------------------------------------------------------------------
-//h
+//h  PODRÍA CREAR UN COMPONENTE QUE SEA UNA TARJETA PARA CADA RECETA. Y le paso por props para propiedad
 
 //? IDEAS: -----------------------------------------------------------------------------------------
 //? 1* Para agregar las dietas podría usar el método add que me brinda sequelize cuando hago asociasiones. Le paso un array de Pks de dietas? Podría agregar esas PK a un arreglo y enviarlo en el post.
