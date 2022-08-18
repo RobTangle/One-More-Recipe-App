@@ -9,6 +9,7 @@ export default class Nav extends Component {
       <div className="nav">
         <Link to="/">Home</Link>
         <Link to="/createRecipe/">Create Recipe</Link>
+        <Link to="/recipesInDataBase/">Recipes in Data Base</Link>
       </div>
     );
   }
