@@ -21,7 +21,7 @@ const CreateRecipe = () => {
   const dispatch = useDispatch();
 
   function handleOnChange(e) {
-    setLocalState({ ...localState, [e.target.title]: e.target.value });
+    setLocalState({ ...localState, [e.target.name]: e.target.value });
   }
 
   function handleSubmit(e) {
