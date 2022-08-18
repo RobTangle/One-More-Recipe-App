@@ -49,7 +49,53 @@ export const getRecipesFromDB = () => {
         `http://localhost:3001/recipes/getAllFromDB`
       );
       return dispatch({ type: GET_ALL_FROM_DB, payload: response });
-    } catch (error) {}
+    } catch (error) {
+      console.log("ERROR EN getRecipesFromDB");
+      return error.message;
+    }
+  };
+};
+
+export const getRecipesByTitle = (title) => {
+  return async function (dispatch) {
+    try {
+      console.log("TRY de getRecipesByTitle");
+      let response = await axios.get(
+        `http://localhost:3001/recipes/?title=${title}`
+      );
+      return dispatch({ type: GET_RECIPES, payload: response });
+    } catch (error) {
+      console.log("ERROR AL getRecipesByTitle");
+      return error.message;
+    }
+  };
+};
+
+export const getRecipesByDiet = (diet) => {
+  return async function (dispatch) {
+    try {
+      console.log("TRY de getRecipesByDiet");
+      let response = await axios.get(
+        `http://localhost:3001/recipes/?diet=${diet}`
+      );
+      return dispatch({ type: GET_RECIPES, payload: response });
+    } catch (error) {
+      console.log("ERROR AL getRecipesBydiet");
+      return error.message;
+    }
+  };
+};
+
+export const getRecipesByQuery = (query) => {
+  return async function (dispatch) {
+    try {
+      console.log("TRY de getRecipesByQUERY");
+      let response = await axios.get(`http://localhost:3001/recipes/?${query}`);
+      return dispatch({ type: GET_RECIPES, payload: response });
+    } catch (error) {
+      console.log("ERROR AL getRecipesBydiet");
+      return error.message;
+    }
   };
 };
 
