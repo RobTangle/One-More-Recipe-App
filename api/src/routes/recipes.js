@@ -68,6 +68,21 @@ router.get("/", async (req, res) => {
 
 //*---------------------------------------------------------------------
 
+//-------------------------------------
+//GET sólo de DB:
+
+router.get("/getAllFromDB", async (req, res) => {
+  console.log("Entré a /getAllFromDB");
+  try {
+    let recetasFromDB = await Recipe.findAll();
+    res.status(200).send(recetasFromDB);
+  } catch (error) {
+    console.log("Error en getAllFromDB!");
+    console.log(error.message);
+    res.status(402).send(error.message);
+  }
+});
+
 //  GET /recipes/{idReceta}:
 // Obtener el detalle de una receta en particular
 //? what?!: Debe traer solo los datos pedidos en la ruta de detalle de receta
