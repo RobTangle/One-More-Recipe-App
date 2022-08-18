@@ -28,7 +28,7 @@
 //h
 
 //? IDEAS: -----------------------------------------------------------------------------------------
-//? 1*
+//? 1* Para agregar las dietas podría usar el método add que me brinda sequelize cuando hago asociasiones. Le paso un array de Pks de dietas? Podría agregar esas PK a un arreglo y enviarlo en el post.
 //? 2*
 //? 3*
 //? RANDOM:
