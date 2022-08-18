@@ -24,6 +24,7 @@ function fromQueryToURL(obj) {
 // Si no existe ninguna receta mostrar un mensaje adecuado:
 //cómo busco con un "includes" en cada atributo? Con el Op.
 //h Acá faltaría el "Si no existe ninguna receta mostrar un mensaje adecuado".
+//h Setear por default a number=99 para que me traiga más de 9 resultados
 router.get("/", async (req, res) => {
   let queryToURL = fromQueryToURL(req.query);
   let fromDB = [];
