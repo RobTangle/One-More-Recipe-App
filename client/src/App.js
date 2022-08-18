@@ -8,10 +8,11 @@ function App() {
   return (
     <div className="App">
       <h1>Henry Food</h1>
-      <Route path="/" component={Nav} />
       <h3>RECIPES!</h3>
+      <Route path="/" component={Nav} />
       <Route path="/recipes/:id" component={RecipeDetail} />
       <Route exact path="/createRecipe/" component={createRecipe} />
+      <Route exact path="/recipesInDataBase/" component={RecipeDetail} />
     </div>
   );
 }
