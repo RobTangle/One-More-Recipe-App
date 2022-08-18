@@ -2,7 +2,7 @@ import "./App.css";
 import { Route } from "react-router-dom";
 import RecipeDetail from "./components/RecipeDetail/RecipeDetail.jsx";
 import Nav from "./components/Nav/Nav.jsx";
-import createRecipe from "./components/createRecipe/createRecipe";
+import createRecipe from "./components/createRecipe/CreateRecipe";
 
 function App() {
   return (
