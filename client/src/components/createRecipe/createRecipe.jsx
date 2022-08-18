@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import * as actions from "./../../redux/actions/index";
+import * as actions from "../../redux/actions/index";
 // Importar las actions como Object Modules, sino los test no funcionarán!
 
 //  Un formulario controlado con JavaScript con los siguientes campos:
