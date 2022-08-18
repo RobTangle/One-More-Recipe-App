@@ -105,14 +105,17 @@ router.get("/:idReceta", async (req, res) => {
 router.post("/", async (req, res) => {
   const { title, summary, healthScore, diet } = req.body;
   if (!title || !summary) {
+    console.log("Title o summary no ingresados!");
     return res.status(400).send("title and summary are mandatory");
   }
   try {
     //agregar a la db:
     const data = { title, summary, healthScore, diet };
     const newRecipe = await Recipe.create(data);
+    console.log("Receta creada!!");
     return res.status(201).json(newRecipe);
   } catch (error) {
+    console.log("Error al intentar crear la receta!!");
     return res.status(402).send(error.message);
   }
 });
