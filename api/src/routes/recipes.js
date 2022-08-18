@@ -28,14 +28,15 @@ router.get("/", async (req, res) => {
   let queryToURL = fromQueryToURL(req.query);
   let fromDB = [];
   let concatAPIyDB = [];
+  console.log("Entré en el get '/'");
   try {
     // si me envian algo por query:
     if (queryToURL.length >= 2) {
+      console.log("ENtré al >= 2");
       let axiado = await axios.get(
         `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}apiKey=${MI_API_KEY}`
       );
 
-      console.log("ENtré al >= 2");
       console.log(queryToURL);
       console.log(
         `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}apiKey=${MI_API_KEY}`
@@ -48,6 +49,7 @@ router.get("/", async (req, res) => {
       concatAPIyDB = [...fromDB, ...axiado.data.results];
       return res.status(208).send(concatAPIyDB);
     } else {
+      console.log("Entré en el try else del get '/'");
       let axiadoSinQuery = await axios.get(
         `https://api.spoonacular.com/recipes/complexSearch?apiKey=${MI_API_KEY}`
       );
@@ -71,6 +73,7 @@ router.get("/", async (req, res) => {
 //? what?!: Debe traer solo los datos pedidos en la ruta de detalle de receta
 // Incluir los tipos de dieta asociados (esto ya deberia venir en la data)
 router.get("/:idReceta", async (req, res) => {
+  console.log("Entré al get /:idReceta");
   const idReceta = req.params.idReceta;
   if (!idReceta) {
     return res.status(404).send("Debe ingresar por params el id de la receta");
