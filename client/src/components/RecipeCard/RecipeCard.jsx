@@ -1,28 +1,22 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../redux/actions/index";
+// import { useDispatch, useSelector } from "react-redux";
+// import * as actions from "../../redux/actions/index";
+import "./RecipeCard.css";
 
 const RecipeCard = (props) => {
-  const recipeDetailRedux = useSelector((state) => state.recipeDetail);
-  const dispatch = useDispatch();
-
-  //* https://stackoverflow.com/questions/56926282/react-hooks-fetch-wont-stop-fetching
-
-  React.useEffect(() => {
-    dispatch(actions.getRecipes(props.match.params.id));
-  }, [dispatch, props.match.params.id]); //*Agregué esto usando el quick fix que ofrecía vsc
-
-  let diets = recipeDetailRedux.diets;
-  let dietasStringed = "";
-  diets?.forEach((element) => {
-    dietasStringed += `${element} `;
-  });
-
   return (
-    <div>
-      <h5>div de receta</h5>
+    <div className="recipeCard" key={props.id}>
+      <h3>{props.title}</h3>
+      <div>ID: {props.id}</div>
+      <div>Health Score: {props.healthScore}</div>
+      <div>Diet: {props.diet}</div>
+      <div>
+        Summary:
+        <div dangerouslySetInnerHTML={{ __html: props.summary }}></div>
+      </div>
     </div>
   );
 };
+//! Esto es peligroso!! Debería arreglarlo!! Puedo con npmodulos tipo html to parse o algo así?
 
 export default RecipeCard;
