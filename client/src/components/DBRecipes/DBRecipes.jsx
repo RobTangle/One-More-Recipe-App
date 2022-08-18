@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions/index";
+import RecipeCard from "../RecipeCard/RecipeCard";
 
 const DBRecipes = (props) => {
   const recipeInDataBaseRedux = useSelector((state) => state.allFromDB);
@@ -19,20 +20,30 @@ const DBRecipes = (props) => {
   // });
 
   //! Voy a tener que modelar mejor el model para que pueda recibir un array de dietas?
+  //* PODRÍA CREAR UN COMPONENTE QUE SEA UNA TARJETA PARA CADA RECETA. Y le paso por props para propiedad
   return (
     <>
       {console.log(recipeInDataBaseRedux)}
 
       {recipeInDataBaseRedux.data?.map((recipe) => {
         return (
-          <div key={recipe.id}>
-            <h2>{recipe.title}</h2>
-            <h3>Recipe detail:</h3>
-            <div>id: {recipe.id}</div>
-            <div>Health score: {recipe.healthScore}</div>
-            <div>Dish type: {recipe.dishTypes}</div>
-            <div>Type of diet: {recipe.diet}</div>
-          </div>
+          <RecipeCard
+            key={recipe.id}
+            title={recipe.title}
+            id={recipe.id}
+            healthScore={recipe.healthScore}
+            summary={recipe.summary}
+            diet={recipe.diet}
+          />
+          //   <div key={Math.random()}>
+          //     <h2>{recipe.title}</h2>
+          //     <h3>Recipe detail:</h3>
+          //     <div>id: {recipe.id}</div>
+          //     <div>Health score: {recipe.healthScore}</div>
+          //     <div>Dish type: {recipe.dishTypes}</div>
+          //     <div>Type of diet: {recipe.diet}</div>
+          //   </div>
+          // </div>
         );
       })}
     </>
