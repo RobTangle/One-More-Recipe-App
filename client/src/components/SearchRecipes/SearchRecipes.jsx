@@ -58,7 +58,7 @@ const SearchRecipes = () => {
         <button type="submit">Search</button>
       </form>
       <form action="" onSubmit={handleSubmitDiet}>
-        <label htmlFor="">By diet</label>
+        <label htmlFor="">By diet: </label>
         <input type="text" name="diet" onChange={handleOnChange} />
         <button type="submit">Search</button>
       </form>
