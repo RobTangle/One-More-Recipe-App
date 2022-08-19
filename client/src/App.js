@@ -6,6 +6,7 @@ import createRecipe from "./components/createRecipe/CreateRecipe";
 import DBRecipes from "./components/DBRecipes/DBRecipes";
 import LandingPage from "./components/LandingPage/LandingPage";
 import SearchRecipes from "./components/SearchRecipes/SearchRecipes";
+import RenderRecipeCardsAPI from "./components/RenderRecipeCardsAPI/RenderRecipeCardsAPI";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route exact path="/" component={LandingPage} />
       <Route path="/home" component={Nav} />
       <Route exact path="/home" component={SearchRecipes} />
+      <Route exact path="/home" component={RenderRecipeCardsAPI} />
       <Route path="/home/recipes/:id" component={RecipeDetail} />
       {/* <Route path="/home/searchRecipes" component={SearchRecipes} /> */}
 
