@@ -8,6 +8,7 @@ const { Op } = require("sequelize");
 
 const router = Router();
 
+const addRecipeInfoTrue = "addRecipeInformation=true";
 //h-------------------------------
 function fromQueryToURL(obj) {
   let urleado = "";
@@ -35,24 +36,38 @@ router.get("/", async (req, res) => {
     if (queryToURL.length >= 2) {
       console.log("ENtré al >= 2");
       let axiado = await axios.get(
-        `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}apiKey=${MI_API_KEY}`
+        `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
       );
 
       console.log(queryToURL);
       console.log(
-        `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}apiKey=${MI_API_KEY}`
+        `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
       );
+      //! Esto de acá abajo es para que no me choque la prop query en la DB, ya que no existe query en el Model Receta:
+      let newObj = {};
+      if (req.query.query) {
+        for (const key in req.query) {
+          if (Object.hasOwn(req.query, key)) {
+            if (key != "query") {
+              newObj[key] = req.query[key];
+            } else {
+              newObj["title"] = req.query.query;
+            }
+          }
+        }
+      }
+      //!----------------------------
       //traer también lo que haya en la DB:
       fromDB = await Recipe.findAll({
-        where: req.query,
+        where: newObj, //! ojo este objeto! Mirar arriba rojo
       });
-      console.log(fromDB);
+      console.log("Length the fromDB: ", fromDB.length);
       concatAPIyDB = [...fromDB, ...axiado.data.results];
       return res.status(208).send(concatAPIyDB);
     } else {
       console.log("Entré en el try else del get '/'");
       let axiadoSinQuery = await axios.get(
-        `https://api.spoonacular.com/recipes/complexSearch?apiKey=${MI_API_KEY}`
+        `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&apiKey=${MI_API_KEY}`
       );
       fromDB = await Recipe.findAll();
       concatAPIyDB = [...fromDB, ...axiadoSinQuery.data.results];
@@ -60,7 +75,7 @@ router.get("/", async (req, res) => {
     }
   } catch (error) {
     console.log(
-      `https://api.spoonacular.com/recipes/complexSearch?${queryToURL}apiKey=${MI_API_KEY}`
+      `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
     );
     console.log("ERROR ACÄ!!!: ", error.message);
     return res.send(error.message);
