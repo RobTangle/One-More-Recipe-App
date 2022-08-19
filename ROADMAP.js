@@ -26,10 +26,15 @@
 
 //H ITINERARIO: ----------------------------------------------------------------------------------
 //h  PODRÍA CREAR UN COMPONENTE QUE SEA UNA TARJETA PARA CADA RECETA. Y le paso por props para propiedad
-
+//h *Tengo que hacer el renderizado de la recipe Search.
+//h * Y luego tengo que hacer unos botones para ordenar las recetas (ordeno el array en el estado) en orden alfabetico. Le hago un sort al arreglo con receta del State.recipes;
+//h * Ordenar por healthScore. Le hago un sort al State.recipes según el healthScore.
+//h * Filtrar por tipo de dieta. Le hacer un filter al State.Recipes según si el array de diets includes "dieta";
+//h * Hacer que el get me traiga 99 recetas. Y hacer que sólo renderice las primeras 9 por cada página. Pensar bien cómo hacer esto... splices? slices? contador en el mapeo?
+//h * Pensar cómo establecer la cantidad de páginas que hay. Si está apretado el botón 2, podría decir que me renderice del 10 al 19, por ejemplo. Y que se creen botones según la cantidad de elementos haya en el array. State.recipes.length / 9;
 //? IDEAS: -----------------------------------------------------------------------------------------
 //? 1* Para agregar las dietas podría usar el método add que me brinda sequelize cuando hago asociasiones. Le paso un array de Pks de dietas? Podría agregar esas PK a un arreglo y enviarlo en el post.
-//? 2*
+//? 2* Podría hacer que las recetas que me traigo de la DB vayan a un State.DBRecipes y que esas recetas se rendericen a su propia manera ya que no tienen imagen, etc.
 //? 3*
 //? RANDOM:
 //? Podría hacer que la PrimaryKey de mis elementos de mi DB empiece con db. O sea: db02. LO HICE DE OTRA FORMA AL FINAL.
