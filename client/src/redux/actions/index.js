@@ -48,7 +48,7 @@ export const getRecipesFromDB = () => {
       let response = await axios.get(
         `http://localhost:3001/recipes/getAllFromDB`
       );
-      return dispatch({ type: GET_ALL_FROM_DB, payload: response });
+      return dispatch({ type: GET_ALL_FROM_DB, payload: response.data });
     } catch (error) {
       console.log("ERROR EN getRecipesFromDB");
       return error.message;
@@ -98,6 +98,17 @@ export const getRecipesByQuery = (query) => {
     }
   };
 };
+//!-----------------------------------------
+export const sortByTitle = () => {
+  return function (dispatch) {
+    try {
+      return dispatch({ type: "SORT_BY_TITLE", payload: "" });
+    } catch (error) {
+      return error.message;
+    }
+  };
+};
+//!----------------------------------------
 
 // export const getRecipeDetailFIXED = (id) => {
 //   return async function (dispatch) {
