@@ -34,6 +34,25 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         allFromDB: action.payload,
       };
+    //!------------------------------
+    case "SORT_BY_TITLE":
+      function compareTitle(a, b) {
+        // a should come before b in the sorted order
+        if (a.title < b.title) {
+          return -1;
+          // a should come after b in the sorted order
+        } else if (a.title > b.title) {
+          return 1;
+          // and and b are the same
+        } else {
+          return 0;
+        }
+      }
+      return {
+        ...state,
+        allFromDB: state.allFromDB.sort(compareTitle),
+      };
+    //!------------------------------
     default:
       return state;
   }
