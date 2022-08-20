@@ -7,18 +7,51 @@ import { useEffect } from "react";
 
 const RenderRecipeCardsAPI = (props) => {
   const recipesSearched = useSelector((state) => state.recipes);
-  // const [localState, setLocalState] = React.useState([recipesSearched])
-  // React.useEffect(() => {}, []);
-  // const dispatch = useDispatch();
-  //h-------------probando ordenar por title:
+  const [localState, setLocalState] = React.useState([]);
+
+  React.useEffect(() => {
+    console.log("Me monté");
+  }, [recipesSearched]);
+
   function orderByTitle() {
-    recipesSearched?.data.sort((a, b) => a.title - b.title);
+    recipesSearched.data?.sort(compareTitle);
+    if (recipesSearched.data) {
+      setLocalState([...recipesSearched.data]);
+    } else {
+      return console.log("recipesSearched.data NO EXISTE!");
+    }
   }
 
   function orderByTitleInvert() {
-    recipesSearched?.data.sort((a, b) => b.title - a.title);
+    recipesSearched.data?.sort(compareTitleInvert);
+    if (recipesSearched.data) {
+      setLocalState([...recipesSearched.data]);
+    } else {
+      console.log("recipesSearched.data NO EXISTE en Invert!");
+      return <div>NO HAY ELEMENTOS PARA RENDERIZAR</div>; //! no funciona
+    }
   }
-  //h-----------------------------y los dos botones de abajo tmb son de esta prueba
+  //h--algoritmos para ordenar por title:
+  function compareTitle(a, b) {
+    if (a.title < b.title) {
+      return -1;
+    } else if (a.title > b.title) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
+  function compareTitleInvert(a, b) {
+    if (a.title < b.title) {
+      return 1;
+    } else if (a.title > b.title) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+  //h------------y los dos botones de abajo para invocar las funciones
   return (
     <div>
       <button onClick={orderByTitle}>Order by title</button>
