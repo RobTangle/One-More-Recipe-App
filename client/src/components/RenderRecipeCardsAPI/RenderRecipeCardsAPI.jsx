@@ -10,7 +10,8 @@ const RenderRecipeCardsAPI = (props) => {
   const [localState, setLocalState] = React.useState([]);
 
   React.useEffect(() => {
-    console.log("Me monté");
+    console.log("Me monté o refresqué");
+    console.log("Soy recipesSearched: ", recipesSearched);
   }, [recipesSearched]);
 
   //h ----- Funciones auxiliares que podría modularizarlas e importarlas:
