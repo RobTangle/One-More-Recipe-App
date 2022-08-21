@@ -125,6 +125,7 @@ const RenderRecipeCardsAPI = (props) => {
         return (
           <RecipeCardAPI
             key={recipeAPI.id}
+            id={recipeAPI.id}
             title={recipeAPI.title}
             image={recipeAPI.image}
             diets={recipeAPI.diets}
