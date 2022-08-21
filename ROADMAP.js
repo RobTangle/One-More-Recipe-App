@@ -26,12 +26,13 @@
 
 //! PROBLEMAS DETECTADOS PARA SOLUCIONAR:
 //! * Cuando hago búsqueda por dieta, me renderiza/trae todo lo de la DB y además de eso me renderiza lo de la API. Mirar el reducer qué está haciendo cuando busca por diet.
-
+//! En realidad está funcionando bien. Lo que pasa es que trae los match de la DB y además trae < 9 recetas de la API. Tengo que poner un límite de elementos a renderizar
+//! Podría hacer un slice de State.recipes y renderizar de a tramos de (i, i+9) por ejemplo...
 //H ITINERARIO: ----------------------------------------------------------------------------------
-//h  PODRÍA CREAR UN COMPONENTE QUE SEA UNA TARJETA PARA CADA RECETA. Y le paso por props para propiedad
-//h *Tengo que hacer el renderizado de la recipe Search.
-//h * ORDENAMIENTO: (mandar action para sortear el state.recipes)?
-//h * Y luego tengo que hacer unos botones para ordenar las recetas (ordeno el array en el estado) en orden alfabetico. Le hago un sort al arreglo con receta del State.recipes;
+//h   PODRÍA CREAR UN COMPONENTE QUE SEA UNA TARJETA PARA CADA RECETA. Y le paso por props para propiedad
+//h   Tengo que hacer el renderizado de la recipe Search.
+//h  ORDENAMIENTO: (mandar action para sortear el state.recipes)?
+//h  Y luego tengo que hacer unos botones para ordenar las recetas (ordeno el array en el estado) en orden alfabetico. Le hago un sort al arreglo con receta del State.recipes;
 //h * Ordenar por healthScore. Le hago un sort al State.recipes según el healthScore.
 //h * Filtrar por tipo de dieta. Le hacer un filter al State.Recipes según si el array de diets includes "dieta";
 //h * Hacer que el get me traiga 99 recetas. Y hacer que sólo renderice las primeras 9 por cada página. Pensar bien cómo hacer esto... splices? slices? contador en el mapeo?
