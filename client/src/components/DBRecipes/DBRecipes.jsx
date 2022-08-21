@@ -8,11 +8,15 @@ const DBRecipes = (props) => {
   const dispatch = useDispatch();
 
   const [localState, setLocalState] = React.useState([]);
-  //* https://stackoverflow.com/questions/56926282/react-hooks-fetch-wont-stop-fetching
 
+  //* https://stackoverflow.com/questions/56926282/react-hooks-fetch-wont-stop-fetching
   React.useEffect(() => {
     // dispatch(actions.getRecipesFromDB());
-    console.log("Me monté");
+    console.log("useEffect: Me monté o refresqué");
+    console.log(
+      "useEffect: soy recipeInDataBaseRedux: ",
+      recipeInDataBaseRedux
+    );
     // setLocalState([...recipeInDataBaseRedux.sort((a, b) => a.title - b.title)]);
   }, [recipeInDataBaseRedux]); //*Agregué esto usando el quick fix que ofrecía vsc
 
@@ -21,10 +25,23 @@ const DBRecipes = (props) => {
   // diets?.forEach((element) => {
   //   dietasStringed += `${element} `;
   // });
+  //h --Algoritmos y funciones para ordenar:  --------------------------
+  // Despacha una action que ordena el store directamente. El setLocalState final hace que se rerenderice el componente.
   function sortear() {
+    //! Por algún motivo, me logueo el array ordenado antes de el dispatch. No entiendo por qué..
+    console.log(
+      "soy async sortear ANTES del await del dispatch. RecipeInDataBaseRedux: ",
+      recipeInDataBaseRedux
+    );
     dispatch(actions.sortByTitle());
+    console.log(
+      "soy async sortear DESPUES del await del dispatch. RecipeInDataBaseRedux: ",
+      recipeInDataBaseRedux
+    );
+    setLocalState([...recipeInDataBaseRedux]);
   }
 
+  // Sort a recipeInDataBaseRedux. El setLocalState final hace que se rerenderice el componente:
   function sortearRecipeInDB() {
     recipeInDataBaseRedux.sort(compareTitle);
     setLocalState([...recipeInDataBaseRedux]);
@@ -42,6 +59,7 @@ const DBRecipes = (props) => {
       return 0;
     }
   }
+  //h -------Arriba funciones y algos para ordenar-----------------------------------
 
   function traerRecetas() {
     console.log("trayendo recetas!");
@@ -49,10 +67,12 @@ const DBRecipes = (props) => {
   }
 
   //! Voy a tener que modelar mejor el model para que pueda recibir un array de dietas?
-  //* PODRÍA CREAR UN COMPONENTE QUE SEA UNA TARJETA PARA CADA RECETA. Y le paso por props para propiedad
   return (
     <>
-      {console.log(recipeInDataBaseRedux)}
+      {console.log(
+        "Estoy en el return del componente. RIDBR: ",
+        recipeInDataBaseRedux
+      )}
       <button onClick={sortearRecipeInDB}>Sortear RecipeInDBRedux</button>
       <button onClick={sortear}>Sort</button>
       <button onClick={traerRecetas}>Traer recetas</button>
