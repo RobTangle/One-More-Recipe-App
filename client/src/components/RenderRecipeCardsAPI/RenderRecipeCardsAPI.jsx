@@ -7,12 +7,23 @@ import { useEffect } from "react";
 
 const RenderRecipeCardsAPI = (props) => {
   const recipesSearched = useSelector((state) => state.recipes);
+
+  React.useEffect(() => {
+    console.log("Me monté o refresqué con [recipesSearched]");
+    console.log("Soy recipesSearched: ", recipesSearched);
+    setLocalState(recipesSearched);
+    console.log(
+      "Estoy en el useEffect de [recipesSearched] despues del setLocalState(recipesSearched)",
+      localState
+    );
+  }, [recipesSearched]);
+
   const [localState, setLocalState] = React.useState([]);
 
   React.useEffect(() => {
-    console.log("Me monté o refresqué");
-    console.log("Soy recipesSearched: ", recipesSearched);
-  }, [recipesSearched]);
+    console.log("Soy el de localState. Me monté o refresqué");
+    console.log("Soy el localState: ", localState);
+  }, [localState]);
 
   //h ----- Funciones auxiliares que podría modularizarlas e importarlas:
 
@@ -69,9 +80,9 @@ const RenderRecipeCardsAPI = (props) => {
   }
 
   function orderByTitleInvert() {
-    recipesSearched.data?.sort(compareTitleInvert);
-    if (recipesSearched.data) {
-      setLocalState([...recipesSearched.data]);
+    recipesSearched.sort(compareTitleInvert);
+    if (recipesSearched) {
+      setLocalState([...recipesSearched]);
     } else {
       console.log("recipesSearched.data NO EXISTE en Invert!");
       return <div>NO HAY ELEMENTOS PARA RENDERIZAR</div>; //! no funciona
@@ -80,14 +91,15 @@ const RenderRecipeCardsAPI = (props) => {
 
   //h--- Ordenar por healthScore:
   function orderByHealthScore() {
+    //! falta actualizarla para usar el localState como está la INVERT
     console.log("Se invocó a orderByHealthScore.");
-    if (recipesSearched.data) {
-      console.log("recipesSearched.data existe.. voy a sortear ahora");
+    if (recipesSearched.length > 0) {
+      console.log("recipesSearched existe.. voy a sortear ahora");
       //altero el orden de la función para ver si es mejor así haciendo el if primero
-      recipesSearched.data?.sort(compareHealthScore);
-      setLocalState([...recipesSearched.data]);
+      recipesSearched.sort(compareHealthScore);
+      setLocalState([...recipesSearched]);
     } else {
-      console.log("recipesSearched.data NO EXISTE en orderByHealthScore!");
+      console.log("recipesSearched.length < 1 en orderByHealthScore!");
       // return <div>NO HAY ELEMENTOS PARA RENDERIZAR</div>; //! no funciona
     }
   }
@@ -98,30 +110,58 @@ const RenderRecipeCardsAPI = (props) => {
       array
     );
     if (array) {
-      //altero el orden de la función para ver si es mejor así haciendo el if primero
-      array.sort(compareHealthScoreInvert);
-      setLocalState([...recipesSearched.data]);
-      console.log("el array después de haber sido sorteado", array);
+      let sortedArray = array.sort(compareHealthScoreInvert);
+      let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
+      setLocalState(copySortedArray);
+      console.log("el localState después de haber sido sorteado", localState);
     } else {
       console.log(
-        "recipesSearched.data NO EXISTE en orderByHealthScoreInvert!"
+        "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
       );
     }
   }
 
-  //h------------y los dos botones de abajo para invocar las funciones
+  //h--- Filter by diets:
+
+  function callBackFilter(receta, diet) {
+    if (
+      diet == "vegetarian" ||
+      diet == "vegan" ||
+      diet == "glutenFree" ||
+      diet == "dairyFree"
+    ) {
+      if (receta[diet] && receta[diet] === true) {
+        return true;
+      }
+    }
+  }
+
+  function filterByDiet(e) {
+    console.log(e.target.id);
+
+    let filteredRecipes = recipesSearched.filter((receta) =>
+      callBackFilter(receta, e.target.id)
+    );
+    console.log(filteredRecipes);
+    setLocalState(filteredRecipes);
+  }
+
+  //h------------y los botones de abajo para invocar las funciones
   return (
     <div>
+      <button id="vegan" onClick={filterByDiet}>
+        Filter by vegan diet
+      </button>
       <button onClick={orderByTitle}>Order by title</button>
       <button onClick={orderByTitleInvert}>Order by title Invert</button>
       {/* //* notar que el order healthScore funciona de dos maneras distintas!: */}
       <button onClick={orderByHealthScore}>Order by Health score</button>
-      <button onClick={(e) => orderByHealthScoreInvert(recipesSearched.data)}>
+      <button onClick={(e) => orderByHealthScoreInvert(localState)}>
         Order by Health score INVERT
       </button>
       {/* //*---------------------------- */}
       <div>Renderizado de RenderRecipeCardsAPI: </div>{" "}
-      {recipesSearched.data?.map((recipeAPI) => {
+      {localState.map((recipeAPI) => {
         return (
           <RecipeCardAPI
             key={recipeAPI.id}
