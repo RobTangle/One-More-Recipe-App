@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions/index";
+import "./recipeDetail.css";
 
 const RecipeDetail = (props) => {
   const recipeDetailRedux = useSelector((state) => state.recipeDetail);
@@ -15,12 +16,30 @@ const RecipeDetail = (props) => {
   let diets = recipeDetailRedux.diets;
   let dietasStringed = "";
   diets?.forEach((element) => {
-    dietasStringed += `${element} `;
+    dietasStringed += `${element} | `;
   });
+
+  // function listaDietas(array) {
+  //   let listado;
+  //   for (let i = 0; i < array.length; i++) {
+  //     return <li>{array[i]}</li>;
+  //   }
+  // }
+
+  // function listadoDiets(array) {
+  //   return array.forEach((diet) => {
+  //     return <li>{diet}</li>;
+  //   });
+  // }
+
+  // let listadoDietsLet = listadoDiets(diets);
+
+  // let listaDietasRender = listaDietas(diets);
 
   //! Voy a tener que modelar mejor el model para que pueda recibir un array de dietas?
   return (
     <div key={recipeDetailRedux.id}>
+      <img src={recipeDetailRedux.image} alt="Recipe ilustration" />
       <h2>{recipeDetailRedux.title}</h2>
       <h3>Recipe detail:</h3>
       <div>id: {recipeDetailRedux.id}</div>
@@ -28,13 +47,17 @@ const RecipeDetail = (props) => {
       <div>Dish type: {recipeDetailRedux.dishTypes}</div>
       <div>Type of diet: {recipeDetailRedux.diet}</div>
 
-      {/* <div>dietasStringed: {dietasStringed}</div>
-      <div>
+      <div>dietasStringed: {dietasStringed}</div>
+      {/*<div>
         Tipo de dietas mapeado:{" "}
         {diets?.map((dieta) => {
           return <div>hola{dieta}</div>;
         })}
       </div> */}
+      {/* <span>lista Dietas Render:</span>
+      <div>{listaDietasRender}</div> */}
+      <span>listadoDiets con forEach</span>
+      {/* <div>{listadoDietsLet}</div> */}
       <div>
         Summary:
         <div
@@ -44,6 +67,12 @@ const RecipeDetail = (props) => {
         <div>Step by step: {recipeDetailRedux.steps}</div>
         <hr />
         {/* <>{recipeDetailRedux.summary}</> */}
+      </div>
+      <div>
+        Instructions:
+        <div
+          dangerouslySetInnerHTML={{ __html: recipeDetailRedux.instructions }}
+        ></div>
       </div>
     </div>
   );
