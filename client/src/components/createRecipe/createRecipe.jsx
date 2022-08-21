@@ -25,29 +25,94 @@ const CreateRecipe = () => {
   }
 
   function handleSubmit(e) {
+    console.log("handleSubmit invocado. localState: ", localState);
     e.preventDefault();
     dispatch(actions.createRecipe(localState));
   }
 
   return (
     <div>
+      {console.log("En el return del componente. Me rendericé!")}
       <form action="" onSubmit={handleSubmit}>
-        <label htmlFor="">Title: </label>
-        <input type="text" name="title" onChange={handleOnChange} />
-        <label htmlFor="">Health score: </label>
-        <input type="number" name="healthScore" onChange={handleOnChange} />
-        {/* hacer validaciones de min=0 y max=100 */}
-        <label htmlFor="">Summary: </label>
-        <textarea
-          name="summary"
-          id=""
-          cols="30"
-          rows="10"
-          onChange={handleOnChange}
-        ></textarea>
-        <label htmlFor="">diet: </label>
-        <input type="text" name="diet" onChange={handleOnChange} />
-        <button type="submit">Create Recipe</button>
+        <fieldset>
+          <legend>Create Recipe: </legend>
+          <div className="createRecipe">
+            <div>
+              <label htmlFor="">Title: </label>
+              <input type="text" name="title" onChange={handleOnChange} />
+            </div>
+            <div>
+              <label htmlFor="">Health score: </label>
+              <input
+                type="number"
+                name="healthScore"
+                onChange={handleOnChange}
+              />
+            </div>
+            {/* hacer validaciones de min=0 y max=100 */}
+            <div>
+              <label htmlFor="">Summary: </label>
+              <textarea
+                name="summary"
+                id=""
+                cols="30"
+                rows="10"
+                onChange={handleOnChange}
+              ></textarea>
+            </div>
+            <div>
+              <label>Step by step: </label>
+              <textarea
+                name="steps"
+                id="steps"
+                cols="30"
+                rows="10"
+                placeholder="Step by step..."
+              ></textarea>
+            </div>
+            <div>
+              <label htmlFor="">diet: </label>
+              <input type="text" name="diet" onChange={handleOnChange} />
+            </div>
+            <div>
+              <label htmlFor="">Vegan</label>
+              <input
+                type="checkbox"
+                name="vegan"
+                id="vegan_checkbox"
+                value="vegan"
+              />
+            </div>
+            <div>
+              <label htmlFor="">Ketogenic</label>
+              <input
+                type="checkbox"
+                name="ketogenic"
+                id="ketogenic_checkbox"
+                value="ketogenic"
+              />
+            </div>
+            <div>
+              <label htmlFor="">Gluten Free</label>
+              <input
+                type="checkbox"
+                name="glutenFree"
+                id="gluten_free_checkbox"
+                value="gluten free"
+              />
+            </div>
+            <div>
+              <label htmlFor="">Carnivore</label>
+              <input
+                type="checkbox"
+                name="carnivore"
+                id="carnivore_checkbox"
+                value="carnivore"
+              />
+            </div>
+            <button type="submit">Create Recipe</button>
+          </div>
+        </fieldset>
       </form>
     </div>
   );
