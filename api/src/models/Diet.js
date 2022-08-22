@@ -6,9 +6,8 @@ module.exports = (sequelize) => {
   //? El name es obligatorio? Seguramente sí.. pero no tiene el asterisco en el readme del PI.
   sequelize.define("diet", {
     id: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false,
     },
     name: {
       type: DataTypes.STRING,
