@@ -1,8 +1,8 @@
 import React from "react";
 import "./recipeCardAPI.css";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../redux/actions";
+// import { useDispatch, useSelector } from "react-redux";
+// import * as actions from "../../redux/actions";
 // Área donde se verá el listado de recetas. Deberá mostrar su:
 // Imagen
 // Nombre
@@ -35,6 +35,12 @@ const RecipeCardAPI = (props) => {
         <Link to={`/home/recipes/${props.id}`}> {props.title} </Link>
       </h2>
       <h3>Diets: {dietsToString(props.diets)} </h3>
+      <h3>Diets mapeado: </h3>
+      <ul>
+        {props.diets?.map((dieta) => (
+          <li>{dieta}</li>
+        ))}
+      </ul>
       <h3>Health score: {props.healthScore}</h3>
     </div>
   );
