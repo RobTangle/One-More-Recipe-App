@@ -28,15 +28,15 @@ const SearchRecipes = () => {
   }
   //h------------------------------
 
-  function handleSubmitTitle(e) {
-    e.preventDefault();
-    dispatch(actions.getRecipesByTitle(localState.query));
-  }
+  // function handleSubmitTitle(e) {
+  //   e.preventDefault();
+  //   dispatch(actions.getRecipesByTitle(localState.query));
+  // }
 
-  function handleSubmitDiet(e) {
-    e.preventDefault();
-    dispatch(actions.getRecipesByDiet(localState.diet));
-  }
+  // function handleSubmitDiet(e) {
+  //   e.preventDefault();
+  //   dispatch(actions.getRecipesByDiet(localState.diet));
+  // }
 
   function handleSubmitAll(e) {
     e.preventDefault();
@@ -52,20 +52,13 @@ const SearchRecipes = () => {
       <div>
         <h1>Search recipes:</h1>
       </div>
-      <form action="" onSubmit={handleSubmitTitle}>
-        <label htmlFor="">By title: </label>
-        <input type="text" name="query" onChange={handleOnChange} />
-        <button type="submit">Search</button>
-      </form>
-      <form action="" onSubmit={handleSubmitDiet}>
-        <label htmlFor="">By diet: </label>
-        <input type="text" name="diet" onChange={handleOnChange} />
-        <button type="submit">Search</button>
-      </form>
+      <label htmlFor="">By title </label>
+      <input type="text" name="query" onChange={handleOnChange} /> <br />
+      <label htmlFor="">By diet </label>
+      <input type="text" name="diet" onChange={handleOnChange} />
       <div>
-        Search by title and diet:
         <button type="submit" onClick={handleSubmitAll}>
-          Search title and diet
+          Search
         </button>
       </div>
     </div>
