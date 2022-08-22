@@ -17,7 +17,11 @@ const CreateRecipe = () => {
     healthScore: 10,
     steps: "",
     diet: "",
+    dietId: [],
   });
+
+  //! Hacer funcionamiento para que cada checkbox me pushee/mande al dietId un número según la dieta.
+  //! El objetivo es postear un array con números.
 
   const dispatch = useDispatch();
 
@@ -30,6 +34,10 @@ const CreateRecipe = () => {
     e.preventDefault();
     dispatch(actions.createRecipe(localState));
   }
+
+  //! function onCheckBoxChange (e) {
+  //!pusheo a dietId el número del checkbox
+  // }
 
   return (
     <div>

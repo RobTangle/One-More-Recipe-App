@@ -70,24 +70,30 @@ router.get("/:idReceta", async (req, res) => {
 // Crea una receta en la base de datos relacionada con sus tipos de dietas.
 //? Cómo relaciono sus tipos de dietas?
 
-router.post("/", async (req, res) => {
-  const { title, summary, healthScore, diet, dietId } = req.body;
-  if (!title || !summary) {
-    console.log("Title o summary no ingresados!");
-    return res.status(400).send("title and summary are mandatory");
-  }
-  try {
-    //agregar a la db:
-    const data = { title, summary, healthScore, diet };
-    const newRecipe = await Recipe.create(data);
-    await newRecipe.addDiet(dietId); //! probando setear FK
-    console.log("Receta creada!!");
-    return res.status(201).json(newRecipe);
-  } catch (error) {
-    console.log("Error al intentar crear la receta!!");
-    return res.status(402).send(error.message);
-  }
-});
+// router.post("/", async (req, res) => {
+//   const { title, summary, healthScore, diet, dietId } = req.body;
+//   if (!title || !summary) {
+//     console.log("Title o summary no ingresados!");
+//     return res.status(400).send("title and summary are mandatory");
+//   }
+//   try {
+//     //agregar a la db:
+//     const data = { title, summary, healthScore, diet };
+//     const newRecipe = await Recipe.create(data);
+//     // await newRecipe.addDiet(dietId); //! probando setear FK.
+//     //! Si dietId fuese un arreglo, directamente le paso todos los id. Tengo que hacer que en el req.body me llegue un key "dietId" = [4, 2, 1, 8].
+//     //! Y le paso ese array a newRecipe.addDiets(dietId).
+//     //! Además, debería guardar como atributo diet un string de las dietas. Tengo que hacer esto en este paso. Al crear la instancia nueva de la receta acá.
+//     //! Podría hacer que se forme el string directamente en el front y se posteen la prop diet ya como un string.... pero quizás sea mejor hacerlo desde acá, o ni siquiera ir por este camino ya que si me modifican la asosiacion entre la receta y la diet, no se me actualizaría  ya que está en forma de string. Debería enviar la prop dietId que tiene el model, y
+//     //! una vez que recibo esos números en el front, lo renderizo según cada número. ESTA CREO QUE ES LA MEJOR. PROBAR SI RECIBO dietId con muchos números o qué
+
+//     console.log("Receta creada!!");
+//     return res.status(201).json(newRecipe);
+//   } catch (error) {
+//     console.log("Error al intentar crear la receta!!");
+//     return res.status(402).send(error.message);
+//   }
+// });
 
 //* --- GET /recipes?name="...":
 //- hacer el get con/sin query con suma de API y DB:
@@ -188,7 +194,47 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
+//* EXPERIMENTACIÓN:
 
+router.post("/", async (req, res) => {
+  const { title, summary, healthScore, diet, dietId } = req.body;
+  if (!title || !summary) {
+    console.log("Title o summary no ingresados!");
+    return res.status(400).send("title and summary are mandatory");
+  }
+  try {
+    //agregar a la db:
+    const data = { title, summary, healthScore, diet };
+    console.log(`Entré al TRY: diet: ${diet}; dietId: ${dietId}`);
+    const newRecipe = await Recipe.create(data);
+    if (Array.isArray(dietId) && dietId.length > 0) {
+      console.log(`Entré al Array.isArray(${dietId})`);
+      for (let i = 0; i < dietId.length; i++) {
+        await newRecipe.addDiet(dietId[i]); //! probando setear FK.
+        console.log(`acabo de meter un setDiet con ${dietId[i]}`);
+      }
+    }
+    if (dietId && !Array.isArray(dietId)) {
+      console.log(`Entré al !Array.isArray(${dietId})`);
+      await newRecipe.addDiet(dietId);
+    }
+
+    //     //! Si dietId fuese un arreglo, directamente le paso todos los id. Tengo que hacer que en el req.body me llegue un key "dietId" = [4, 2, 1, 8].
+    //     //! Y le paso ese array a newRecipe.addDiets(dietId).
+    //     //! Además, debería guardar como atributo diet un string de las dietas. Tengo que hacer esto en este paso. Al crear la instancia nueva de la receta acá.
+    //     //! Podría hacer que se forme el string directamente en el front y se posteen la prop diet ya como un string.... pero quizás sea mejor hacerlo desde acá, o ni siquiera ir por este camino ya que si me modifican la asosiacion entre la receta y la diet, no se me actualizaría  ya que está en forma de string. Debería enviar la prop dietId que tiene el model, y
+    //     //! una vez que recibo esos números en el front, lo renderizo según cada número. ESTA CREO QUE ES LA MEJOR. PROBAR SI RECIBO dietId con muchos números o qué
+
+    console.log("Receta creada!! newRecipe: ");
+    console.log(`${newRecipe}`);
+    return res.status(201).json(newRecipe);
+  } catch (error) {
+    console.log("Error al intentar crear la receta!!");
+    return res.status(402).send(error.message);
+  }
+});
+
+//*----------------------------
 //!CÓDIGO QUE NO SIRVE PERO DEJO LOS BACKUPS: ------------------------------------------------------------------------
 
 //*----- hacer el get con/sin query con suma de API y DB:

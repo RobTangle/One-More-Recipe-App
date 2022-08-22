@@ -31,7 +31,7 @@
 //! * Order by Health score INVERT funciona bien. Pero "Order by Health score" está trabajando sobre el store.recipes y no sobre el localState.
 //! Cuando ya hay una Recipe detail cargada, tarda mucho en renderizarmela
 //H ITINERARIO: ----------------------------------------------------------------------------------
-//h Sacar los botones de buscado por title y receta individualmente y dejar uno solo.
+//h OK Sacar los botones de buscado por title y receta individualmente y dejar uno solo.
 //h Poner un botón para eliminar filter por dieta, y que simplemente renderice todo el store.recipes.
 //h * Filtrar por tipo de dieta. Le hacer un filter al State.Recipes según si el array de diets includes "dieta";
 //h * Hacer que el get me traiga 99 recetas. Y hacer que sólo renderice las primeras 9 por cada página. Pensar bien cómo hacer esto... splices? slices? contador en el mapeo?
@@ -39,7 +39,8 @@
 //? IDEAS: -----------------------------------------------------------------------------------------
 //? 1* Para agregar las dietas podría usar el método add que me brinda sequelize cuando hago asociaciones. Le paso un array de Pks de dietas? Podría agregar esas PK a un arreglo y enviarlo en el post.
 //? 2* Podría hacer que las recetas que me traigo de la DB vayan a un State.DBRecipes y que esas recetas se rendericen a su propia manera ya que no tienen imagen, etc.
-//? 3*
+//? 3* Para mostrar las diets: Podría hacer que al crear receta en la DB, que diets sea un string con dietas separadas por coma. Y luego desde la tarjeta le hago un split (",") y mapeo cada elemento como una <li>{diet}</li>.
+//?
 //? RANDOM:
 
 //?--------------------------------------------------------
