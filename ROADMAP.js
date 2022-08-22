@@ -22,18 +22,17 @@
 //*Pensar bien la estructura de cada app, pensar el rol de cada componente, micro y macro, Detallar y escribir los detalles de cada parte de la app. Esto me va a ayudar a entender bien todo.
 //* El archivo app.js importa el objeto de rutas y lo usa como middleware, con un server.use(router)
 
-//* Podría crear una función que devuelva true || false si un PK es de la DB o de la API. Y dependiendo de este if(funcionEsDB) ir a buscar a un lado u el otro.
-
 //! PROBLEMAS DETECTADOS PARA SOLUCIONAR:
-//! * Cuando hago búsqueda por dieta, me renderiza/trae todo lo de la DB y además de eso me renderiza lo de la API. Mirar el reducer qué está haciendo cuando busca por diet.
-//! En realidad está funcionando bien. Lo que pasa es que trae los match de la DB y además trae < 9 recetas de la API. Tengo que poner un límite de elementos a renderizar
+//! * Home/ Cuando busco con By title: Search. me devuelve .... TODO LO DE LA DB y además resultados de API.
+//! * Home/ Cuando busco con "Search title and diet" me devuelve... sólo resultados de la API.
 //! Podría hacer un slice de State.recipes y renderizar de a tramos de (i, i+9) por ejemplo...
+//! * Order by title no funciona. Sólo el Invert funciona.
+//! * Si no hay recetas para renderizar, renderizar un mensaje.
+//! * Order by Health score INVERT funciona bien. Pero "Order by Health score" está trabajando sobre el store.recipes y no sobre el localState.
+//! Cuando ya hay una Recipe detail cargada, tarda mucho en renderizarmela
 //H ITINERARIO: ----------------------------------------------------------------------------------
-//h   PODRÍA CREAR UN COMPONENTE QUE SEA UNA TARJETA PARA CADA RECETA. Y le paso por props para propiedad
-//h   Tengo que hacer el renderizado de la recipe Search.
-//h  ORDENAMIENTO: (mandar action para sortear el state.recipes)?
-//h  Y luego tengo que hacer unos botones para ordenar las recetas (ordeno el array en el estado) en orden alfabetico. Le hago un sort al arreglo con receta del State.recipes;
-//h * Ordenar por healthScore. Le hago un sort al State.recipes según el healthScore.
+//h Sacar los botones de buscado por title y receta individualmente y dejar uno solo.
+//h Poner un botón para eliminar filter por dieta, y que simplemente renderice todo el store.recipes.
 //h * Filtrar por tipo de dieta. Le hacer un filter al State.Recipes según si el array de diets includes "dieta";
 //h * Hacer que el get me traiga 99 recetas. Y hacer que sólo renderice las primeras 9 por cada página. Pensar bien cómo hacer esto... splices? slices? contador en el mapeo?
 //h * Pensar cómo establecer la cantidad de páginas que hay. Si está apretado el botón 2, podría decir que me renderice del 10 al 19, por ejemplo. Y que se creen botones según la cantidad de elementos haya en el array. State.recipes.length / 9;
@@ -42,7 +41,6 @@
 //? 2* Podría hacer que las recetas que me traigo de la DB vayan a un State.DBRecipes y que esas recetas se rendericen a su propia manera ya que no tienen imagen, etc.
 //? 3*
 //? RANDOM:
-//? Podría hacer que la PrimaryKey de mis elementos de mi DB empiece con db. O sea: db02. LO HICE DE OTRA FORMA AL FINAL.
 
 //?--------------------------------------------------------
 
@@ -58,3 +56,19 @@ function fromQueryToURL(obj) {
   }
   return urleado;
 }
+
+//* DIETAS:
+[
+  { name: "gluten free", id: 1 },
+  { name: "ketogenic", id: 2 },
+  { name: "vegetarian", id: 3 },
+  { name: "lacto-vegetarian", id: 4 },
+  { name: "ovo-vegetarian", id: 5 },
+  { name: "vegan", id: 6 },
+  { name: "pescetarian", id: 7 },
+  { name: "paleo", id: 8 },
+  { name: "primal", id: 9 },
+  { name: "low FODMAP", id: 10 },
+  { name: "whole30", id: 11 },
+  { name: "omnivore", id: 12 },
+];
