@@ -1,9 +1,9 @@
 import React from "react";
 import RecipeCardAPI from "../RecipeCardAPI/RecipeCardAPI";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import * as actions from "../../redux/actions/index";
-import { useEffect } from "react";
+// import * as actions from "../../redux/actions/index";
+// import { useEffect } from "react";
 
 const RenderRecipeCardsAPI = (props) => {
   const recipesSearched = useSelector((state) => state.recipes);
@@ -121,18 +121,26 @@ const RenderRecipeCardsAPI = (props) => {
     }
   }
 
-  //h--- Filter by diets:
+  //h--- Filter by diets EXPERIMENTAL:
 
   function callBackFilter(receta, diet) {
+    console.log(`callBackFilter: receta = ${receta} y diet = ${diet}`);
     if (
-      diet == "vegetarian" ||
-      diet == "vegan" ||
-      diet == "glutenFree" ||
-      diet == "dairyFree"
+      diet === "vegetarian" ||
+      diet === "vegan" ||
+      diet === "glutenFree" ||
+      diet === "dairyFree" ||
+      diet === "lowFodmap"
     ) {
       if (receta[diet] && receta[diet] === true) {
         return true;
       }
+    }
+    if (receta.diets && receta.diets.includes(diet)) {
+      return true;
+    }
+    if (receta.diet && receta.diet.includes(diet)) {
+      return true;
     }
   }
 
@@ -146,9 +154,67 @@ const RenderRecipeCardsAPI = (props) => {
     setLocalState(filteredRecipes);
   }
 
+  //h --- Filter by select option EXPERIMENTAL:
+
+  function onOptionChange(e) {
+    console.log(`e.target.value: `, e.target.value);
+    let filteredRecipes = recipesSearched.filter((receta) =>
+      callBackFilter(receta, e.target.value)
+    );
+    console.log(`filteredRecipes:`);
+    console.log(filteredRecipes);
+    setLocalState(filteredRecipes);
+  }
+
   //h------------y los botones de abajo para invocar las funciones
   return (
     <div>
+      {/* Voy a tener que ponerlo adentro de un form me parece, y con un botón le doy submit y que active */}
+      <label htmlFor="filterDiets">
+        <span>Filter by diet</span>
+      </label>
+      <select name="filterDiet" id="filterDiet" onChange={onOptionChange}>
+        <option value="">--Select a diet--</option>
+        <option value="glutenFree" id="glutenFree">
+          Gluten Free
+        </option>
+        <option value="dairyFree" id="dairyFree">
+          Dairy Free
+        </option>
+        <option value="vegan" id="vegan">
+          Vegan
+        </option>
+        <option value="vegetarian" id="vegetarian">
+          Vegetarian
+        </option>
+        <option value="lacto-vegeterian" id="lacto-vegeterian">
+          Lacto-vegetarian
+        </option>
+        <option value="ovo-vegeterian" id="ovo-vegeterian">
+          Ovo-vegetarian
+        </option>
+        <option value="pescetarian" id="pescetarian">
+          Pescetarian
+        </option>
+        <option value="ketogenic" id="ketogenic">
+          Ketogenic
+        </option>
+        <option value="paleo" id="paleo">
+          Paleo
+        </option>
+        <option value="primal" id="primal">
+          Primal
+        </option>
+        <option value="lowFodmap" id="low FODMAP">
+          Low FODMAP
+        </option>
+        <option value="whole30" id="whole30">
+          Whole30
+        </option>
+        <option value="omnivore" id="omnivore">
+          Omnivore
+        </option>
+      </select>
       <button id="vegan" onClick={filterByDiet}>
         Filter by vegan diet
       </button>
