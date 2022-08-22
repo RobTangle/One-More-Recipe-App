@@ -1,0 +1,14 @@
+/* This is our style for the invalid fields */
+input:invalid {
+  border-color: #900;
+  background-color: #fdd;
+}
+
+input:focus:invalid {
+  outline: none;
+}
+
+/* input:valid {
+  border-color: rgb(87, 119, 38);
+  background-color: greenyellow;
+} */
