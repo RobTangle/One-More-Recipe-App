@@ -42,6 +42,23 @@ router.post("/", async (req, res) => {
   }
 });
 
+//! Creo que esta es uan alternativa que anda bien si me envían un array con varias dietas. No sé por qué dejé este comentado..
+// router.post("/", async (req, res) => {
+//   console.log(req.body);
+//   if (Array.isArray(req.body)) {
+//     try {
+//       let nuevasRecetas = await Diet.createBulk(req.body);
+//       console.log("nuevasRecetas creadas: ", nuevasRecetas);
+//       return res.status(208).send(nuevasRecetas);
+//     } catch (error) {
+//       return res.status(408).send(error.message);
+//     }
+//   } else {
+//     return res.status(409).send("Postee únicamente array");
+//   }
+// });
+//!----------------------------------------
+
 // router.post("/", async (req, res) => {
 //   const { name } = req.body;
 //   if (!name) {
