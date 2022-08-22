@@ -45,6 +45,11 @@ const RecipeDetail = (props) => {
       <div>id: {recipeDetailRedux.id}</div>
       <div>Health score: {recipeDetailRedux.healthScore}</div>
       <div>Dish type: {recipeDetailRedux.dishTypes}</div>
+      {recipeDetailRedux?.diet?.length > 0 ? (
+        <div> "Length mayor a 0</div>
+      ) : (
+        <span>Length no es mayor a 0</span>
+      )}
       <div>Type of diet: {recipeDetailRedux.diet}</div>
 
       <div>dietasStringed: {dietasStringed}</div>
