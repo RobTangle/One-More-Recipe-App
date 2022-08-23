@@ -4,6 +4,7 @@ import RecipeCardAPI from "../RecipeCardAPI/RecipeCardAPI";
 import { useSelector } from "react-redux";
 // import * as actions from "../../redux/actions/index";
 // import { useEffect } from "react";
+import "./renderRecipeCardsAPI.css";
 
 const RenderRecipeCardsAPI = (props) => {
   const recipesSearched = useSelector((state) => state.recipes);
@@ -27,80 +28,100 @@ const RenderRecipeCardsAPI = (props) => {
 
   //h ----- Funciones auxiliares que podría modularizarlas e importarlas:
 
-  //h--algoritmos para ordenar por title:
-  function compareTitle(a, b) {
-    if (a.title < b.title) {
-      return -1;
-    } else if (a.title > b.title) {
-      return 1;
-    } else {
-      return 0;
+  //? experimentar modularizar función: ----------------------------------------------
+
+  function compareKeyAsc(key) {
+    function compare(a, b) {
+      if (a[key] < b[key]) {
+        return -1;
+      } else if (a[key] > b[key]) {
+        return 1;
+      } else {
+        return 0;
+      }
     }
+    return compare;
   }
 
-  function compareTitleInvert(a, b) {
-    if (a.title < b.title) {
-      return 1;
-    } else if (a.title > b.title) {
-      return -1;
-    } else {
-      return 0;
+  function compareKeyDes(key) {
+    function compare(a, b) {
+      if (a[key] < b[key]) {
+        return 1;
+      } else if (a[key] > b[key]) {
+        return -1;
+      } else {
+        return 0;
+      }
     }
+    return compare;
   }
 
-  //h --algoritmos para ordenar por healthScore:
-  function compareHealthScore(a, b) {
-    if (a.healthScore < b.healthScore) {
-      return -1;
-    } else if (a.healthScore > b.healthScore) {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
+  const compararTituloAsc = compareKeyAsc("title");
+  const compararTituloDes = compareKeyDes("title");
+  const compareHealthScoreAsc = compareKeyAsc("healthScore");
+  const compareHealthScoreDes = compareKeyDes("healthScore");
 
-  function compareHealthScoreInvert(a, b) {
-    if (a.healthScore < b.healthScore) {
-      return 1;
-    } else if (a.healthScore > b.healthScore) {
-      return -1;
-    } else {
-      return 0;
-    }
-  }
-
+  //?------------------------------------------------------------------------------------------------------------
   //h--- Ordenar por title:
-  function orderByTitle() {
-    recipesSearched.data?.sort(compareTitle);
-    if (recipesSearched.data) {
-      setLocalState([...recipesSearched.data]);
+
+  //?---experimental copiando a healthscore:
+
+  function orderByTitleExp(array) {
+    console.log(
+      "Se invocó a orderByHealthTitleExp con este array como argumento: ",
+      array
+    );
+    if (array) {
+      let sortedArray = array.sort(compararTituloAsc);
+      let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
+      setLocalState(copySortedArray);
+      console.log(
+        "el localState después de haber sido sorteado por title",
+        localState
+      );
     } else {
-      return console.log("recipesSearched.data NO EXISTE!");
+      console.log(
+        "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
+      );
     }
   }
 
-  function orderByTitleInvert() {
-    recipesSearched.sort(compareTitleInvert);
-    if (recipesSearched) {
-      setLocalState([...recipesSearched]);
+  function orderByTitleInvertExp(array) {
+    console.log(
+      "Se invocó a orderByTitleInvertExp con este array como argumento: ",
+      array
+    );
+    if (array) {
+      let sortedArray = array.sort(compararTituloDes);
+      let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
+      setLocalState(copySortedArray);
+      console.log(
+        "el localState después de haber sido sorteado por title",
+        localState
+      );
     } else {
-      console.log("recipesSearched.data NO EXISTE en Invert!");
-      return <div>NO HAY ELEMENTOS PARA RENDERIZAR</div>; //! no funciona
+      console.log(
+        "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
+      );
     }
   }
 
   //h--- Ordenar por healthScore:
-  function orderByHealthScore() {
-    //! falta actualizarla para usar el localState como está la INVERT
-    console.log("Se invocó a orderByHealthScore.");
-    if (recipesSearched.length > 0) {
-      console.log("recipesSearched existe.. voy a sortear ahora");
-      //altero el orden de la función para ver si es mejor así haciendo el if primero
-      recipesSearched.sort(compareHealthScore);
-      setLocalState([...recipesSearched]);
+
+  function orderByHealthScore(array) {
+    console.log(
+      "Se invocó a orderByHealthScoreInvert con este array como argumento: ",
+      array
+    );
+    if (array) {
+      let sortedArray = array.sort(compareHealthScoreAsc);
+      let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
+      setLocalState(copySortedArray);
+      console.log("el localState después de haber sido sorteado", localState);
     } else {
-      console.log("recipesSearched.length < 1 en orderByHealthScore!");
-      // return <div>NO HAY ELEMENTOS PARA RENDERIZAR</div>; //! no funciona
+      console.log(
+        "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
+      );
     }
   }
 
@@ -110,10 +131,13 @@ const RenderRecipeCardsAPI = (props) => {
       array
     );
     if (array) {
-      let sortedArray = array.sort(compareHealthScoreInvert);
+      let sortedArray = array.sort(compareHealthScoreDes);
       let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
       setLocalState(copySortedArray);
-      console.log("el localState después de haber sido sorteado", localState);
+      console.log(
+        "el localState después de haber sido sorteado invert",
+        localState
+      );
     } else {
       console.log(
         "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
@@ -144,37 +168,27 @@ const RenderRecipeCardsAPI = (props) => {
     }
   }
 
-  function filterByDiet(e) {
-    console.log(e.target.id);
-
-    let filteredRecipes = recipesSearched.filter((receta) =>
-      callBackFilter(receta, e.target.id)
-    );
-    console.log(filteredRecipes);
-    setLocalState(filteredRecipes);
-  }
-
   //h --- Filter by select option EXPERIMENTAL:
 
-  function onOptionChange(e) {
+  function onFilterOptionChange(e) {
     console.log(`e.target.value: `, e.target.value);
     let filteredRecipes = recipesSearched.filter((receta) =>
       callBackFilter(receta, e.target.value)
     );
-    console.log(`filteredRecipes:`);
-    console.log(filteredRecipes);
+    console.log(`filteredRecipes: ${filteredRecipes}`);
     setLocalState(filteredRecipes);
   }
 
-  //h------------y los botones de abajo para invocar las funciones
   return (
     <div key={Math.random().toFixed(8)}>
       {/* Voy a tener que ponerlo adentro de un form me parece, y con un botón le doy submit y que active */}
       <label htmlFor="filterDiets">
         <span>Filter by diet</span>
       </label>
-      <select name="filterDiet" id="filterDiet" onChange={onOptionChange}>
-        <option value="">--Select a diet--</option>
+      <select name="filterDiet" id="filterDiet" onChange={onFilterOptionChange}>
+        <option value="" id="default">
+          --Select a diet--
+        </option>
         <option value="glutenFree" id="glutenFree">
           Gluten Free
         </option>
@@ -215,18 +229,22 @@ const RenderRecipeCardsAPI = (props) => {
           Omnivore
         </option>
       </select>
-      <button id="vegan" onClick={filterByDiet}>
-        Filter by vegan diet
-      </button>
-      <button onClick={orderByTitle}>Order by title</button>
-      <button onClick={orderByTitleInvert}>Order by title Invert</button>
-      {/* //* notar que el order healthScore funciona de dos maneras distintas!: */}
-      <button onClick={orderByHealthScore}>Order by Health score</button>
-      <button onClick={(e) => orderByHealthScoreInvert(localState)}>
-        Order by Health score INVERT
-      </button>
+      <div className="order-by-container">
+        <div className="order-title">
+          <span>Order by title: </span>
+          <button onClick={(e) => orderByTitleExp(localState)}>¡</button>
+          <button onClick={(e) => orderByTitleInvertExp(localState)}>!</button>
+        </div>
+        <div className="order-healthScore">
+          <span>Order by health score: </span>
+          <button onClick={(e) => orderByHealthScore(localState)}>¡</button>
+          <button onClick={(e) => orderByHealthScoreInvert(localState)}>
+            !
+          </button>
+        </div>
+      </div>
       {/* //*---------------------------- */}
-      <div>Renderizado de RenderRecipeCardsAPI: </div>{" "}
+      <div>recipes... </div>{" "}
       {localState?.map((recipeAPI) => {
         return (
           <RecipeCardAPI
