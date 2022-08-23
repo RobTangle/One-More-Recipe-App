@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 // import * as actions from "../../redux/actions/index";
 // import { useEffect } from "react";
 import "./renderRecipeCardsAPI.css";
+import { Paginacion } from "../Paginacion/Paginacion";
 
 const RenderRecipeCardsAPI = (props) => {
   const recipesSearched = useSelector((state) => state.recipes);
@@ -25,6 +26,13 @@ const RenderRecipeCardsAPI = (props) => {
     console.log("Soy el de localState. Me monté o refresqué");
     console.log("Soy el localState: ", localState);
   }, [localState]);
+
+  //!Experimentación con paginado:
+
+  const [page, setPage] = React.useState(1);
+  const [quantity, setQuantity] = React.useState(9);
+
+  let maxPages = localState.length / quantity;
 
   //h ----- Funciones auxiliares que podría modularizarlas e importarlas:
 
@@ -179,6 +187,13 @@ const RenderRecipeCardsAPI = (props) => {
     setLocalState(filteredRecipes);
   }
 
+  //h --- Reset filters:
+
+  function resetFilter() {
+    console.log("Reset filter...");
+    setLocalState(recipesSearched);
+  }
+
   return (
     <div key={Math.random().toFixed(8)}>
       {/* Voy a tener que ponerlo adentro de un form me parece, y con un botón le doy submit y que active */}
@@ -229,6 +244,9 @@ const RenderRecipeCardsAPI = (props) => {
           Omnivore
         </option>
       </select>
+      <button className="reset-filter" onClick={resetFilter}>
+        Reset filters
+      </button>
       <div className="order-by-container">
         <div className="order-title">
           <span>Order by title: </span>
@@ -244,19 +262,22 @@ const RenderRecipeCardsAPI = (props) => {
         </div>
       </div>
       {/* //*---------------------------- */}
-      <div>recipes... </div>{" "}
-      {localState?.map((recipeAPI) => {
-        return (
-          <RecipeCardAPI
-            key={recipeAPI.id}
-            id={recipeAPI.id}
-            title={recipeAPI.title}
-            image={recipeAPI.image}
-            diets={recipeAPI.diets}
-            healthScore={recipeAPI.healthScore}
-          />
-        );
-      })}
+      <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
+      <div>{`${localState.length} recipes found...`} </div>{" "}
+      {localState
+        .slice((page - 1) * quantity, (page - 1) * quantity + quantity)
+        .map((recipeAPI) => {
+          return (
+            <RecipeCardAPI
+              key={recipeAPI.id}
+              id={recipeAPI.id}
+              title={recipeAPI.title}
+              image={recipeAPI.image}
+              diets={recipeAPI.diets}
+              healthScore={recipeAPI.healthScore}
+            />
+          );
+        })}
     </div>
   );
 };
