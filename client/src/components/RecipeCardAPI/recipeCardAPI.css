@@ -8,3 +8,10 @@
   padding-top: 15px;
   padding-bottom: 15px;
 }
+
+.ul-diets {
+  width: fit-content;
+  /* text-align: center; */
+  margin-left: auto;
+  margin-right: auto;
+}
