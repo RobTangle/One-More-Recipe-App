@@ -22,7 +22,7 @@ const CreateRecipe = () => {
 
   //! Hacer funcionamiento para que cada checkbox me pushee/mande al dietId un número según la dieta.
   //! El objetivo es postear un array con números.
-
+  //! Podría hacer que adentro de el handleSubmit, se chequee cuáles checkboxes están chequeados y ahí pushear esos valores al array.
   const dispatch = useDispatch();
 
   function handleOnChange(e) {
@@ -32,7 +32,17 @@ const CreateRecipe = () => {
   function handleSubmit(e) {
     console.log("handleSubmit invocado. localState: ", localState);
     e.preventDefault();
+    validateTitle(localState.title);
+    console.log("Despues del validate");
+    //! sigue enviando el dispatch aunque validateTitle retorne alert. Tengo que solucionar esto.
     dispatch(actions.createRecipe(localState));
+  }
+
+  //h --- función validadora:
+  function validateTitle(title) {
+    if (title.length > 60) {
+      return alert("The title can't have more than 60 characters");
+    }
   }
 
   //! function onCheckBoxChange (e) {
@@ -96,160 +106,162 @@ const CreateRecipe = () => {
               <label htmlFor="">diet </label>
               <input type="text" name="diet" onChange={handleOnChange} />
             </div>
-            <div>
-              <label htmlFor="">Vegan</label>
-              <input
-                type="checkbox"
-                name="vegan"
-                id="vegan_checkbox"
-                value="vegan"
-              />
-            </div>
-            <div>
-              <label htmlFor="">Ketogenic</label>
-              <input
-                type="checkbox"
-                name="ketogenic"
-                id="ketogenic_checkbox"
-                value="ketogenic"
-              />
-            </div>
-            <div>
-              <label htmlFor="">Gluten Free</label>
-              <input
-                type="checkbox"
-                name="glutenFree"
-                id="gluten_free_checkbox"
-                value="gluten free"
-              />
-            </div>
-            <div>
-              <label htmlFor="">Carnivore</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="carnivore"
-              />
-            </div>
-            <div>
-              <label htmlFor="">Gluten Free</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="Gluten Free"
-              />
-            </div>
+            <div className="check-boxes">
+              <div>
+                <label htmlFor="">Vegan</label>
+                <input
+                  type="checkbox"
+                  name="vegan"
+                  id="vegan_checkbox"
+                  value="vegan"
+                />
+              </div>
+              <div>
+                <label htmlFor="">Ketogenic</label>
+                <input
+                  type="checkbox"
+                  name="ketogenic"
+                  id="ketogenic_checkbox"
+                  value="ketogenic"
+                />
+              </div>
+              <div>
+                <label htmlFor="">Gluten Free</label>
+                <input
+                  type="checkbox"
+                  name="glutenFree"
+                  id="gluten_free_checkbox"
+                  value="gluten free"
+                />
+              </div>
+              <div>
+                <label htmlFor="">Carnivore</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="carnivore"
+                />
+              </div>
+              <div>
+                <label htmlFor="">Gluten Free</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="Gluten Free"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="">Ketogenic</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="Ketogenic"
-              />
-            </div>
+              <div>
+                <label htmlFor="">Ketogenic</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="Ketogenic"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="">Vegeterian</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="Vegeterian"
-              />
-            </div>
+              <div>
+                <label htmlFor="">Vegeterian</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="Vegeterian"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="">Lacto-Vegeterian</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="Lacto-vegeterian"
-              />
-            </div>
+              <div>
+                <label htmlFor="">Lacto-Vegeterian</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="Lacto-vegeterian"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="">Ovo-Vegeterian</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="Ovo-Vegeterian"
-              />
-            </div>
+              <div>
+                <label htmlFor="">Ovo-Vegeterian</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="Ovo-Vegeterian"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="">Vegan</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="Vegan"
-              />
-            </div>
+              <div>
+                <label htmlFor="">Vegan</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="Vegan"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="">Pescetarian</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="Pescetarian"
-              />
-            </div>
+              <div>
+                <label htmlFor="">Pescetarian</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="Pescetarian"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="">Paleo</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="Paleo"
-              />
-            </div>
+              <div>
+                <label htmlFor="">Paleo</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="Paleo"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="">Primal</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="Primal"
-              />
-            </div>
+              <div>
+                <label htmlFor="">Primal</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="Primal"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="">Low FODMAP</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="Low FODMAP"
-              />
-            </div>
+              <div>
+                <label htmlFor="">Low FODMAP</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="Low FODMAP"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="">Whole30</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="Whole30"
-              />
-            </div>
+              <div>
+                <label htmlFor="">Whole30</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="Whole30"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="">Omnivore</label>
-              <input
-                type="checkbox"
-                name="carnivore"
-                id="carnivore_checkbox"
-                value="Omnivore"
-              />
+              <div>
+                <label htmlFor="">Omnivore</label>
+                <input
+                  type="checkbox"
+                  name="carnivore"
+                  id="carnivore_checkbox"
+                  value="Omnivore"
+                />
+              </div>
             </div>
             <button type="submit">Create Recipe</button>
           </div>
