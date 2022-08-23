@@ -31,17 +31,17 @@ const RecipeCardAPI = (props) => {
   return (
     <div key={props.id} className="recipeCardAPI">
       <img src={props.image} alt={`ilustration of recipe id: ${props.id}`} />{" "}
-      <h2 id={props.id}>
+      <h3 id={props.id}>
         <Link to={`/home/recipes/${props.id}`}> {props.title} </Link>
-      </h2>
-      <h3>Diets: {dietsToString(props.diets)} </h3>
-      <h3>Diets mapeado: </h3>
+      </h3>
+      {/* <h3>Diets: {dietsToString(props.diets)} </h3> */}
+      <h4>Diets: </h4>
       <ul className="ul-diets">
         {props.diets?.map((dieta) => (
           <li key={Math.random()}>{dieta}</li>
         ))}
       </ul>
-      <h3>Health score: {props.healthScore}</h3>
+      <h4>Health score: {props.healthScore}</h4>
     </div>
   );
 };
