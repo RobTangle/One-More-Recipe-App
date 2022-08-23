@@ -24,13 +24,6 @@ const ExpRender = (props) => {
 
   //!Experimentación con paginado:
 
-  // const [dynamicState, setDynamicState] = React.useState([...recipesSearched]);
-
-  // React.useEffect(() => {
-  //   console.log(`Soy dynamicState`);
-  //   console.log(`dynamicState`);
-  // }, [dynamicState]);
-
   const [page, setPage] = React.useState(1);
   const [quantity, setQuantity] = React.useState(9);
 
