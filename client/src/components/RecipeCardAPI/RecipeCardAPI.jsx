@@ -14,7 +14,7 @@ const RecipeCardAPI = (props) => {
   function dietsToString(diets) {
     let stringed = "";
     diets?.forEach((element) => {
-      stringed += element;
+      stringed += `${element} | `;
     });
     return stringed;
   }
@@ -36,9 +36,9 @@ const RecipeCardAPI = (props) => {
       </h2>
       <h3>Diets: {dietsToString(props.diets)} </h3>
       <h3>Diets mapeado: </h3>
-      <ul>
+      <ul className="ul-diets">
         {props.diets?.map((dieta) => (
-          <li>{dieta}</li>
+          <li key={Math.random()}>{dieta}</li>
         ))}
       </ul>
       <h3>Health score: {props.healthScore}</h3>
