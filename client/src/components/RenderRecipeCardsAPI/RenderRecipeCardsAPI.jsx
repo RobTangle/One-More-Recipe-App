@@ -261,23 +261,26 @@ const RenderRecipeCardsAPI = (props) => {
           </button>
         </div>
       </div>
-      {/* //*---------------------------- */}
       <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
       <div>{`${localState.length} recipes found...`} </div>{" "}
-      {localState
-        .slice((page - 1) * quantity, (page - 1) * quantity + quantity)
-        .map((recipeAPI) => {
-          return (
-            <RecipeCardAPI
-              key={recipeAPI.id}
-              id={recipeAPI.id}
-              title={recipeAPI.title}
-              image={recipeAPI.image}
-              diets={recipeAPI.diets}
-              healthScore={recipeAPI.healthScore}
-            />
-          );
-        })}
+      {Array.isArray(localState) && localState.length > 0 ? (
+        localState
+          .slice((page - 1) * quantity, (page - 1) * quantity + quantity)
+          .map((recipeAPI) => {
+            return (
+              <RecipeCardAPI
+                key={recipeAPI.id}
+                id={recipeAPI.id}
+                title={recipeAPI.title}
+                image={recipeAPI.image}
+                diets={recipeAPI.diets}
+                healthScore={recipeAPI.healthScore}
+              />
+            );
+          })
+      ) : (
+        <span>No hay recetas para mostrar</span>
+      )}
     </div>
   );
 };
