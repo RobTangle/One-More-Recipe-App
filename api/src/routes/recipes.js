@@ -51,16 +51,19 @@ router.get("/:idReceta", async (req, res) => {
       recetaEncontrada = await Recipe.findByPk(idReceta);
     }
     if (!recetaEncontrada) {
+      console.log("Buscando receta en API...");
       //(si no encuentro la receta en la DB, chequeo la API por si las dudas...:)
       let axiado = await axios.get(
         `https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`
       );
       console.log("Receta buscada en API");
+      console.log(`Receta title: ${axiado.data?.title}`);
       return res.status(200).send(axiado.data);
     }
     console.log("Devolviendo buscada en DB..:");
     return res.status(200).send(recetaEncontrada);
   } catch (error) {
+    console.log(`Error! ${error.message}`);
     return res.send(error.message);
   }
 });
@@ -218,7 +221,7 @@ router.post("/", async (req, res) => {
       console.log(`Entré al Array.isArray(${dietId})`);
       for (let i = 0; i < dietId.length; i++) {
         await newRecipe.addDiet(dietId[i]); //! probando setear FK.
-        console.log(`acabo de meter un setDiet con ${dietId[i]}`);
+        console.log(`acabo de meter un addDiet con ${dietId[i]}`);
       }
     }
     if (dietId && !Array.isArray(dietId)) {
