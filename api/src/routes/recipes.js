@@ -179,8 +179,15 @@ router.get("/", async (req, res) => {
       let axiado = await axios.get(
         `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
       );
-      console.log(`axiado.data.length: ${axiado.data.length}`);
-      concatAPIyDB = [...fromDB, ...axiado.data.results];
+      console.log(`axiado.data.length: ${axiado.data.results.length}`);
+      if (axiado.data.results?.length >= 1) {
+        console.log(`Entré al axiado.data.results?.length >= 1`);
+        concatAPIyDB = [...fromDB, ...axiado.data.results];
+        console.log(`concatAPIyDB.length: ${concatAPIyDB.length}`);
+        return res.status(203).send(concatAPIyDB);
+      } else {
+        concatAPIyDB = [...fromDB];
+      }
       console.log(`concatAPIyDB.length: ${concatAPIyDB.length}`);
       return res.status(204).send(concatAPIyDB);
     }
