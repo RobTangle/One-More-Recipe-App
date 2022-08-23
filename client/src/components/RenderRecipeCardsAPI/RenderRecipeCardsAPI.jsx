@@ -168,7 +168,7 @@ const RenderRecipeCardsAPI = (props) => {
 
   //h------------y los botones de abajo para invocar las funciones
   return (
-    <div>
+    <div key={Math.random().toFixed(8)}>
       {/* Voy a tener que ponerlo adentro de un form me parece, y con un botón le doy submit y que active */}
       <label htmlFor="filterDiets">
         <span>Filter by diet</span>
@@ -227,7 +227,7 @@ const RenderRecipeCardsAPI = (props) => {
       </button>
       {/* //*---------------------------- */}
       <div>Renderizado de RenderRecipeCardsAPI: </div>{" "}
-      {localState.map((recipeAPI) => {
+      {localState?.map((recipeAPI) => {
         return (
           <RecipeCardAPI
             key={recipeAPI.id}
