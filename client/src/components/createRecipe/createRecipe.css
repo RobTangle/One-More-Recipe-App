@@ -8,7 +8,29 @@ input:focus:invalid {
   outline: none;
 }
 
+input {
+  border-radius: 5px;
+}
+
+textarea {
+  border-radius: 5px;
+}
+
 /* input:valid {
   border-color: rgb(87, 119, 38);
   background-color: greenyellow;
 } */
+
+.check-boxes {
+  display: flex;
+  /* border: solid black thin; */
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.check-boxes > div {
+  border: solid thin;
+  border-radius: 5px;
+  margin: 5px;
+  padding-left: 3px;
+}
