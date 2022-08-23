@@ -73,3 +73,116 @@ function fromQueryToURL(obj) {
   { name: "whole30", id: 11 },
   { name: "omnivore", id: 12 },
 ];
+
+//h --algoritmos EN DESUSO para ordenar por healthScore:
+// function compareHealthScore(a, b) {
+//   if (a.healthScore < b.healthScore) {
+//     return -1;
+//   } else if (a.healthScore > b.healthScore) {
+//     return 1;
+//   } else {
+//     return 0;
+//   }
+// }
+
+// function compareHealthScoreInvert(a, b) {
+//   if (a.healthScore < b.healthScore) {
+//     return 1;
+//   } else if (a.healthScore > b.healthScore) {
+//     return -1;
+//   } else {
+//     return 0;
+//   }
+// }
+
+//* orderByHealthScore que andan bien pero no son las modularizadas. Las reemplacé por las otras. :
+// function orderByHealthScore(array) {
+//   console.log(
+//     "Se invocó a orderByHealthScoreInvert con este array como argumento: ",
+//     array
+//   );
+//   if (array) {
+//     let sortedArray = array.sort(compareHealthScore);
+//     let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
+//     setLocalState(copySortedArray);
+//     console.log("el localState después de haber sido sorteado", localState);
+//   } else {
+//     console.log(
+//       "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
+//     );
+//   }
+// }
+
+// function orderByHealthScoreInvert(array) {
+//   console.log(
+//     "Se invocó a orderByHealthScoreInvert con este array como argumento: ",
+//     array
+//   );
+//   if (array) {
+//     let sortedArray = array.sort(compareHealthScoreInvert);
+//     let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
+//     setLocalState(copySortedArray);
+//     console.log(
+//       "el localState después de haber sido sorteado invert",
+//       localState
+//     );
+//   } else {
+//     console.log(
+//       "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
+//     );
+//   }
+// }
+
+//h--algoritmos para ordenar por title en DESUSO:
+// function compareTitle(a, b) {
+//   if (a.title < b.title) {
+//     return -1;
+//   } else if (a.title > b.title) {
+//     return 1;
+//   } else {
+//     return 0;
+//   }
+// }
+
+// function compareTitleInvert(a, b) {
+//   if (a.title < b.title) {
+//     return 1;
+//   } else if (a.title > b.title) {
+//     return -1;
+//   } else {
+//     return 0;
+//   }
+// }
+
+//h--- Ordenar por title:
+
+//! en desuso:
+// function orderByTitle() {
+//   recipesSearched.data?.sort(compareTitle);
+//   if (recipesSearched.data) {
+//     setLocalState([...recipesSearched.data]);
+//   } else {
+//     return console.log("recipesSearched.data NO EXISTE!");
+//   }
+// }
+
+// function orderByTitleInvert() {
+//   recipesSearched.sort(compareTitleInvert);
+//   if (recipesSearched) {
+//     setLocalState([...recipesSearched]);
+//   } else {
+//     console.log("recipesSearched.data NO EXISTE en Invert!");
+//     return <div>NO HAY ELEMENTOS PARA RENDERIZAR</div>; //! no funciona
+//   }
+// }
+//!---------------
+
+// function filterByDiet(e) {
+//   console.log(e.target.id);
+
+//   let filteredRecipes = recipesSearched.filter((receta) =>
+//     callBackFilter(receta, e.target.id)
+//   );
+//   console.log(filteredRecipes);
+//   setLocalState(filteredRecipes);
+// }
