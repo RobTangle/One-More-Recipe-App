@@ -1,13 +1,9 @@
 import React from "react";
 import RecipeCardAPI from "../RecipeCardAPI/RecipeCardAPI";
-// import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-// import * as actions from "../../redux/actions/index";
-// import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import * as actions from "../../redux/actions";
 import "./renderRecipeCardsAPI.css";
 import { Paginacion } from "../Paginacion/Paginacion";
-import * as actions from "../../redux/actions";
-import { useDispatch } from "react-redux";
 
 const RenderRecipeCardsAPI = (props) => {
   const recipesSearched = useSelector((state) => state.recipes);
@@ -18,7 +14,7 @@ const RenderRecipeCardsAPI = (props) => {
     console.log("Soy recipesSearched: ", recipesSearched);
     setLocalState(recipesSearched);
     console.log(
-      "Estoy en el useEffect de [recipesSearched] despues del setLocalState(recipesSearched)",
+      "Soy useEffect despues del setLocalState(recipesSearched)",
       localState
     );
     dispatch(actions.clearDetail());
@@ -27,15 +23,12 @@ const RenderRecipeCardsAPI = (props) => {
   const [localState, setLocalState] = React.useState([]);
 
   React.useEffect(() => {
-    console.log("Soy el de localState. Me monté o refresqué");
-    console.log("Soy el localState: ", localState);
+    console.log("Soy el useEffect, localState: ", localState);
   }, [localState]);
 
-  //!Experimentación con paginado:
-
+  //!Para paginado:
   const [page, setPage] = React.useState(1);
   const [quantity, setQuantity] = React.useState(9);
-
   let maxPages = localState.length / quantity;
 
   //h ----- Funciones auxiliares que podría modularizarlas e importarlas:
@@ -75,8 +68,6 @@ const RenderRecipeCardsAPI = (props) => {
 
   //?------------------------------------------------------------------------------------------------------------
   //h--- Ordenar por title:
-
-  //?---experimental copiando a healthscore:
 
   function orderByTitleExp(array) {
     console.log(
@@ -200,20 +191,17 @@ const RenderRecipeCardsAPI = (props) => {
   }
 
   return (
-    <div key={Math.random().toFixed(8)}>
-      {/* Voy a tener que ponerlo adentro de un form me parece, y con un botón le doy submit y que active */}
+    <div>
       <div className="filter-order-container">
         <label htmlFor="filterDiets">
           <span>Filter by diet</span>
         </label>
         <select
-          name="filterDiet"
-          id="filterDiet"
+          name="filterDiets"
+          id="filterDiets"
           onChange={onFilterOptionChange}
         >
-          <option value="" id="default">
-            --Select a diet--
-          </option>
+          <option value="">--Select a diet--</option>
           <option value="glutenFree" id="glutenFree">
             Gluten Free
           </option>
@@ -226,10 +214,10 @@ const RenderRecipeCardsAPI = (props) => {
           <option value="vegetarian" id="vegetarian">
             Vegetarian
           </option>
-          <option value="lacto-vegeterian" id="lacto-vegeterian">
+          <option value="lacto-vegetarian" id="lacto-vegetarian">
             Lacto-vegetarian
           </option>
-          <option value="ovo-vegeterian" id="ovo-vegeterian">
+          <option value="ovo-vegetarian" id="ovo-vegetarian">
             Ovo-vegetarian
           </option>
           <option value="pescetarian" id="pescetarian">
@@ -303,9 +291,9 @@ const RenderRecipeCardsAPI = (props) => {
       ) : (
         <span>No hay recetas para mostrar</span>
       )}
-      {localState.length > 9 ? (
+      {/* {localState.length > 9 ? (
         <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
-      ) : null}
+      ) : null} */}
     </div>
   );
 };
