@@ -6,9 +6,12 @@ import { useSelector } from "react-redux";
 // import { useEffect } from "react";
 import "./renderRecipeCardsAPI.css";
 import { Paginacion } from "../Paginacion/Paginacion";
+import * as actions from "../../redux/actions";
+import { useDispatch } from "react-redux";
 
 const RenderRecipeCardsAPI = (props) => {
   const recipesSearched = useSelector((state) => state.recipes);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     console.log("Me monté o refresqué con [recipesSearched]");
@@ -18,6 +21,7 @@ const RenderRecipeCardsAPI = (props) => {
       "Estoy en el useEffect de [recipesSearched] despues del setLocalState(recipesSearched)",
       localState
     );
+    dispatch(actions.clearDetail());
   }, [recipesSearched]);
 
   const [localState, setLocalState] = React.useState([]);
@@ -184,7 +188,7 @@ const RenderRecipeCardsAPI = (props) => {
       callBackFilter(receta, e.target.value)
     );
     console.log(`filteredRecipes: ${filteredRecipes}`);
-    setLocalState(filteredRecipes);
+    setLocalState([...filteredRecipes]);
   }
 
   //h --- Reset filters:
@@ -272,11 +276,17 @@ const RenderRecipeCardsAPI = (props) => {
       {localState.length > 9 ? (
         <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
       ) : null}
-      {/* <Paginacion page={page} setPage={setPage} maxPages={maxPages} /> */}
-      <div>{`${localState.length} recipes found...`} </div>{" "}
+      {/* Crear algun tipo de error handler chequeando si localState es un string:  */}
+      <div>
+        {typeof localState == "string" ? (
+          <span>Hubo un error. Lo siento :/</span>
+        ) : (
+          `${localState.length} recipes found...`
+        )}{" "}
+      </div>{" "}
       {Array.isArray(localState) && localState.length > 0 ? (
         localState
-          .slice((page - 1) * quantity, (page - 1) * quantity + quantity)
+          .slice((page - 1) * quantity, (page - 1) * quantity + quantity + 1)
           .map((recipeAPI) => {
             return (
               <RecipeCardAPI
