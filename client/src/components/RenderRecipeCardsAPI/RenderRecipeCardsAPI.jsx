@@ -189,6 +189,7 @@ const RenderRecipeCardsAPI = (props) => {
     );
     console.log(`filteredRecipes: ${filteredRecipes}`);
     setLocalState([...filteredRecipes]);
+    setPage(1); //! agregué esta linea para solucionar problema de filter + paginado. Quedó bien al parecer.
   }
 
   //h --- Reset filters:
@@ -286,7 +287,7 @@ const RenderRecipeCardsAPI = (props) => {
       </div>{" "}
       {Array.isArray(localState) && localState.length > 0 ? (
         localState
-          .slice((page - 1) * quantity, (page - 1) * quantity + quantity + 1)
+          .slice((page - 1) * quantity, (page - 1) * quantity + quantity)
           .map((recipeAPI) => {
             return (
               <RecipeCardAPI
