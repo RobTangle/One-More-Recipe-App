@@ -22,7 +22,7 @@ const rootReducer = (state = initialState, action) => {
     case "DELETE_RECIPE":
       return {
         ...state,
-        recipes: state.recipes.filter((recip) => recip.id != action.payload),
+        recipes: state.recipes.filter((recip) => recip.id !== action.payload),
       };
     case "CREATE_RECIPE":
       return {
@@ -53,6 +53,11 @@ const rootReducer = (state = initialState, action) => {
         allFromDB: state.allFromDB.sort(compareTitle),
       };
     //!------------------------------
+    case "CLEAR_DETAIL":
+      return {
+        ...state,
+        recipeDetail: {},
+      };
     default:
       return state;
   }
