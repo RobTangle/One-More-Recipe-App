@@ -4,3 +4,11 @@
   justify-content: center;
   flex-wrap: wrap;
 }
+
+.filter-order-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
