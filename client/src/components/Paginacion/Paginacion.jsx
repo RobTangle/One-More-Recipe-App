@@ -4,6 +4,11 @@ import styles from "./paginacion.css";
 export const Paginacion = ({ page, setPage, maxPages }) => {
   const [input, setInput] = useState(1);
 
+  //!--- creé esto para ver si me soluciona el tema del render del input, pero no. Lo dejo....
+  React.useEffect(() => {
+    console.log(`Soy el input: ${input}`);
+  }, [input]);
+  //!-----------------
   const nextPage = () => {
     setInput(parseInt(input) + 1);
     setPage(parseInt(page) + 1);
@@ -15,7 +20,7 @@ export const Paginacion = ({ page, setPage, maxPages }) => {
   };
 
   const onKeyDown = (e) => {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       setPage(parseInt(e.target.value));
       if (
         parseInt(e.target.value < 1) ||
