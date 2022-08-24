@@ -10,7 +10,7 @@ const LandingPage = () => {
           <h1 className="title">Welcome to one more food related web page!</h1>
           <h3>
             Here you will find not only the most awesome and delicious recipes,
-            but also you'll be able to create your owns!
+            but also you'll be able to create your own ones!
           </h3>
           <h4>JUST CLICK HERE!</h4>
         </div>
