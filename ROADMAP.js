@@ -24,7 +24,6 @@
 //! PROBLEMAS DETECTADOS PARA SOLUCIONAR:
 //! * Home/ Cuando busco con By title: Search. me devuelve .... TODO LO DE LA DB y además resultados de API.
 //! * Home/ Cuando busco con "Search title and diet" me devuelve... sólo resultados de la API.
-//! Cuando ya hay una Recipe detail cargada, tarda mucho en renderizarmela
 //H ITINERARIO: ----------------------------------------------------------------------------------
 
 //h * Hacer que el get me traiga 99 recetas.
@@ -231,3 +230,30 @@ function fromQueryToURL(obj) {
 //   };
 // };
 // //!----------------------------------------
+
+//! REDUCER:
+
+//! Switch  cases:
+// case "SORT_BY_TITLE":
+//   function compareTitle(a, b) {
+//     // a should come before b in the sorted order
+//     if (a.title < b.title) {
+//       return -1;
+//       // a should come after b in the sorted order
+//     } else if (a.title > b.title) {
+//       return 1;
+//       // and and b are the same
+//     } else {
+//       return 0;
+//     }
+//   }
+//   return {
+//     ...state,
+//     allFromDB: state.allFromDB.sort(compareTitle),
+//   };
+// case "DELETE_RECIPE":
+//   return {
+//     ...state,
+//     recipes: state.recipes.filter((recip) => recip.id !== action.payload),
+//   };
+//!------------------------------
