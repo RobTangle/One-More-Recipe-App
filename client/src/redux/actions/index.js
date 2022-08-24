@@ -17,6 +17,19 @@ export const CLEAR_DETAIL = "CLEAR_DETAIL";
 //   };
 // };
 
+// export const getRecipeDetail = (id) => {
+//   return async function (dispatch) {
+//     try {
+//       const response = await fetch(`http://localhost:3001/recipes/${id}`);
+//       const data = await response.json();
+//       dispatch({ type: GET_RECIPE_DETAIL, payload: data });
+//     } catch (error) {
+//       console.log(error.message);
+//       return error;
+//     }
+//   };
+// };
+
 export const getRecipeDetail = (id) => {
   return function (dispatch) {
     return fetch(`http://localhost:3001/recipes/${id}`)
