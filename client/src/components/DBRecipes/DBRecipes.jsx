@@ -27,19 +27,19 @@ const DBRecipes = (props) => {
   // });
   //h --Algoritmos y funciones para ordenar:  --------------------------
   // Despacha una action que ordena el store directamente. El setLocalState final hace que se rerenderice el componente.
-  function sortear() {
-    //! Por algún motivo, me logueo el array ordenado antes de el dispatch. No entiendo por qué..
-    console.log(
-      "soy async sortear ANTES del await del dispatch. RecipeInDataBaseRedux: ",
-      recipeInDataBaseRedux
-    );
-    dispatch(actions.sortByTitle());
-    console.log(
-      "soy async sortear DESPUES del await del dispatch. RecipeInDataBaseRedux: ",
-      recipeInDataBaseRedux
-    );
-    setLocalState([...recipeInDataBaseRedux]);
-  }
+  // function sortear() {
+  //   //! Por algún motivo, me logueo el array ordenado antes de el dispatch. No entiendo por qué..
+  //   console.log(
+  //     "soy async sortear ANTES del await del dispatch. RecipeInDataBaseRedux: ",
+  //     recipeInDataBaseRedux
+  //   );
+  //   dispatch(actions.sortByTitle());
+  //   console.log(
+  //     "soy async sortear DESPUES del await del dispatch. RecipeInDataBaseRedux: ",
+  //     recipeInDataBaseRedux
+  //   );
+  //   setLocalState([...recipeInDataBaseRedux]);
+  // }
 
   // Sort a recipeInDataBaseRedux. El setLocalState final hace que se rerenderice el componente:
   function sortearRecipeInDB() {
@@ -74,7 +74,7 @@ const DBRecipes = (props) => {
         recipeInDataBaseRedux
       )}
       <button onClick={sortearRecipeInDB}>Sortear RecipeInDBRedux</button>
-      <button onClick={sortear}>Sort</button>
+      {/* <button onClick={sortear}>Sort</button> */}
       <button onClick={traerRecetas}>Traer recetas</button>
       {recipeInDataBaseRedux.map((recipe) => {
         return (
