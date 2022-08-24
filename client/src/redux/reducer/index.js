@@ -1,4 +1,11 @@
 //Importar las actions types acá?
+import {
+  GET_RECIPES,
+  GET_RECIPE_DETAIL,
+  CREATE_RECIPE,
+  GET_ALL_FROM_DB,
+  CLEAR_DETAIL,
+} from "../actions/index";
 
 const initialState = {
   recipes: [],
@@ -9,12 +16,12 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "GET_RECIPES":
+    case GET_RECIPES:
       return {
         ...state,
         recipes: action.payload.data, //agregué .data 21/08 20:20hs
       };
-    case "GET_RECIPE_DETAIL":
+    case GET_RECIPE_DETAIL:
       return {
         ...state,
         recipeDetail: action.payload,
@@ -24,12 +31,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         recipes: state.recipes.filter((recip) => recip.id !== action.payload),
       };
-    case "CREATE_RECIPE":
+    case CREATE_RECIPE:
       return {
         ...state,
         newRecipe: action.payload,
       };
-    case "GET_ALL_FROM_DB":
+    case GET_ALL_FROM_DB:
       return {
         ...state,
         allFromDB: action.payload,
@@ -53,7 +60,7 @@ const rootReducer = (state = initialState, action) => {
         allFromDB: state.allFromDB.sort(compareTitle),
       };
     //!------------------------------
-    case "CLEAR_DETAIL":
+    case CLEAR_DETAIL:
       return {
         ...state,
         recipeDetail: {},
