@@ -7,7 +7,6 @@ import DBRecipes from "./components/DBRecipes/DBRecipes";
 import LandingPage from "./components/LandingPage/LandingPage";
 import SearchRecipes from "./components/SearchRecipes/SearchRecipes";
 import RenderRecipeCardsAPI from "./components/RenderRecipeCardsAPI/RenderRecipeCardsAPI";
-import Paginacion from "./components/Paginacion/Paginacion";
 import ExpRender from "./components/Paginacion/ExpRender";
 
 function App() {
