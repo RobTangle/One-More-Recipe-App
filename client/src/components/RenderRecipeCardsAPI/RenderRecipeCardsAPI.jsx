@@ -197,71 +197,82 @@ const RenderRecipeCardsAPI = (props) => {
   return (
     <div key={Math.random().toFixed(8)}>
       {/* Voy a tener que ponerlo adentro de un form me parece, y con un botón le doy submit y que active */}
-      <label htmlFor="filterDiets">
-        <span>Filter by diet</span>
-      </label>
-      <select name="filterDiet" id="filterDiet" onChange={onFilterOptionChange}>
-        <option value="" id="default">
-          --Select a diet--
-        </option>
-        <option value="glutenFree" id="glutenFree">
-          Gluten Free
-        </option>
-        <option value="dairyFree" id="dairyFree">
-          Dairy Free
-        </option>
-        <option value="vegan" id="vegan">
-          Vegan
-        </option>
-        <option value="vegetarian" id="vegetarian">
-          Vegetarian
-        </option>
-        <option value="lacto-vegeterian" id="lacto-vegeterian">
-          Lacto-vegetarian
-        </option>
-        <option value="ovo-vegeterian" id="ovo-vegeterian">
-          Ovo-vegetarian
-        </option>
-        <option value="pescetarian" id="pescetarian">
-          Pescetarian
-        </option>
-        <option value="ketogenic" id="ketogenic">
-          Ketogenic
-        </option>
-        <option value="paleo" id="paleo">
-          Paleo
-        </option>
-        <option value="primal" id="primal">
-          Primal
-        </option>
-        <option value="lowFodmap" id="low FODMAP">
-          Low FODMAP
-        </option>
-        <option value="whole30" id="whole30">
-          Whole30
-        </option>
-        <option value="omnivore" id="omnivore">
-          Omnivore
-        </option>
-      </select>
-      <button className="reset-filter" onClick={resetFilter}>
-        Reset filters
-      </button>
-      <div className="order-by-container">
-        <div className="order-title">
-          <span>Order by title: </span>
-          <button onClick={(e) => orderByTitleExp(localState)}>¡</button>
-          <button onClick={(e) => orderByTitleInvertExp(localState)}>!</button>
-        </div>
-        <div className="order-healthScore">
-          <span>Order by health score: </span>
-          <button onClick={(e) => orderByHealthScore(localState)}>¡</button>
-          <button onClick={(e) => orderByHealthScoreInvert(localState)}>
-            !
-          </button>
+      <div className="filter-order-container">
+        <label htmlFor="filterDiets">
+          <span>Filter by diet</span>
+        </label>
+        <select
+          name="filterDiet"
+          id="filterDiet"
+          onChange={onFilterOptionChange}
+        >
+          <option value="" id="default">
+            --Select a diet--
+          </option>
+          <option value="glutenFree" id="glutenFree">
+            Gluten Free
+          </option>
+          <option value="dairyFree" id="dairyFree">
+            Dairy Free
+          </option>
+          <option value="vegan" id="vegan">
+            Vegan
+          </option>
+          <option value="vegetarian" id="vegetarian">
+            Vegetarian
+          </option>
+          <option value="lacto-vegeterian" id="lacto-vegeterian">
+            Lacto-vegetarian
+          </option>
+          <option value="ovo-vegeterian" id="ovo-vegeterian">
+            Ovo-vegetarian
+          </option>
+          <option value="pescetarian" id="pescetarian">
+            Pescetarian
+          </option>
+          <option value="ketogenic" id="ketogenic">
+            Ketogenic
+          </option>
+          <option value="paleo" id="paleo">
+            Paleo
+          </option>
+          <option value="primal" id="primal">
+            Primal
+          </option>
+          <option value="lowFodmap" id="low FODMAP">
+            Low FODMAP
+          </option>
+          <option value="whole30" id="whole30">
+            Whole30
+          </option>
+          <option value="omnivore" id="omnivore">
+            Omnivore
+          </option>
+        </select>
+        <button className="reset-filter" onClick={resetFilter}>
+          Reset filters
+        </button>
+        <div className="order-by-container">
+          <div className="order-title">
+            <span>Order by title: </span>
+            <button onClick={(e) => orderByTitleExp(localState)}>¡</button>
+            <button onClick={(e) => orderByTitleInvertExp(localState)}>
+              !
+            </button>
+          </div>
+          <div className="order-healthScore">
+            <span>Order by health score: </span>
+            <button onClick={(e) => orderByHealthScore(localState)}>¡</button>
+            <button onClick={(e) => orderByHealthScoreInvert(localState)}>
+              !
+            </button>
+          </div>
         </div>
       </div>
-      <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
+      {localState.length > 9 ? (
+        <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
+      ) : null}
+      {/* <Paginacion page={page} setPage={setPage} maxPages={maxPages} /> */}
       <div>{`${localState.length} recipes found...`} </div>{" "}
       {Array.isArray(localState) && localState.length > 0 ? (
         localState
@@ -281,6 +292,9 @@ const RenderRecipeCardsAPI = (props) => {
       ) : (
         <span>No hay recetas para mostrar</span>
       )}
+      {localState.length > 9 ? (
+        <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
+      ) : null}
     </div>
   );
 };
