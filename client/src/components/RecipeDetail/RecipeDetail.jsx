@@ -7,8 +7,6 @@ const RecipeDetail = (props) => {
   const recipeDetailRedux = useSelector((state) => state.recipeDetail);
   const dispatch = useDispatch();
 
-  //* https://stackoverflow.com/questions/56926282/react-hooks-fetch-wont-stop-fetching
-
   React.useEffect(() => {
     dispatch(actions.getRecipeDetail(props.match.params.id));
   }, [dispatch, props.match.params.id]); //*Agregué esto usando el quick fix que ofrecía vsc
