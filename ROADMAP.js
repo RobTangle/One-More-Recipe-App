@@ -180,3 +180,54 @@ function fromQueryToURL(obj) {
 //   console.log(filteredRecipes);
 //   setLocalState(filteredRecipes);
 // }
+
+//! Actions:
+
+// export const getRecipeDetailFIXED = (id) => {
+//   return async function (dispatch) {
+//     const response = await fetch(`http://localhost:3001/recipes/${id}`);
+//     const data = await response.json();
+//     dispatch({ type: GET_RECIPE_DETAIL, payload: data });
+//   };
+// };
+
+// export const getRecipesByTitle = (title) => {
+//   return async function (dispatch) {
+//     try {
+//       console.log("TRY de getRecipesByTitle");
+//       let response = await axios.get(
+//         `http://localhost:3001/recipes/?title=${title}`
+//       );
+//       return dispatch({ type: GET_RECIPES, payload: response });
+//     } catch (error) {
+//       console.log("ERROR AL getRecipesByTitle");
+//       return error.message;
+//     }
+//   };
+// };
+
+// export const getRecipesByDiet = (diet) => {
+//   return async function (dispatch) {
+//     try {
+//       console.log("TRY de getRecipesByDiet");
+//       let response = await axios.get(
+//         `http://localhost:3001/recipes/?diet=${diet}`
+//       );
+//       return dispatch({ type: GET_RECIPES, payload: response });
+//     } catch (error) {
+//       console.log("ERROR AL getRecipesBydiet");
+//       return error.message;
+//     }
+//   };
+// };
+
+// export const sortByTitle = () => {
+//   return function (dispatch) {
+//     try {
+//       return dispatch({ type: "SORT_BY_TITLE", payload: "" });
+//     } catch (error) {
+//       return error.message;
+//     }
+//   };
+// };
+// //!----------------------------------------
