@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions/index";
 import RecipeCard from "../RecipeCard/RecipeCard";
+import { ErrorBoundary } from "../ErrorBoundary/ErrorBoundary";
 
 const DBRecipes = (props) => {
   const recipeInDataBaseRedux = useSelector((state) => state.allFromDB);
@@ -47,6 +48,8 @@ const DBRecipes = (props) => {
     setLocalState([...recipeInDataBaseRedux]);
   }
 
+  const [testState, setTestState] = React.useState("");
+
   function compareTitle(a, b) {
     // a should come before b in the sorted order
     if (a.title < b.title) {
@@ -63,6 +66,7 @@ const DBRecipes = (props) => {
 
   function traerRecetas() {
     console.log("trayendo recetas!");
+    // throw Error("Ayaaa");
     dispatch(actions.getRecipesFromDB());
   }
 
@@ -76,6 +80,7 @@ const DBRecipes = (props) => {
       <button onClick={sortearRecipeInDB}>Sortear RecipeInDBRedux</button>
       {/* <button onClick={sortear}>Sort</button> */}
       <button onClick={traerRecetas}>Traer recetas</button>
+
       {recipeInDataBaseRedux.map((recipe) => {
         return (
           <RecipeCard
