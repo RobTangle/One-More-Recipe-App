@@ -92,3 +92,15 @@ export const clearDetail = () => {
     }
   };
 };
+
+export const getDiets = () => {
+  return async function (dispatch) {
+    try {
+      let response = await axios.get(`http://localhost:3001/diets`);
+      return dispatch({ type: "GET_DIETS", payload: response.data });
+    } catch (error) {
+      console.log("En action getDiets: " + error.message);
+      return error.message;
+    }
+  };
+};
