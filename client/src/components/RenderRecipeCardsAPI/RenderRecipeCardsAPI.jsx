@@ -202,7 +202,7 @@ const RenderRecipeCardsAPI = (props) => {
           onChange={onFilterOptionChange}
         >
           <option value="">--Select a diet--</option>
-          <option value="glutenFree" id="glutenFree">
+          <option value="gluten free" id="glutenFree">
             Gluten Free
           </option>
           <option value="dairyFree" id="dairyFree">
@@ -214,11 +214,8 @@ const RenderRecipeCardsAPI = (props) => {
           <option value="vegetarian" id="vegetarian">
             Vegetarian
           </option>
-          <option value="lacto-vegetarian" id="lacto-vegetarian">
-            Lacto-vegetarian
-          </option>
-          <option value="ovo-vegetarian" id="ovo-vegetarian">
-            Ovo-vegetarian
+          <option value="lacto ovo vegetarian" id="lacto-ovo-vegetarian">
+            Lacto ovo vegetarian
           </option>
           <option value="pescetarian" id="pescetarian">
             Pescetarian
