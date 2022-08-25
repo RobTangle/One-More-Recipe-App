@@ -8,6 +8,7 @@ import LandingPage from "./components/LandingPage/LandingPage";
 import SearchRecipes from "./components/SearchRecipes/SearchRecipes";
 import RenderRecipeCardsAPI from "./components/RenderRecipeCardsAPI/RenderRecipeCardsAPI";
 import ExpRender from "./components/Paginacion/ExpRender";
+import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 
 function App() {
   return (
