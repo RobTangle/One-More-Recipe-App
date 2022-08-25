@@ -102,6 +102,8 @@ router.post("/", async (req, res) => {
 //* EXPERIMENTACIÓN CON GET BY ID:
 router.get("/:idReceta", async (req, res) => {
   const { idReceta } = req.params;
+  console.log(req.params);
+  console.log(typeof idReceta);
   console.log("idReceta: ", idReceta);
   //creo objeto para responder en caso de error:
   let errorObject = {
@@ -112,7 +114,7 @@ router.get("/:idReceta", async (req, res) => {
     image: "https://clipground.com/images/avoid-junk-food-clipart-7.jpg",
     diets: ["null"],
   };
-  console.log("errorObject :", errorObject);
+  // console.log("errorObject :", errorObject);
   try {
     if (idReceta.length > 30) {
       let recipeDB = await Recipe.findByPk(idReceta, {
@@ -308,6 +310,7 @@ const getAllFromAPI = async () => {
     if (axiosData.length > 0) {
       let recipesFromAPI = await axiosData.map((r) => {
         return {
+          id: r.id,
           title: r.title,
           vegetarian: r.vegetarian,
           vegan: r.vegan,
