@@ -173,8 +173,14 @@ const RenderRecipeCardsAPI = (props) => {
 
   //h --- Filter by select option EXPERIMENTAL:
 
+  // const [filterState, setFilterState] = React.useState("");
+
   function onFilterOptionChange(e) {
     console.log(`e.target.value: `, e.target.value);
+    // console.log(`e.target: `, e.target);
+    // console.log(e);
+    // setFilterState("Algo!");
+
     let filteredRecipes = recipesSearched.filter((receta) =>
       callBackFilter(receta, e.target.value)
     );
@@ -188,57 +194,83 @@ const RenderRecipeCardsAPI = (props) => {
   function resetFilter() {
     console.log("Reset filter...");
     setLocalState(recipesSearched);
+    setPage(1);
   }
 
   return (
-    <div>
+    <div key={Math.random()}>
       <div className="filter-order-container">
         <label htmlFor="filterDiets">
           <span>Filter by diet</span>
         </label>
-        <select
-          name="filterDiets"
-          id="filterDiets"
-          onChange={onFilterOptionChange}
-        >
-          <option value="">--Select a diet--</option>
-          <option value="gluten free" id="glutenFree">
+
+        <div className="filter-buttons">
+          <button
+            onClick={onFilterOptionChange}
+            value="gluten free"
+            id="glutenFree"
+          >
             Gluten Free
-          </option>
-          <option value="dairyFree" id="dairyFree">
+          </button>
+          <button
+            value="dairyFree"
+            id="dairyFree"
+            onClick={onFilterOptionChange}
+          >
             Dairy Free
-          </option>
-          <option value="vegan" id="vegan">
+          </button>
+          <button value="vegan" id="vegan" onClick={onFilterOptionChange}>
             Vegan
-          </option>
-          <option value="vegetarian" id="vegetarian">
+          </button>
+          <button
+            value="vegetarian"
+            id="vegetarian"
+            onClick={onFilterOptionChange}
+          >
             Vegetarian
-          </option>
-          <option value="lacto ovo vegetarian" id="lacto-ovo-vegetarian">
+          </button>
+          <button
+            value="lacto ovo vegetarian"
+            id="lacto-ovo-vegetarian"
+            onClick={onFilterOptionChange}
+          >
             Lacto ovo vegetarian
-          </option>
-          <option value="pescetarian" id="pescetarian">
+          </button>
+          <button
+            value="pescetarian"
+            id="pescetarian"
+            onClick={onFilterOptionChange}
+          >
             Pescetarian
-          </option>
-          <option value="ketogenic" id="ketogenic">
+          </button>
+          <button
+            value="ketogenic"
+            id="ketogenic"
+            onClick={onFilterOptionChange}
+          >
             Ketogenic
-          </option>
-          <option value="paleo" id="paleo">
+          </button>
+          <button value="paleo" id="paleo" onClick={onFilterOptionChange}>
             Paleo
-          </option>
-          <option value="primal" id="primal">
+          </button>
+          <button value="primal" id="primal" onClick={onFilterOptionChange}>
             Primal
-          </option>
-          <option value="lowFodmap" id="low FODMAP">
+          </button>
+          <button
+            value="lowFodmap"
+            id="low FODMAP"
+            onClick={onFilterOptionChange}
+          >
             Low FODMAP
-          </option>
-          <option value="whole30" id="whole30">
+          </button>
+          <button value="whole30" id="whole30" onClick={onFilterOptionChange}>
             Whole30
-          </option>
-          <option value="omnivore" id="omnivore">
+          </button>
+          <button value="omnivore" id="omnivore" onClick={onFilterOptionChange}>
             Omnivore
-          </option>
-        </select>
+          </button>
+        </div>
+
         <button className="reset-filter" onClick={resetFilter}>
           Reset filters
         </button>
@@ -260,7 +292,12 @@ const RenderRecipeCardsAPI = (props) => {
         </div>
       </div>
       {localState.length > 9 ? (
-        <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
+        <Paginacion
+          key={Math.random()}
+          page={page}
+          setPage={setPage}
+          maxPages={maxPages}
+        />
       ) : null}
       {/* Crear algun tipo de error handler chequeando si localState es un string:  */}
       <div>
@@ -286,7 +323,7 @@ const RenderRecipeCardsAPI = (props) => {
             );
           })
       ) : (
-        <span>No hay recetas para mostrar</span>
+        <span key={Math.random()}>No hay recetas para mostrar</span>
       )}
       {/* {localState.length > 9 ? (
         <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
