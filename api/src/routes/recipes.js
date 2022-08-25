@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { Recipe } = require("../db");
+const { Recipe, Diet } = require("../db");
 // const Recipe = require("../models/Recipe");
 // const { MY_API_KEY } = process.env;
 const MI_API_KEY = "08627e517b4943fe9b66893317a91541";
@@ -9,6 +9,7 @@ const { Op } = require("sequelize");
 const router = Router();
 
 const addRecipeInfoTrue = "addRecipeInformation=true";
+const NUMBER = "number=49";
 //h-------------------------------
 function fromQueryToURL(obj) {
   let urleado = "";
@@ -98,153 +99,565 @@ router.get("/:idReceta", async (req, res) => {
 //   }
 // });
 
-//* --- GET /recipes?name="...":
+//* --- GET /recipes?name="...":  CREO QUE FUNCIONA BIEN! LO COMENTO PARA PROBAR LOS EXPERIMENTOS:
 //- hacer el get con/sin query con suma de API y DB:
+
+// router.get("/", async (req, res) => {
+//   const { query, diet } = req.query;
+//   console.log(`Soy query: ${query}`);
+//   console.log(`Soy diet: ${diet} y mi .length es: ${diet.length}`);
+//   console.log(`Soy el req.query: ${req.query} y mi length es: ${diet.length}`);
+//   let queryToURL = fromQueryToURL(req.query);
+//   let fromDB = [];
+//   let concatAPIyDB = [];
+//   console.log("Entré en el get '/'");
+//   console.log(`Soy el queryToURL: ${queryToURL}`);
+//   console.log(`queryToURL.length: ${queryToURL.length}`);
+//   try {
+//     // si me envian query y diet válidos...:
+//     if (query && query.length > 1 && diet && diet.length > 1) {
+//       console.log("ENtré al QUERY y DIET son VÁLIDOS");
+//       let axiado = await axios.get(
+//         `https://api.spoonacular.com/recipes/complexSearch?${NUMBER}&${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
+//       );
+//       console.log(axiado.data.results);
+//       console.log(
+//         `https://api.spoonacular.com/recipes/complexSearch?${NUMBER}&${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
+//       );
+//       let fromDB = await Recipe.findAll({
+//         where: {
+//           title: query,
+//           diet: diet,
+//         },
+//       });
+//       console.log(fromDB);
+
+//       concatAPIyDB = [...fromDB, ...axiado.data.results];
+//       console.log(`concatAPIyDB.length: ${concatAPIyDB.length}`);
+//       console.log(`retornando concatAPIyDB: ${concatAPIyDB}`);
+//       return res.status(200).send(concatAPIyDB);
+//     }
+//     if (query && query.length > 1) {
+//       console.log(
+//         "req.query.query existe y es su length es mayor a 1.. buscando fromDB con ese title:"
+//       );
+//       fromDB = await Recipe.findAll({
+//         where: { title: query }, //! hacer que no sea igualación exacta si no mas bien un includes o algo así.
+//       });
+//       console.log(`Soy fromDB: ${fromDB}`);
+//       console.log(`Soy fromDB.length: ${fromDB.length}`);
+
+//       console.log(`Buscar en API..`);
+//       let axiado = await axios.get(
+//         `https://api.spoonacular.com/recipes/complexSearch?${NUMBER}&${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
+//       );
+//       console.log(
+//         `Soy axiado.result.data.length ${axiado.data.results.length}`
+//       );
+//       console.log(`Soy axiado.result.data: ${axiado.data.results}`);
+//       concatAPIyDB = [...fromDB, ...axiado.data.results];
+//       return res.status(200).send(concatAPIyDB);
+//     }
+//     if (diet && diet.length > 1) {
+//       console.log("Entré al (diet && diet.length > 1)");
+//       fromDB = await Recipe.findAll({
+//         where: { diet: diet },
+//       });
+//       console.log(`Soy fromDB: ${fromDB}`);
+
+//       let axiado = await axios.get(
+//         `https://api.spoonacular.com/recipes/complexSearch?${NUMBER}&${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
+//       );
+//       console.log(
+//         `Soy axiado.result.data.length ${axiado.data.results.length}`
+//       );
+//       console.log(`Soy axiado.result.data: ${axiado.data.results}`);
+//       concatAPIyDB = [...fromDB, ...axiado.data.results];
+//       return res.status(200).send(concatAPIyDB);
+//     } else {
+//       console.log(
+//         `Entro al else final si no me ingresan title ni diet o son de 1 caracter... `
+//       );
+//       fromDB = await Recipe.findAll();
+//       console.log(`fromDB.length: ${fromDB.length} `);
+//       let axiado = await axios.get(
+//         `https://api.spoonacular.com/recipes/complexSearch?${NUMBER}&${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
+//       );
+//       console.log(`axiado.data.length: ${axiado.data.results.length}`);
+//       if (axiado.data.results?.length >= 1) {
+//         console.log(`Entré al axiado.data.results?.length >= 1`);
+//         concatAPIyDB = [...fromDB, ...axiado.data.results];
+//         console.log(`concatAPIyDB.length: ${concatAPIyDB.length}`);
+//         return res.status(203).send(concatAPIyDB);
+//       } else {
+//         concatAPIyDB = [...fromDB];
+//       }
+//       console.log(`concatAPIyDB.length: ${concatAPIyDB.length}`);
+//       return res.status(204).send(concatAPIyDB);
+//     }
+//   } catch (error) {
+//     console.log(
+//       `https://api.spoonacular.com/recipes/complexSearch?${NUMBER}&${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
+//     );
+//     console.log("ERROR ACÄ!!!: ", error.message);
+//     return res.send(error.message);
+//   }
+// });
+//!---- EL DE ARRIBA CREO QUE ANDA "BIEN". Lo comenté para probar los nuevos experimentos.
+module.exports = router;
+//* EXPERIMENTACIÓN:
+//* POST ACTUAL QUE FUNCIONA, pero no perfecto por el tema de las associations.
+// router.post("/", async (req, res) => {
+//   const { title, summary, healthScore, diet, dietId } = req.body;
+//   if (!title || !summary) {
+//     console.log("Title o summary no ingresados!");
+//     return res.status(400).send("title and summary are mandatory");
+//   }
+//   try {
+//     //agregar a la db:
+//     const data = { title, summary, healthScore, diet };
+//     console.log(`Entré al TRY: diet: ${diet}; dietId: ${dietId}`);
+//     const newRecipe = await Recipe.create(data);
+//     if (Array.isArray(dietId) && dietId.length > 0) {
+//       console.log(`Entré al Array.isArray(${dietId})`);
+//       for (let i = 0; i < dietId.length; i++) {
+//         await newRecipe.addDiet(dietId[i]); //! probando setear FK.
+//         console.log(`acabo de meter un addDiet con ${dietId[i]}`);
+//       }
+//     }
+//     if (dietId && !Array.isArray(dietId)) {
+//       console.log(`Entré al !Array.isArray(${dietId})`);
+//       await newRecipe.addDiet(dietId);
+//     }
+//     //     //! Si dietId fuese un arreglo, directamente le paso todos los id. Tengo que hacer que en el req.body me llegue un key "dietId" = [4, 2, 1, 8].
+//     //     //! Y le paso ese array a newRecipe.addDiets(dietId).
+//     //     //! Además, debería guardar como atributo diet un string de las dietas. Tengo que hacer esto en este paso. Al crear la instancia nueva de la receta acá.
+//     //     //! Podría hacer que se forme el string directamente en el front y se posteen la prop diet ya como un string.... pero quizás sea mejor hacerlo desde acá, o ni siquiera ir por este camino ya que si me modifican la asosiacion entre la receta y la diet, no se me actualizaría  ya que está en forma de string. Debería enviar la prop dietId que tiene el model, y
+//     //     //! una vez que recibo esos números en el front, lo renderizo según cada número. ESTA CREO QUE ES LA MEJOR. PROBAR SI RECIBO dietId con muchos números o qué
+
+//     console.log("Receta creada!! newRecipe: ");
+//     console.log(`${newRecipe}`);
+//     return res.status(201).json(newRecipe);
+//   } catch (error) {
+//     console.log("Error al intentar crear la receta!!");
+//     return res.status(402).send(error.message);
+//   }
+// });
+
+//*------------------------------------------------------------------------------------------------------
+
+//* POST nuevo experimental QUE ANDA BIEN!!!!!:
+router.post("/", async (req, res) => {
+  const { title, summary, healthScore, diets, steps, image } = req.body;
+  try {
+    if (!title || !summary) {
+      return res.status(400).send({ error: "title and summary are mandatory" });
+    }
+    if (typeof healthScore !== "number") {
+      return res.status(400).send({
+        error: `Health score ${healthScore} must be a NUMBER from 0 to 100.`,
+      });
+    }
+    if (healthScore) {
+      if (healthScore > 100 || healthScore < 0) {
+        return res.status(400).send({
+          error: `Health score ${healthScore}must be between 0 and 100.`,
+        });
+      }
+    }
+    if (title.length > 100) {
+      return res.status(400).send({
+        error: `Title must have less than 100 characters. It has ${title.length}`,
+      });
+    }
+    //!TENGO QUE LOGRAR QUE ME LLEGUE diets = [nombre de dieta, nombre2, otro nombre] !!
+    //! Y después al momento de enviar las recetas, hago un getDiets de la receta en cuestión, y le asigno ese valor a una propiedad del objeto que mando al front desde el back.
+    let newRecipe = await Recipe.create({
+      title: title.trim().toLowerCase(),
+      summary,
+      healthScore,
+      steps,
+      image,
+    });
+
+    // let dietsToSet = await Promise.all(
+    //   diets.map((d) => Diet.findOne({ where: { name: d } }))
+    // );
+
+    let dietsToSet = await Diet.findAll({
+      where: { name: diets },
+    });
+
+    console.log("dietsToSet: " + dietsToSet);
+    newRecipe.addDiets(dietsToSet);
+
+    // await newRecipe.addDiets([3, 8]);
+    // console.log("Soy el summary: " + newRecipe.summary);
+    // let getDiets = await newRecipe.getDiets();
+    // console.log("getDiets: ");
+    // console.log(getDiets[0].dataValues.name, getDiets[1].dataValues.name);
+    return res.status(200).send(newRecipe);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(403).send(error);
+  }
+});
+//*----------------------------------------------------------------
+
+//* EXPERIMENTACIÓN CON GET BY ID:
+router.get("/:idReceta", async (req, res) => {
+  const { idReceta } = req.params;
+  //creo objeto para responder en caso de error:
+  let errorObject = {
+    title: "Recipe not found",
+    summary: "Nothing to show here...",
+    healthScore: 0,
+    steps: "Try again",
+    image: "",
+    diets: [],
+  };
+
+  try {
+    if (idReceta.length > 30) {
+      let recipeDB = await Recipe.findByPk(idReceta, {
+        include: {
+          model: Diet,
+          attributes: ["name"],
+          through: {
+            attributes: [],
+          },
+        },
+      });
+      if (recipeDB) {
+        let recipeObject = {
+          title: recipeDB.title,
+          id: recipeDB.id,
+          summary: recipeDB.summary,
+          healthScore: recipeDB.healthScore,
+          steps: recipeDB.steps,
+          image: recipeDB.image,
+          diets: recipeDB.diets?.map((diet) => diet.name),
+        };
+        return res.status(200).send(recipeObject);
+      } else {
+        return res.status(400).send(errorObject);
+      }
+    } else {
+      console.log(`Buscar en API con id: ${idReceta}`);
+      let axiado = await axios.get(
+        `https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`
+      );
+      console.log("Receta buscada en API");
+      console.log(`Receta title: ${axiado.data?.title}`);
+      return res.status(200).send(axiado.data);
+    }
+  } catch (error) {
+    console.log(`Hubo un error en el catch final del get por ID`);
+    console.log(error.message);
+    return res.status(400).send(errorObject);
+  }
+});
+
+//*--  CREAR MODULARIZACIONES PARA BUSCAR RECETAS EN DB.
+
+const getByTitleFromAPI = async (title) => {
+  try {
+    const axiosFromApi = await axios.get(
+      `https://api.spoonacular.com/recipes/complexSearch?${NUMBER}&query=${title}&${addRecipeInfoTrue}&apiKey=${MI_API_KEY}`
+    );
+    const axiosDataResults = axiosFromApi.data.results;
+    console.log(`getByTitleFromAPI. title = ${title}`);
+    if (axiosDataResults.length > 0) {
+      let recipesFromAPI = await axiosDataResults.map((r) => {
+        return {
+          title: r.title,
+          vegetarian: r.vegetarian,
+          vegan: r.vegan,
+          glutenFree: r.glutenFree,
+          dairyFree: r.dairyFree,
+          healthScore: r.healthScore,
+          summary: r.summary,
+          steps: r.steps,
+          types: r.types,
+          image: r.image,
+          diets: r.diets?.map((diet) => diet),
+        };
+      });
+      console.log(`recipesFromAPI.length = ${recipesFromAPI.length}`);
+      return recipesFromAPI;
+    }
+  } catch (error) {
+    console.log("Error en getByTitleFromAPI");
+    console.log(error.message);
+    return [];
+  }
+};
+
+const getByTitleFromDB = async (title) => {
+  console.log("Entré al getByTitleFromDB");
+  console.log(`title = ${title}`);
+  try {
+    let allFromDB = await Recipe.findAll();
+    console.log(`allFromDB.length = ${allFromDB.length}`);
+    console.log(allFromDB);
+    let filteredByTitle = allFromDB.filter((recipe) =>
+      recipe.title.includes(title)
+    );
+    console.log(`filteredByTitle.length = ${filteredByTitle.length}`);
+    return filteredByTitle;
+  } catch (error) {
+    console.log("Error en getByTitleFromDB");
+    console.log(error.message);
+    return [];
+  }
+};
+
+const getAllFromDB = async () => {
+  try {
+    const recipesDB = await Recipe.findAll({
+      include: {
+        model: Diet,
+        attributes: ["name"],
+        through: {
+          attributes: [],
+        },
+      },
+    });
+    let recipesDBPlusDiets = await recipesDB?.map((recipe) => {
+      return {
+        id: recipe.id,
+        title: recipe.title,
+        summary: recipe.summary,
+        healthScore: recipe.healthScore,
+        steps: recipe.steps,
+        image: recipe.image,
+        diets: recipe.diets?.map((diet) => diet.name),
+      };
+    });
+    return recipesDBPlusDiets;
+  } catch (error) {
+    console.log("Error en getAllFromDB");
+    console.log(error.message);
+    return [];
+  }
+};
+
+const getAllFromAPI = async () => {
+  try {
+    console.log("Entré al getAllFromAPI");
+    const axiosFromApi = await axios.get(
+      `https://api.spoonacular.com/recipes/complexSearch?${NUMBER}&${addRecipeInfoTrue}&apiKey=${MI_API_KEY}`
+    );
+    const axiosData = axiosFromApi.data?.results;
+    console.log(
+      `axiosData.data.results.length = ${axiosData.data.results?.length}`
+    );
+
+    if (axiosData.length > 0) {
+      let recipesFromAPI = await results.map((r) => {
+        return {
+          title: r.title,
+          vegetarian: r.vegetarian,
+          vegan: r.vegan,
+          glutenFree: r.glutenFree,
+          dairyFree: r.dairyFree,
+          healthScore: r.healthScore,
+          summary: r.summary,
+          steps: r.steps,
+          types: r.types,
+          image: r.image,
+          diets: r.diets?.map((diet) => diet),
+        };
+      });
+      return recipesFromAPI;
+    } else {
+      console.log(`Estoy en el else de axiosData no es mayor a 0`);
+      console.log(`axiosData: ${axiosData}`);
+      return [];
+    }
+  } catch (error) {
+    console.log("Error en getAllFromApi");
+    console.log(error.message);
+    return [];
+  }
+};
+
+const getAllGlobal = async () => {
+  try {
+    let allFromDB = await getAllFromDB();
+    console.log("allFromDB: ");
+    console.log(allFromDB);
+    let allFromAPI = await getAllFromAPI();
+    console.log("allFromAPI:");
+    console.log(allFromAPI);
+    let allGlobal = allFromDB.concat(allFromAPI);
+    return allGlobal;
+  } catch (error) {
+    console.log("Error en getAllGlobal");
+    console.log(error.message);
+    return [];
+  }
+};
 
 router.get("/", async (req, res) => {
   const { query, diet } = req.query;
-  console.log(`Soy query: ${query}`);
-  console.log(`Soy diet: ${diet} y mi .length es: ${diet.length}`);
-  console.log(`Soy el req.query: ${req.query} y mi length es: ${diet.length}`);
-  let queryToURL = fromQueryToURL(req.query);
-  let fromDB = [];
-  let concatAPIyDB = [];
-  console.log("Entré en el get '/'");
-  console.log(`Soy el queryToURL: ${queryToURL}`);
-  console.log(`queryToURL.length: ${queryToURL.length}`);
+  console.log(`Entré al get. query = ${query}`);
   try {
-    // si me envian query y diet válidos...:
-    if (query && query.length > 1 && diet && diet.length > 1) {
-      console.log("ENtré al QUERY y DIET son VÁLIDOS");
-      let axiado = await axios.get(
-        `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
-      );
-      console.log(axiado.data.results);
-      console.log(
-        `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
-      );
-      let fromDB = await Recipe.findAll({
-        where: {
-          title: query,
-          diet: diet,
-        },
-      });
-      console.log(fromDB);
-
-      concatAPIyDB = [...fromDB, ...axiado.data.results];
-      console.log(`concatAPIyDB.length: ${concatAPIyDB.length}`);
-      console.log(`retornando concatAPIyDB: ${concatAPIyDB}`);
-      return res.status(200).send(concatAPIyDB);
-    }
-    if (query && query.length > 1) {
-      console.log(
-        "req.query.query existe y es su length es mayor a 1.. buscando fromDB con ese title:"
-      );
-      fromDB = await Recipe.findAll({
-        where: { title: query },
-      });
-      console.log(`Soy fromDB: ${fromDB}`);
-      console.log(`Soy fromDB.length: ${fromDB.length}`);
-
-      console.log(`Buscar en API..`);
-      let axiado = await axios.get(
-        `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
-      );
-      console.log(
-        `Soy axiado.result.data.length ${axiado.data.results.length}`
-      );
-      console.log(`Soy axiado.result.data: ${axiado.data.results}`);
-      concatAPIyDB = [...fromDB, ...axiado.data.results];
-      return res.status(200).send(concatAPIyDB);
-    }
-    if (diet && diet.length > 1) {
-      console.log("Entré al (diet && diet.length > 1)");
-      fromDB = await Recipe.findAll({
-        where: { diet: diet },
-      });
-      console.log(`Soy fromDB: ${fromDB}`);
-
-      let axiado = await axios.get(
-        `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
-      );
-      console.log(
-        `Soy axiado.result.data.length ${axiado.data.results.length}`
-      );
-      console.log(`Soy axiado.result.data: ${axiado.data.results}`);
-      concatAPIyDB = [...fromDB, ...axiado.data.results];
-      return res.status(200).send(concatAPIyDB);
+    if (query) {
+      let fromDB = await getByTitleFromDB(query);
+      let fromAPI = await getByTitleFromAPI(query);
+      let allConcat = fromDB.concat(fromAPI);
+      return res.status(200).send(allConcat);
     } else {
-      console.log(
-        `Entro al else final si no me ingresan title ni diet o son de 1 caracter... `
-      );
-      fromDB = await Recipe.findAll();
-      console.log(`fromDB.length: ${fromDB.length} `);
-      let axiado = await axios.get(
-        `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
-      );
-      console.log(`axiado.data.length: ${axiado.data.results.length}`);
-      if (axiado.data.results?.length >= 1) {
-        console.log(`Entré al axiado.data.results?.length >= 1`);
-        concatAPIyDB = [...fromDB, ...axiado.data.results];
-        console.log(`concatAPIyDB.length: ${concatAPIyDB.length}`);
-        return res.status(203).send(concatAPIyDB);
-      } else {
-        concatAPIyDB = [...fromDB];
-      }
-      console.log(`concatAPIyDB.length: ${concatAPIyDB.length}`);
-      return res.status(204).send(concatAPIyDB);
+      console.log("Buscando allGlobal...");
+      let allGlobal = await getAllGlobal();
+      console.log(`allGlobal.length = ${allGlobal.length}`);
+      return res.status(200).send(allGlobal);
     }
   } catch (error) {
-    console.log(
-      `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
-    );
-    console.log("ERROR ACÄ!!!: ", error.message);
-    return res.send(error.message);
+    console.log("Error en el get por title");
+    console.log(error.message);
+    return res.status(404).send(error.message);
   }
 });
 
-module.exports = router;
-//* EXPERIMENTACIÓN:
+//*-- EXPERIMENTACIÓN ---------------------------------------------------------------------------
+//! ESTE GET LO COMENTO PARA PROBAR EL DE ARRIBA MODULARIZADO. ESTE DE ABAJO ES EXPERIMENTAL PERO PODRÍA ANDAR BIEN ASI COMO ESTA....
+// router.get("/", async (req, res) => {
+//   const { query, diet } = req.query;
+//   console.log(`Soy query: ${query}`);
+//   console.log(`Soy diet: ${diet} y mi .length es: ${diet.length}`);
+//   console.log(`Soy el req.query: ${req.query} y mi length es: ${diet.length}`);
+//   let queryToURL = fromQueryToURL(req.query);
+//   let fromDB = [];
+//   let concatAPIyDB = [];
+//   console.log("Entré en el get '/'");
+//   console.log(`Soy el queryToURL: ${queryToURL}`);
+//   console.log(`queryToURL.length: ${queryToURL.length}`);
+//   try {
+//     // si me envian query y diet válidos...:
+//     if (query && query.length > 1 && diet && diet.length > 1) {
+//       console.log("ENtré al QUERY y DIET son VÁLIDOS");
+//       let axiado = await axios.get(
+//         `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
+//       );
+//       console.log(axiado.data.results);
+//       // let fromDB = await Recipe.findAll({
+//       //   where: {
+//       //     title: query,
+//       //     diet: diet,
+//       //   },
+//       // });
+//       // console.log(fromDB);
+//       //!----
+//       // let filteredByName = getByTitleFromDB(query);
+//       // console.log("filteredByName: " + filteredByName);
+//       //!----
+//       const dBRecipes = await Recipe.findAll({
+//         where: {
+//           title: {
+//             [Op.iLike]: `%${query}%`,
+//           },
+//         },
+//         include: Diet,
+//       });
+//       let dBRecipesPlusDiets = dBRecipes.map((recipe) => {
+//         return {
+//           id: recipe.id,
+//           title:
+//             recipe.title.trim().toLowerCase().charAt(0).toUpperCase() +
+//             recipe.title.substring(1),
+//           healthScore: recipe.healthScore,
+//           summary: recipe.summary,
+//           steps: recipe.steps,
+//           diets: recipe.Diet.map((d) => d.name),
+//         };
+//       });
+//       console.log(`dBRecipesPlusDiets.length = ${dBRecipesPlusDiets.length}`);
+//       console.log(dBRecipesPlusDiets);
 
-router.post("/", async (req, res) => {
-  const { title, summary, healthScore, diet, dietId } = req.body;
-  if (!title || !summary) {
-    console.log("Title o summary no ingresados!");
-    return res.status(400).send("title and summary are mandatory");
-  }
-  try {
-    //agregar a la db:
-    const data = { title, summary, healthScore, diet };
-    console.log(`Entré al TRY: diet: ${diet}; dietId: ${dietId}`);
-    const newRecipe = await Recipe.create(data);
-    if (Array.isArray(dietId) && dietId.length > 0) {
-      console.log(`Entré al Array.isArray(${dietId})`);
-      for (let i = 0; i < dietId.length; i++) {
-        await newRecipe.addDiet(dietId[i]); //! probando setear FK.
-        console.log(`acabo de meter un addDiet con ${dietId[i]}`);
-      }
-    }
-    if (dietId && !Array.isArray(dietId)) {
-      console.log(`Entré al !Array.isArray(${dietId})`);
-      await newRecipe.addDiet(dietId);
-    }
+//       let filteredPlusDiets = dBRecipesPlusDiets.filter((r) =>
+//         r.diets.includes(diet)
+//       );
+//       console.log(`filteredPlusDiets.length = ${filteredPlusDiets.length}`);
+//       // console.log(filteredPlusDiets);
+//       concatAPIyDB = [...filteredPlusDiets, ...axiado.data.results];
+//       console.log(`concatAPIyDB.length: ${concatAPIyDB.length}`);
+//       console.log(`retornando concatAPIyDB: ${concatAPIyDB}`);
+//       return res.status(200).send(concatAPIyDB);
+//     }
+//     if (query && query.length > 1) {
+//       console.log(
+//         "req.query.query existe y es su length es mayor a 1.. buscando fromDB con ese title:"
+//       );
+//       //! Acá tendría que usar un includes o algo así...:
+//       let filteredByName = getByTitleFromDB(query);
 
-    //     //! Si dietId fuese un arreglo, directamente le paso todos los id. Tengo que hacer que en el req.body me llegue un key "dietId" = [4, 2, 1, 8].
-    //     //! Y le paso ese array a newRecipe.addDiets(dietId).
-    //     //! Además, debería guardar como atributo diet un string de las dietas. Tengo que hacer esto en este paso. Al crear la instancia nueva de la receta acá.
-    //     //! Podría hacer que se forme el string directamente en el front y se posteen la prop diet ya como un string.... pero quizás sea mejor hacerlo desde acá, o ni siquiera ir por este camino ya que si me modifican la asosiacion entre la receta y la diet, no se me actualizaría  ya que está en forma de string. Debería enviar la prop dietId que tiene el model, y
-    //     //! una vez que recibo esos números en el front, lo renderizo según cada número. ESTA CREO QUE ES LA MEJOR. PROBAR SI RECIBO dietId con muchos números o qué
+//       // fromDB = await Recipe.findAll({
+//       //   where: { title: query },
+//       // });
+//       // console.log(`Soy fromDB: ${fromDB}`);
+//       // console.log(`Soy fromDB.length: ${fromDB.length}`);
 
-    console.log("Receta creada!! newRecipe: ");
-    console.log(`${newRecipe}`);
-    return res.status(201).json(newRecipe);
-  } catch (error) {
-    console.log("Error al intentar crear la receta!!");
-    return res.status(402).send(error.message);
-  }
-});
+//       console.log(`Buscar en API..`);
+//       let axiado = await axios.get(
+//         `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
+//       );
+//       console.log(
+//         `Soy axiado.result.data.length ${axiado.data.results.length}`
+//       );
+//       console.log(`Soy axiado.result.data: ${axiado.data.results}`);
+//       concatAPIyDB = [...filteredByName, ...axiado.data.results];
+//       return res.status(200).send(concatAPIyDB);
+//     }
+//     if (diet && diet.length > 1) {
+//       //! Acá tengo que buscar por pks en tabla relacional?
+//       console.log("Entré al (diet && diet.length > 1)");
+//       fromDB = await Recipe.findAll({
+//         where: { diet: diet },
+//       });
+//       console.log(`Soy fromDB: ${fromDB}`);
 
-//*----------------------------
+//       let axiado = await axios.get(
+//         `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
+//       );
+//       console.log(
+//         `Soy axiado.result.data.length ${axiado.data.results.length}`
+//       );
+//       console.log(`Soy axiado.result.data: ${axiado.data.results}`);
+//       concatAPIyDB = [...fromDB, ...axiado.data.results];
+//       return res.status(200).send(concatAPIyDB);
+//     } else {
+//       console.log(
+//         `Entro al else final si no me ingresan title ni diet o son de 1 caracter... `
+//       );
+//       fromDB = await Recipe.findAll();
+//       console.log(`fromDB.length: ${fromDB.length} `);
+//       let axiado = await axios.get(
+//         `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
+//       );
+//       console.log(`axiado.data.length: ${axiado.data.results.length}`);
+//       if (axiado.data.results?.length >= 1) {
+//         console.log(`Entré al axiado.data.results?.length >= 1`);
+//         concatAPIyDB = [...fromDB, ...axiado.data.results];
+//         console.log(`concatAPIyDB.length: ${concatAPIyDB.length}`);
+//         return res.status(203).send(concatAPIyDB);
+//       } else {
+//         concatAPIyDB = [...fromDB];
+//       }
+//       console.log(`concatAPIyDB.length: ${concatAPIyDB.length}`);
+//       return res.status(204).send(concatAPIyDB);
+//     }
+//   } catch (error) {
+//     console.log(
+//       `https://api.spoonacular.com/recipes/complexSearch?${addRecipeInfoTrue}&${queryToURL}apiKey=${MI_API_KEY}`
+//     );
+//     console.log("ERROR ACÄ!!!: ", error.message);
+//     return res.send(error.message);
+//   }
+// });
+//! -- EL DE ARRIBA PODRÍA FUNCIONAR AUNQUE ESTÁ EN ETAPA DE MODIFICACION EXPERIMENTAL.
+//*-----------------------------------------------------------------
 //!CÓDIGO QUE NO SIRVE PERO DEJO LOS BACKUPS: ------------------------------------------------------------------------
 
 //*----- hacer el get con/sin query con suma de API y DB:
