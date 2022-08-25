@@ -30,9 +30,14 @@
 //H * Terminar funcionamiento de formulario.
 //H * Pensar estilos, y despues terminar recipeDetails.
 
-//h * Para agregar como imagen a mis recetas posteadas, al momento de renderizar: https://spoonacular.com/recipeImages/157103-312x231.jpg Es la misma que spoonacular. Aunque parece que no se dimensiona bien y sobresale de ancho. O buscar cualquier otra que vaya bien con mis estilos.
+//h * Poner estados de "loading" o error
+
 //h * Validaciones
+
+//h * Para agregar como imagen a mis recetas posteadas, al momento de renderizar: https://spoonacular.com/recipeImages/157103-312x231.jpg Es la misma que spoonacular. Aunque parece que no se dimensiona bien y sobresale de ancho. O buscar cualquier otra que vaya bien con mis estilos.
+//h * Error handlings
 //h * Hacer ordenamiento por readyInMinutes
+
 //? IDEAS: -----------------------------------------------------------------------------------------
 //? 1* Podría hacer un ordenamiento según el readyInMinutes!
 //? RANDOM:
