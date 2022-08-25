@@ -24,10 +24,9 @@
 //! PROBLEMAS DETECTADOS PARA SOLUCIONAR:
 
 //! * El select filter no se resetea despues de resetear los filtros.
-
+//! * Creo que no renderizo bien TODAS las diets de las API (las que estan como propiedades creo que no las renderizo)
 //H ITINERARIO: ----------------------------------------------------------------------------------
 
-//H * Terminar funcionamiento de formulario.
 //H * Pensar estilos, y despues terminar recipeDetails.
 
 //h * Poner estados de "loading" o error
