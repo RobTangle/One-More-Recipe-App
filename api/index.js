@@ -18,12 +18,27 @@
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
-const { conn } = require("./src/db.js");
+const { conn, Diet } = require("./src/db.js");
 
 // Syncing all the models at once.
-conn.sync({ force: false }).then(() => {
+conn.sync({ force: true }).then(() => {
   //! modifico el force! Estaba en force: true originalmente
   server.listen(3001, () => {
     console.log("%s listening at 3001"); // eslint-disable-line no-console
+    const diets = [
+      "dairyFree",
+      "fodmap friendly",
+      "gluten free",
+      "ketogenic",
+      "lacto ovo vegetarian",
+      "paleolithic",
+      "pescatarian",
+      "primal",
+      "vegan",
+      "vegetarian",
+      "whole 30",
+    ];
+    diets.forEach(async (element) => await Diet.create({ name: element }));
+    console.log(`${diets.length} dietas se han precargado`);
   });
 });
