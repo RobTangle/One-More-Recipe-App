@@ -49,7 +49,7 @@ export const createRecipe = (obj) => {
   return async function (dispatch) {
     try {
       let response = await axios.post(`http://localhost:3001/recipes/`, obj);
-      return dispatch({ type: CREATE_RECIPE, payload: response });
+      return dispatch({ type: CREATE_RECIPE, payload: response.data });
     } catch (error) {
       return error.message;
     }
