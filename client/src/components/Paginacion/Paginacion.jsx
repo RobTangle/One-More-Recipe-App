@@ -40,7 +40,7 @@ export const Paginacion = ({ page, setPage, maxPages }) => {
   };
 
   return (
-    <div className="paginacion">
+    <div key={Math.random()} className="paginacion">
       <button
         className="svg-left"
         disabled={page === 1 || page < 1}
@@ -58,7 +58,7 @@ export const Paginacion = ({ page, setPage, maxPages }) => {
         onKeyDown={(e) => onKeyDown(e)}
         name="page"
         autoComplete="off"
-        value={input}
+        value={page}
       />
       <p> de {Math.ceil(maxPages)} </p>
       <button
