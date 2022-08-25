@@ -35,90 +35,21 @@ router.get("/getAllFromDB", async (req, res) => {
   }
 });
 
-//* --- GET /recipes/{idReceta}:
-// Obtener el detalle de una receta en particular
-// Incluir los tipos de dieta asociados (esto ya deberia venir en la data)
-//! Esta ruta puede ser pulida..
-// router.get("/:idReceta", async (req, res) => {
-//   console.log("Entré al get /:idReceta");
-//   const idReceta = req.params.idReceta;
-//   if (!idReceta) {
-//     return res.status(404).send("Debe ingresar por params el id de la receta");
-//   }
-//   try {
-//     let recetaEncontrada;
-//     if (idReceta.length > 31) {
-//       //(si la PK es UUIDV4):
-//       console.log("Buscando recenta en DB: idReceta.length > 31");
-//       recetaEncontrada = await Recipe.findByPk(idReceta);
-//     }
-//     if (!recetaEncontrada) {
-//       console.log("Buscando receta en API...");
-//       //(si no encuentro la receta en la DB, chequeo la API por si las dudas...:)
-//       let axiado = await axios.get(
-//         `https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`
-//       );
-//       console.log("Receta buscada en API");
-//       console.log(`Receta title: ${axiado.data?.title}`);
-//       return res.status(200).send(axiado.data);
-//     }
-//     console.log("Devolviendo buscada en DB..:");
-//     return res.status(200).send(recetaEncontrada);
-//   } catch (error) {
-//     console.log(`Error! ${error.message}`);
-//     return res.send(error.message);
-//   }
-// });
-
 //* EXPERIMENTACIÓN:
-//* POST ACTUAL QUE FUNCIONA, pero no perfecto por el tema de las associations.
-// router.post("/", async (req, res) => {
-//   const { title, summary, healthScore, diet, dietId } = req.body;
-//   if (!title || !summary) {
-//     console.log("Title o summary no ingresados!");
-//     return res.status(400).send("title and summary are mandatory");
-//   }
-//   try {
-//     //agregar a la db:
-//     const data = { title, summary, healthScore, diet };
-//     console.log(`Entré al TRY: diet: ${diet}; dietId: ${dietId}`);
-//     const newRecipe = await Recipe.create(data);
-//     if (Array.isArray(dietId) && dietId.length > 0) {
-//       console.log(`Entré al Array.isArray(${dietId})`);
-//       for (let i = 0; i < dietId.length; i++) {
-//         await newRecipe.addDiet(dietId[i]); //! probando setear FK.
-//         console.log(`acabo de meter un addDiet con ${dietId[i]}`);
-//       }
-//     }
-//     if (dietId && !Array.isArray(dietId)) {
-//       console.log(`Entré al !Array.isArray(${dietId})`);
-//       await newRecipe.addDiet(dietId);
-//     }
-//     //     //! Si dietId fuese un arreglo, directamente le paso todos los id. Tengo que hacer que en el req.body me llegue un key "dietId" = [4, 2, 1, 8].
-//     //     //! Y le paso ese array a newRecipe.addDiets(dietId).
-//     //     //! Además, debería guardar como atributo diet un string de las dietas. Tengo que hacer esto en este paso. Al crear la instancia nueva de la receta acá.
-//     //     //! Podría hacer que se forme el string directamente en el front y se posteen la prop diet ya como un string.... pero quizás sea mejor hacerlo desde acá, o ni siquiera ir por este camino ya que si me modifican la asosiacion entre la receta y la diet, no se me actualizaría  ya que está en forma de string. Debería enviar la prop dietId que tiene el model, y
-//     //     //! una vez que recibo esos números en el front, lo renderizo según cada número. ESTA CREO QUE ES LA MEJOR. PROBAR SI RECIBO dietId con muchos números o qué
-
-//     console.log("Receta creada!! newRecipe: ");
-//     console.log(`${newRecipe}`);
-//     return res.status(201).json(newRecipe);
-//   } catch (error) {
-//     console.log("Error al intentar crear la receta!!");
-//     return res.status(402).send(error.message);
-//   }
-// });
 
 //*------------------------------------------------------------------------------------------------------
 
 //* POST nuevo experimental QUE ANDA BIEN!!!!!:
 router.post("/", async (req, res) => {
+  console.log("Entré al post");
   const { title, summary, healthScore, diets, steps, image } = req.body;
+  console.log(typeof healthScore);
   try {
     if (!title || !summary) {
       return res.status(400).send({ error: "title and summary are mandatory" });
     }
     if (typeof healthScore !== "number") {
+      console.log("Error! healthScore must be a number");
       return res.status(400).send({
         error: `Health score ${healthScore} must be a NUMBER from 0 to 100.`,
       });
@@ -135,10 +66,7 @@ router.post("/", async (req, res) => {
         error: `Title must have less than 100 characters. It has ${title.length}`,
       });
     }
-    //!TENGO QUE LOGRAR QUE ME LLEGUE diets = [nombre de dieta, nombre2, otro nombre] !!
-    //! Y después al momento de enviar las recetas, hago un getDiets de la receta en cuestión, y le asigno ese valor a una propiedad del objeto que mando al front desde el back.
-
-    //! Que desde el front se ocupen de ponerle una imagen al momento de renderizarla en caso de que no tengan una. Lo dejo en manos del front porque van a saber mejor qué tipo de imagen quedaría mejor.
+    //! Que desde el front se ocupen de ponerle una imagen al momento de renderizarla en caso de que no tengan una.
     let newRecipe = await Recipe.create({
       title: title.charAt(0).toUpperCase() + title.slice(1),
       summary,
@@ -231,7 +159,7 @@ router.get("/:idReceta", async (req, res) => {
         dishTypes: axiData.dishTypes,
         image: axiData.image,
         readyInMinutes: axiData.readyInMinutes,
-        steps: axiData.analyzedInstructions,
+        steps: axiData.analyzedInstructions[0]?.steps,
         // steps: axiData.analyzedInstructions?.[0]?.steps, //Atención a este ?.chain!
         diets: axiData.diets,
       };
@@ -275,6 +203,11 @@ const getByTitleFromAPI = async (title) => {
       });
       console.log(`recipesFromAPI.length = ${recipesFromAPI.length}`);
       return recipesFromAPI;
+    } else {
+      console.log(
+        "No se encontró nada en API al parecer. Retorno un arreglo vacío"
+      );
+      return [];
     }
   } catch (error) {
     console.log("Error en getByTitleFromAPI");
@@ -449,6 +382,79 @@ router.get("/", async (req, res) => {
 module.exports = router;
 
 //*BackUp de ruta que funcionaba bien, pero le faltaba traer a las Recipes de la DB el array de dietas. El resto andaba bien. Y también buscaba por query+diets!! :
+
+//* --- GET /recipes/{idReceta}:
+// Obtener el detalle de una receta en particular
+// Incluir los tipos de dieta asociados (esto ya deberia venir en la data)
+//! Esta ruta puede ser pulida..
+// router.get("/:idReceta", async (req, res) => {
+//   console.log("Entré al get /:idReceta");
+//   const idReceta = req.params.idReceta;
+//   if (!idReceta) {
+//     return res.status(404).send("Debe ingresar por params el id de la receta");
+//   }
+//   try {
+//     let recetaEncontrada;
+//     if (idReceta.length > 31) {
+//       //(si la PK es UUIDV4):
+//       console.log("Buscando recenta en DB: idReceta.length > 31");
+//       recetaEncontrada = await Recipe.findByPk(idReceta);
+//     }
+//     if (!recetaEncontrada) {
+//       console.log("Buscando receta en API...");
+//       //(si no encuentro la receta en la DB, chequeo la API por si las dudas...:)
+//       let axiado = await axios.get(
+//         `https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`
+//       );
+//       console.log("Receta buscada en API");
+//       console.log(`Receta title: ${axiado.data?.title}`);
+//       return res.status(200).send(axiado.data);
+//     }
+//     console.log("Devolviendo buscada en DB..:");
+//     return res.status(200).send(recetaEncontrada);
+//   } catch (error) {
+//     console.log(`Error! ${error.message}`);
+//     return res.send(error.message);
+//   }
+// });
+
+//* POST ACTUAL QUE FUNCIONA, pero no perfecto por el tema de las associations.
+// router.post("/", async (req, res) => {
+//   const { title, summary, healthScore, diet, dietId } = req.body;
+//   if (!title || !summary) {
+//     console.log("Title o summary no ingresados!");
+//     return res.status(400).send("title and summary are mandatory");
+//   }
+//   try {
+//     //agregar a la db:
+//     const data = { title, summary, healthScore, diet };
+//     console.log(`Entré al TRY: diet: ${diet}; dietId: ${dietId}`);
+//     const newRecipe = await Recipe.create(data);
+//     if (Array.isArray(dietId) && dietId.length > 0) {
+//       console.log(`Entré al Array.isArray(${dietId})`);
+//       for (let i = 0; i < dietId.length; i++) {
+//         await newRecipe.addDiet(dietId[i]); //! probando setear FK.
+//         console.log(`acabo de meter un addDiet con ${dietId[i]}`);
+//       }
+//     }
+//     if (dietId && !Array.isArray(dietId)) {
+//       console.log(`Entré al !Array.isArray(${dietId})`);
+//       await newRecipe.addDiet(dietId);
+//     }
+//     //     //! Si dietId fuese un arreglo, directamente le paso todos los id. Tengo que hacer que en el req.body me llegue un key "dietId" = [4, 2, 1, 8].
+//     //     //! Y le paso ese array a newRecipe.addDiets(dietId).
+//     //     //! Además, debería guardar como atributo diet un string de las dietas. Tengo que hacer esto en este paso. Al crear la instancia nueva de la receta acá.
+//     //     //! Podría hacer que se forme el string directamente en el front y se posteen la prop diet ya como un string.... pero quizás sea mejor hacerlo desde acá, o ni siquiera ir por este camino ya que si me modifican la asosiacion entre la receta y la diet, no se me actualizaría  ya que está en forma de string. Debería enviar la prop dietId que tiene el model, y
+//     //     //! una vez que recibo esos números en el front, lo renderizo según cada número. ESTA CREO QUE ES LA MEJOR. PROBAR SI RECIBO dietId con muchos números o qué
+
+//     console.log("Receta creada!! newRecipe: ");
+//     console.log(`${newRecipe}`);
+//     return res.status(201).json(newRecipe);
+//   } catch (error) {
+//     console.log("Error al intentar crear la receta!!");
+//     return res.status(402).send(error.message);
+//   }
+// });
 
 //* --- POST /recipes:
 // Recibe los datos recolectados desde el formulario controlado de la ruta de creación de recetas por body
