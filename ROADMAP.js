@@ -22,16 +22,19 @@
 //* El archivo app.js importa el objeto de rutas y lo usa como middleware, con un server.use(router)
 
 //! PROBLEMAS DETECTADOS PARA SOLUCIONAR:
-//! * Home/ Cuando busco con By title: Search. me devuelve .... TODO LO DE LA DB y además resultados de API.
-//! * Home/ Cuando busco con "Search title and diet" me devuelve... sólo resultados de la API.
+
+//! * El select filter no se resetea despues de resetear los filtros.
+
 //H ITINERARIO: ----------------------------------------------------------------------------------
 
-//h * Hacer que el get me traiga 99 recetas.
+//H * Terminar funcionamiento de formulario.
+//H * Pensar estilos, y despues terminar recipeDetails.
+
+//h * Para agregar como imagen a mis recetas posteadas, al momento de renderizar: https://spoonacular.com/recipeImages/157103-312x231.jpg Es la misma que spoonacular. Aunque parece que no se dimensiona bien y sobresale de ancho. O buscar cualquier otra que vaya bien con mis estilos.
+//h * Validaciones
+//h * Hacer ordenamiento por readyInMinutes
 //? IDEAS: -----------------------------------------------------------------------------------------
-//? 1* Para agregar las dietas podría usar el método add que me brinda sequelize cuando hago asociaciones. Le paso un array de Pks de dietas? Podría agregar esas PK a un arreglo y enviarlo en el post.
-//? 2* Podría hacer que las recetas que me traigo de la DB vayan a un State.DBRecipes y que esas recetas se rendericen a su propia manera ya que no tienen imagen, etc.
-//? 3* Para mostrar las diets: Podría hacer que al crear receta en la DB, que diets sea un string con dietas separadas por coma. Y luego desde la tarjeta le hago un split (",") y mapeo cada elemento como una <li>{diet}</li>.
-//?
+//? 1* Podría hacer un ordenamiento según el readyInMinutes!
 //? RANDOM:
 
 //?--------------------------------------------------------
