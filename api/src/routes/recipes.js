@@ -9,7 +9,7 @@ const { Op } = require("sequelize");
 const router = Router();
 
 const addRecipeInfoTrue = "addRecipeInformation=true";
-const NUMBER = "number=49";
+const NUMBER = "number=39";
 //h-------------------------------
 function fromQueryToURL(obj) {
   let urleado = "";
@@ -39,36 +39,36 @@ router.get("/getAllFromDB", async (req, res) => {
 // Obtener el detalle de una receta en particular
 // Incluir los tipos de dieta asociados (esto ya deberia venir en la data)
 //! Esta ruta puede ser pulida..
-router.get("/:idReceta", async (req, res) => {
-  console.log("Entré al get /:idReceta");
-  const idReceta = req.params.idReceta;
-  if (!idReceta) {
-    return res.status(404).send("Debe ingresar por params el id de la receta");
-  }
-  try {
-    let recetaEncontrada;
-    if (idReceta.length > 31) {
-      //(si la PK es UUIDV4):
-      console.log("Buscando recenta en DB: idReceta.length > 31");
-      recetaEncontrada = await Recipe.findByPk(idReceta);
-    }
-    if (!recetaEncontrada) {
-      console.log("Buscando receta en API...");
-      //(si no encuentro la receta en la DB, chequeo la API por si las dudas...:)
-      let axiado = await axios.get(
-        `https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`
-      );
-      console.log("Receta buscada en API");
-      console.log(`Receta title: ${axiado.data?.title}`);
-      return res.status(200).send(axiado.data);
-    }
-    console.log("Devolviendo buscada en DB..:");
-    return res.status(200).send(recetaEncontrada);
-  } catch (error) {
-    console.log(`Error! ${error.message}`);
-    return res.send(error.message);
-  }
-});
+// router.get("/:idReceta", async (req, res) => {
+//   console.log("Entré al get /:idReceta");
+//   const idReceta = req.params.idReceta;
+//   if (!idReceta) {
+//     return res.status(404).send("Debe ingresar por params el id de la receta");
+//   }
+//   try {
+//     let recetaEncontrada;
+//     if (idReceta.length > 31) {
+//       //(si la PK es UUIDV4):
+//       console.log("Buscando recenta en DB: idReceta.length > 31");
+//       recetaEncontrada = await Recipe.findByPk(idReceta);
+//     }
+//     if (!recetaEncontrada) {
+//       console.log("Buscando receta en API...");
+//       //(si no encuentro la receta en la DB, chequeo la API por si las dudas...:)
+//       let axiado = await axios.get(
+//         `https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`
+//       );
+//       console.log("Receta buscada en API");
+//       console.log(`Receta title: ${axiado.data?.title}`);
+//       return res.status(200).send(axiado.data);
+//     }
+//     console.log("Devolviendo buscada en DB..:");
+//     return res.status(200).send(recetaEncontrada);
+//   } catch (error) {
+//     console.log(`Error! ${error.message}`);
+//     return res.send(error.message);
+//   }
+// });
 
 //* EXPERIMENTACIÓN:
 //* POST ACTUAL QUE FUNCIONA, pero no perfecto por el tema de las associations.
@@ -174,16 +174,17 @@ router.post("/", async (req, res) => {
 //* EXPERIMENTACIÓN CON GET BY ID:
 router.get("/:idReceta", async (req, res) => {
   const { idReceta } = req.params;
+  console.log("idReceta: ", idReceta);
   //creo objeto para responder en caso de error:
   let errorObject = {
     title: "Recipe not found",
     summary: "Nothing to show here...",
     healthScore: 0,
-    steps: "Try again",
-    image: "",
-    diets: [],
+    steps: [],
+    image: "https://clipground.com/images/avoid-junk-food-clipart-7.jpg",
+    diets: ["null"],
   };
-
+  console.log("errorObject :", errorObject);
   try {
     if (idReceta.length > 30) {
       let recipeDB = await Recipe.findByPk(idReceta, {
@@ -214,14 +215,32 @@ router.get("/:idReceta", async (req, res) => {
       let axiado = await axios.get(
         `https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`
       );
+      let axiData = axiado.data;
       console.log("Receta buscada en API");
-      console.log(`Receta title: ${axiado.data?.title}`);
-      return res.status(200).send(axiado.data);
+      console.log(`Receta title: ${axiData?.title}`);
+      let axiadoDetails = {
+        id: axiData.id,
+        title: axiData.title,
+        vegetarian: axiData.vegetarian,
+        vegan: axiData.vegan,
+        glutenFree: axiData.glutenFree,
+        dairyFree: axiData.dairyFree,
+        lowFodmap: axiData.lowFodmap,
+        healthScore: axiData.healthScore,
+        summary: axiData.summary,
+        dishTypes: axiData.dishTypes,
+        image: axiData.image,
+        readyInMinutes: axiData.readyInMinutes,
+        steps: axiData.analyzedInstructions,
+        // steps: axiData.analyzedInstructions?.[0]?.steps, //Atención a este ?.chain!
+        diets: axiData.diets,
+      };
+      return res.status(200).send(axiadoDetails);
     }
   } catch (error) {
     console.log(`Hubo un error en el catch final del get por ID`);
     console.log(error.message);
-    return res.status(400).send(errorObject);
+    return res.status(404).send(errorObject);
   }
 });
 
@@ -237,16 +256,20 @@ const getByTitleFromAPI = async (title) => {
     if (axiosDataResults.length > 0) {
       let recipesFromAPI = await axiosDataResults.map((r) => {
         return {
+          id: r.id,
           title: r.title,
           vegetarian: r.vegetarian,
           vegan: r.vegan,
           glutenFree: r.glutenFree,
           dairyFree: r.dairyFree,
+          lowFodmap: r.lowFodmap,
           healthScore: r.healthScore,
           summary: r.summary,
-          steps: r.steps,
-          types: r.types,
+          dishTypes: r.dishTypes,
           image: r.image,
+          readyInMinutes: r.readyInMinutes,
+          // steps: r.analyzedInstructions,
+          // steps: r.analyzedInstructions?.[0]?.steps, //Atención a este ?.chain!
           diets: r.diets?.map((diet) => diet),
         };
       });
@@ -260,7 +283,6 @@ const getByTitleFromAPI = async (title) => {
   }
 };
 
-//h --- Esta función no me devuelve el array de diets de la receta:
 const getByTitleFromDB = async (title) => {
   console.log("Entré al getByTitleFromDB");
   console.log(`title = ${title}`);
@@ -311,8 +333,6 @@ const getByTitleFromDB = async (title) => {
   }
 };
 
-//h Voy a copiar a getAllFromDB para corregir el error. Falta mapear un nuevo objeto con la prop diets.
-
 const getAllFromDB = async () => {
   try {
     const recipesDB = await Recipe.findAll({
@@ -349,13 +369,11 @@ const getAllFromAPI = async () => {
     const axiosFromApi = await axios.get(
       `https://api.spoonacular.com/recipes/complexSearch?${NUMBER}&${addRecipeInfoTrue}&apiKey=${MI_API_KEY}`
     );
+    // console.log(axiosFromApi.data);
     const axiosData = axiosFromApi.data?.results;
-    console.log(
-      `axiosData.data.results.length = ${axiosData.data.results?.length}`
-    );
 
     if (axiosData.length > 0) {
-      let recipesFromAPI = await results.map((r) => {
+      let recipesFromAPI = await axiosData.map((r) => {
         return {
           title: r.title,
           vegetarian: r.vegetarian,
@@ -364,8 +382,8 @@ const getAllFromAPI = async () => {
           dairyFree: r.dairyFree,
           healthScore: r.healthScore,
           summary: r.summary,
-          steps: r.steps,
-          types: r.types,
+          // steps: r.steps,
+          dishTypes: r.dishTypes,
           image: r.image,
           diets: r.diets?.map((diet) => diet),
         };
@@ -387,11 +405,12 @@ const getAllGlobal = async () => {
   try {
     let allFromDB = await getAllFromDB();
     console.log("allFromDB: ");
-    console.log(allFromDB);
+    console.log(allFromDB.length);
     let allFromAPI = await getAllFromAPI();
     console.log("allFromAPI:");
-    console.log(allFromAPI);
+    console.log(allFromAPI.length);
     let allGlobal = allFromDB.concat(allFromAPI);
+    console.log(`allGlobal.length = ${allGlobal.length}`);
     return allGlobal;
   } catch (error) {
     console.log("Error en getAllGlobal");
@@ -421,7 +440,7 @@ router.get("/", async (req, res) => {
       return res.status(200).send(allGlobal);
     }
   } catch (error) {
-    console.log("Error en el get por title");
+    console.log("Error en el get");
     console.log(error.message);
     return res.status(404).send(error.message);
   }
