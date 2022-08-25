@@ -14,12 +14,38 @@ const CreateRecipe = () => {
   const [localState, setLocalState] = React.useState({
     title: "",
     summary: "",
-    healthScore: 10,
+    healthScore: 0, //! se lo pongo en null por default?
     steps: "",
     diet: "",
     dietId: [],
   });
 
+  //h --- función de validación de createRecipe:
+  //h La idea es que me devuelva true si todo está ok, o false si hay un error.
+
+  // function validateForm(obj) {
+  //   if (
+  //     typeof obj.title !== "string" ||
+  //     obj.title.length <= 2 ||
+  //     obj.title.length > 70
+  //   ) {
+  //     return false;
+  //   }
+  //   if (obj.title) {
+  //   }
+  // }
+
+  // function check_if_input_has_special_chars(element) {
+  //   let textInput = element.value;
+  //   let pattern = /[^a-zA-Z0-9 ]+$/gm;
+  //   if (pattern.test(textInput)) {
+  //     console.log("String contains special characters.");
+  //   }
+
+  //   element.value = textInput;
+  // }
+
+  //h ------------------------------
   //! Hacer funcionamiento para que cada checkbox me pushee/mande al dietId un número según la dieta.
   //! El objetivo es postear un array con números.
   //! Podría hacer que adentro de el handleSubmit, se chequee cuáles checkboxes están chequeados y ahí pushear esos valores al array.
