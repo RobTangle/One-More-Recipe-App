@@ -11,11 +11,40 @@ const RecipeDetail = (props) => {
     dispatch(actions.getRecipeDetail(props.match.params.id));
   }, [dispatch, props.match.params.id]); //*Agregué esto usando el quick fix que ofrecía vsc
 
-  let diets = recipeDetailRedux.diets;
-  let dietasStringed = "";
-  diets?.forEach((element) => {
-    dietasStringed += `${element} | `;
-  });
+  // let diets = recipeDetailRedux.diets;
+  // let dietasStringed = "";
+  // diets?.forEach((element) => {
+  //   dietasStringed += `${element} | `;
+  // });
+
+  function checkDietsAndListThem(obj) {
+    let dietas = [];
+    if (obj.vegetarian && obj.vegetarian === true) {
+      dietas.push("vegetarian");
+    }
+    if (obj.vegan && obj.vegan === true) {
+      dietas.push("vegan");
+    }
+    if (obj.glutenFree && obj.glutenFree === true) {
+      dietas.push("gluten free");
+    }
+    if (obj.dairyFree && obj.dairyFree === true) {
+      dietas.push("dairyFree");
+    }
+    if (obj.lowFodmap && obj.lowFodmap === true) {
+      dietas.push("lowFodmap");
+    }
+    obj?.diets?.forEach((d) => {
+      if (!dietas.includes(d)) {
+        dietas.push(d);
+      }
+    });
+    if (dietas.length === 0) {
+      return ["no data loaded"];
+    } else {
+      return dietas;
+    }
+  }
 
   // function listaDietas(array) {
   //   let listado;
@@ -24,9 +53,9 @@ const RecipeDetail = (props) => {
   //   }
   // }
 
-  // function listadoDiets(array) {
-  //   return array.forEach((diet) => {
-  //     return <li>{diet}</li>;
+  // function checkDishTypesAndListThem(array) {
+  //   array.forEach((dishType) => {
+  //     return <li>{dishType}</li>;
   //   });
   // }
 
@@ -37,45 +66,54 @@ const RecipeDetail = (props) => {
   //! Voy a tener que modelar mejor el model para que pueda recibir un array de dietas?
   return (
     <div key={recipeDetailRedux.id}>
-      <img src={recipeDetailRedux.image} alt="Recipe ilustration" />
+      <img
+        src={
+          recipeDetailRedux.image == null
+            ? "https://spoonacular.com/recipeImages/157103-312x231.jpg"
+            : recipeDetailRedux.image
+        }
+        alt="Recipe ilustration"
+      />
       <h2>{recipeDetailRedux.title}</h2>
-      <h3>Recipe detail:</h3>
       <div>id: {recipeDetailRedux.id}</div>
       <div>Health score: {recipeDetailRedux.healthScore}</div>
-      <div>Dish type: {recipeDetailRedux.dishTypes}</div>
-      {recipeDetailRedux?.diet?.length > 0 ? (
-        <div> "Length mayor a 0</div>
-      ) : (
-        <span>Length no es mayor a 0</span>
-      )}
-      <div>Type of diet: {recipeDetailRedux.diet}</div>
-
-      <div>dietasStringed: {dietasStringed}</div>
-      {/*<div>
-        Tipo de dietas mapeado:{" "}
-        {diets?.map((dieta) => {
-          return <div>hola{dieta}</div>;
+      <div>
+        Dish type:
+        <ul>
+          {recipeDetailRedux?.dishTypes?.map((dish) => {
+            return <li>{dish}</li>;
+          })}
+        </ul>
+      </div>
+      <div>Type of diets:</div>
+      <ul>
+        {checkDietsAndListThem(recipeDetailRedux)?.map((el) => {
+          return <li>{el}</li>;
         })}
-      </div> */}
-      {/* <span>lista Dietas Render:</span>
-      <div>{listaDietasRender}</div> */}
-      <span>listadoDiets con forEach</span>
-      {/* <div>{listadoDietsLet}</div> */}
+      </ul>
       <div>
         Summary:
+        {/* <>{recipeDetailRedux.summary}</> */}
         <div
           dangerouslySetInnerHTML={{ __html: recipeDetailRedux.summary }}
           //! Esto es peligroso!! Debería arreglarlo!! Puedo con npmodulos tipo html to parse o algo así?
         ></div>
-        <div>Step by step: {recipeDetailRedux.steps}</div>
+        <div>
+          <div>Step by step: </div>
+          {typeof recipeDetailRedux.steps == "string" ? (
+            recipeDetailRedux.steps
+          ) : (
+            <div>No data</div>
+          )}
+          {Array.isArray(recipeDetailRedux.steps) ? (
+            recipeDetailRedux.steps.map((step) => {
+              return <li>{step}</li>;
+            })
+          ) : (
+            <div>No data for steps</div>
+          )}
+        </div>
         <hr />
-        {/* <>{recipeDetailRedux.summary}</> */}
-      </div>
-      <div>
-        Instructions:
-        <div
-          dangerouslySetInnerHTML={{ __html: recipeDetailRedux.instructions }}
-        ></div>
       </div>
     </div>
   );
