@@ -11,12 +11,6 @@ const RecipeDetail = (props) => {
     dispatch(actions.getRecipeDetail(props.match.params.id));
   }, [dispatch, props.match.params.id]); //*Agregué esto usando el quick fix que ofrecía vsc
 
-  // let diets = recipeDetailRedux.diets;
-  // let dietasStringed = "";
-  // diets?.forEach((element) => {
-  //   dietasStringed += `${element} | `;
-  // });
-
   function checkDietsAndListThem(obj) {
     let dietas = [];
     if (obj.vegetarian && obj.vegetarian === true) {
@@ -46,26 +40,8 @@ const RecipeDetail = (props) => {
     }
   }
 
-  // function listaDietas(array) {
-  //   let listado;
-  //   for (let i = 0; i < array.length; i++) {
-  //     return <li>{array[i]}</li>;
-  //   }
-  // }
-
-  // function checkDishTypesAndListThem(array) {
-  //   array.forEach((dishType) => {
-  //     return <li>{dishType}</li>;
-  //   });
-  // }
-
-  // let listadoDietsLet = listadoDiets(diets);
-
-  // let listaDietasRender = listaDietas(diets);
-
-  //! Voy a tener que modelar mejor el model para que pueda recibir un array de dietas?
   return (
-    <div key={recipeDetailRedux.id}>
+    <div key={Math.random()}>
       <img
         src={
           recipeDetailRedux.image == null
@@ -81,14 +57,14 @@ const RecipeDetail = (props) => {
         Dish type:
         <ul>
           {recipeDetailRedux?.dishTypes?.map((dish) => {
-            return <li>{dish}</li>;
+            return <li key={Math.random()}>{dish}</li>;
           })}
         </ul>
       </div>
       <div>Type of diets:</div>
       <ul>
         {checkDietsAndListThem(recipeDetailRedux)?.map((el) => {
-          return <li>{el}</li>;
+          return <li key={Math.random()}>{el}</li>;
         })}
       </ul>
       <div>
@@ -106,11 +82,13 @@ const RecipeDetail = (props) => {
             <div>No data</div>
           )}
           {Array.isArray(recipeDetailRedux.steps) ? (
-            recipeDetailRedux.steps.map((step) => {
-              return <li>{step}</li>;
-            })
+            <ol>
+              {recipeDetailRedux.steps.map((step) => {
+                return <li key={Math.random()}>{step.step}</li>;
+              })}
+            </ol>
           ) : (
-            <div>No data for steps</div>
+            <span></span>
           )}
         </div>
         <hr />
