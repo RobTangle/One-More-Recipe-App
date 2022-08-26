@@ -43,7 +43,7 @@ router.get("/getAllFromDB", async (req, res) => {
 router.post("/", async (req, res) => {
   console.log("Entré al post");
   const { title, summary, healthScore, diets, steps, image } = req.body;
-  console.log(typeof healthScore);
+  console.log(`Title: ${title}`);
   try {
     if (!title || !summary) {
       return res.status(400).send({ error: "title and summary are mandatory" });
@@ -91,6 +91,7 @@ router.post("/", async (req, res) => {
     // let getDiets = await newRecipe.getDiets();
     // console.log("getDiets: ");
     // console.log(getDiets[0].dataValues.name, getDiets[1].dataValues.name);
+    console.log("Nueva receta creada!");
     return res.status(200).send(newRecipe);
   } catch (error) {
     console.log(error.message);
