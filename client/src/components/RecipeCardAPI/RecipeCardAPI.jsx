@@ -10,13 +10,13 @@ const RecipeCardAPI = (props) => {
         <Link to={`/home/recipes/${props.id}`}> {props.title} </Link>
       </h3>
       {/* <h3>Diets: {dietsToString(props.diets)} </h3> */}
+      <h4>Health score: {props.healthScore}</h4>
       <h4>Diets: </h4>
       <ul className="ul-diets">
         {props.diets?.map((dieta) => (
           <li key={Math.random()}>{dieta}</li>
         ))}
       </ul>
-      <h4>Health score: {props.healthScore}</h4>
     </div>
   );
 };
