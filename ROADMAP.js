@@ -29,7 +29,7 @@
 
 //H * Hacer CSS
 //h * Poner estados de "loading" o error
-//h * Deshabilitar botón de submit al hacerle click satisfactoriamente.
+//h * Deshabilitar botón de submit al hacerle click satisfactoriamente. Por ahora sólo hice un alert.
 //h * Validaciones. Listas??? Creo que ya hice todo....
 
 //h * Error handlings
@@ -37,6 +37,7 @@
 
 //h * Para agregar como imagen a mis recetas posteadas, al momento de renderizar: https://spoonacular.com/recipeImages/157103-312x231.jpg Es la misma que spoonacular. Aunque parece que no se dimensiona bien y sobresale de ancho. O buscar cualquier otra que vaya bien con mis estilos.
 //? IDEAS: -----------------------------------------------------------------------------------------
+//? Poner botón en el pie de página para que vaya arriba del todo con un click
 //? 1* Podría hacer un ordenamiento según el readyInMinutes!
 //? RANDOM:
 
@@ -80,6 +81,87 @@ function dietsToString(diets) {
   { name: "whole30", id: 11 },
   { name: "omnivore", id: 12 },
 ];
+
+//! Botones de filtrado que funcionaban joya, pero los reemplacé por un componente que básicamente contiene este mismo código.
+{
+  /*<div className="filter-order-container" id="filter-order-container">
+        <label htmlFor="filterDiets">
+          <span>Filter by diet</span>
+        </label>
+
+        <div className="filter-buttons">
+          <button
+            onClick={onFilterOptionChange}
+            value="gluten free"
+            id="glutenFree"
+          >
+            Gluten Free
+          </button>
+          <button
+            value="dairyFree"
+            id="dairyFree"
+            onClick={onFilterOptionChange}
+          >
+            Dairy Free
+          </button>
+          <button value="vegan" id="vegan" onClick={onFilterOptionChange}>
+            Vegan
+          </button>
+          <button
+            value="vegetarian"
+            id="vegetarian"
+            onClick={onFilterOptionChange}
+          >
+            Vegetarian
+          </button>
+          <button
+            value="lacto ovo vegetarian"
+            id="lacto-ovo-vegetarian"
+            onClick={onFilterOptionChange}
+          >
+            Lacto ovo vegetarian
+          </button>
+          <button
+            value="pescetarian"
+            id="pescetarian"
+            onClick={onFilterOptionChange}
+          >
+            Pescetarian
+          </button>
+          <button
+            value="ketogenic"
+            id="ketogenic"
+            onClick={onFilterOptionChange}
+          >
+            Ketogenic
+          </button>
+          <button value="paleo" id="paleo" onClick={onFilterOptionChange}>
+            Paleo
+          </button>
+          <button value="primal" id="primal" onClick={onFilterOptionChange}>
+            Primal
+          </button>
+          <button
+            value="lowFodmap"
+            id="low FODMAP"
+            onClick={onFilterOptionChange}
+          >
+            Low FODMAP
+          </button>
+          <button value="whole30" id="whole30" onClick={onFilterOptionChange}>
+            Whole30
+          </button>
+          <button value="omnivore" id="omnivore" onClick={onFilterOptionChange}>
+            Omnivore
+          </button>
+        </div>
+
+        <button className="reset-filter" onClick={resetFilter}>
+          Reset filters
+        </button>
+      </div> */
+}
+//!------------------------------------------------------------------
 
 //h --algoritmos EN DESUSO para ordenar por healthScore:
 // function compareHealthScore(a, b) {
