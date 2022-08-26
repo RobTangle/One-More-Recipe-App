@@ -62,19 +62,58 @@ const CreateRecipe = () => {
     });
   }
 
+  //h validate on Submit:
   function handleSubmit(e) {
     console.log("handleSubmit invocado. localState: ", localState);
     e.preventDefault();
-    validateTitle(localState.title);
-    console.log("Despues del validate");
-    //! sigue enviando el dispatch aunque validateTitle retorne alert. Tengo que solucionar esto.
+    if (
+      violatedTitleLength(localState.title) ||
+      userIntroducedProhibitedSimbols(localState.title)
+    ) {
+      console.log("No pasé el primer test");
+      return alert(
+        "Invalid recipe title. Please, don't introduce simbols nor more than 100 characters"
+      );
+    }
+    if (localState.summary.length > 500) {
+      return alert(
+        `Characters exceeded. Maximum length for summary is 500 characters. Actual length: ${localState.summary.length}`
+      );
+    }
+    if (userIntroducedProhibitedSimbols(localState.summary)) {
+      return alert(`Prohibited simbols detected in the summary.`);
+    }
+    if (localState.healthScore > 100 || localState.healthScore < 0) {
+      return alert("Health score must be a number between 0 and 100");
+    }
+    if (localState.steps.length > 3000) {
+      return alert(
+        `The 'steps' input exceeded the 3000 characters. Actual length: ${localState.steps.length}`
+      );
+    }
+
+    console.log("Despues del validate. Despachando la action...");
     dispatch(actions.createRecipe(localState));
   }
 
   //h --- función validadora:
-  function validateTitle(title) {
-    if (title.length > 60) {
-      return alert("The title can't have more than 60 characters");
+  function violatedTitleLength(title) {
+    if (title.length > 100 || title.length < 1) {
+      alert("The must have between 1 and 100 characters");
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function userIntroducedProhibitedSimbols(inputString) {
+    let charactersNotAllowed = /[^{};@>!<]*$/g;
+    // /[^<;>@}{!]*$/g;
+    if (inputString.search(charactersNotAllowed) !== 0) {
+      console.log("ENTRË al !== 0 del USERiNTRODUCEDpHOsIMBOLS");
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -114,6 +153,8 @@ const CreateRecipe = () => {
                 type="text"
                 id="title"
                 name="title"
+                minlength="1"
+                maxLength={100} //! testear estas dos
                 onChange={handleOnChange}
               />
             </div>
@@ -136,8 +177,9 @@ const CreateRecipe = () => {
                 required
                 name="summary"
                 minLength="1"
+                maxlength="500"
                 id="summary"
-                placeholder="Don't introduce simbols like '[ ] { } > < '"
+                placeholder="Don't introduce simbols like ' ; @ ! { } > < ', nor more than 500 characters"
                 cols="30"
                 rows="10"
                 onChange={handleOnChange}
@@ -150,7 +192,8 @@ const CreateRecipe = () => {
                 id="steps"
                 cols="30"
                 rows="10"
-                placeholder="Step by step..."
+                maxLength={3000}
+                placeholder="Step by step... (3000 characters maximum)"
                 onChange={handleOnChange}
               ></textarea>
             </div>
