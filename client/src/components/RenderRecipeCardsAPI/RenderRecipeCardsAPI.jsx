@@ -5,19 +5,19 @@ import * as actions from "../../redux/actions";
 import "./renderRecipeCardsAPI.css";
 import { Paginacion } from "../Paginacion/Paginacion";
 import FilterButtons from "../FilterButtons/FilterButtons";
-// import {
-//   callBackFilter,
-//   orderByHealthScore,
-//   orderByHealthScoreInvert,
-//   orderByTitleInvertExp,
-//   orderByTitleExp,
-//   compararTituloAsc,
-//   compararTituloDes,
-//   compareHealthScoreAsc,
-//   compareHealthScoreDes,
-//   compareKeyDes,
-//   compareKeyAsc,
-// } from "../../auxiliaryModules/functions";
+import {
+  callBackFilter,
+  orderByHealthScore,
+  orderByHealthScoreInvert,
+  orderByTitleInvertExp,
+  orderByTitleExp,
+  // compararTituloAsc,
+  // compararTituloDes,
+  // compareHealthScoreAsc,
+  // compareHealthScoreDes,
+  // compareKeyDes,
+  // compareKeyAsc,
+} from "../../auxiliaryModules/functions";
 
 const RenderRecipeCardsAPI = (props) => {
   const recipesSearched = useSelector((state) => state.recipes);
@@ -40,7 +40,7 @@ const RenderRecipeCardsAPI = (props) => {
     console.log("Soy el useEffect, localState: ", localState);
   }, [localState]);
 
-  //!Para paginado:
+  //h Para paginado:
   const [page, setPage] = React.useState(1);
   const [quantity, setQuantity] = React.useState(9);
   let maxPages = localState.length / quantity;
@@ -49,141 +49,141 @@ const RenderRecipeCardsAPI = (props) => {
 
   //? experimentar modularizar función: ----------------------------------------------
 
-  function compareKeyAsc(key) {
-    function compare(a, b) {
-      if (a[key] < b[key]) {
-        return -1;
-      } else if (a[key] > b[key]) {
-        return 1;
-      } else {
-        return 0;
-      }
-    }
-    return compare;
-  }
+  // function compareKeyAsc(key) {
+  //   function compare(a, b) {
+  //     if (a[key] < b[key]) {
+  //       return -1;
+  //     } else if (a[key] > b[key]) {
+  //       return 1;
+  //     } else {
+  //       return 0;
+  //     }
+  //   }
+  //   return compare;
+  // }
 
-  function compareKeyDes(key) {
-    function compare(a, b) {
-      if (a[key] < b[key]) {
-        return 1;
-      } else if (a[key] > b[key]) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-    return compare;
-  }
+  // function compareKeyDes(key) {
+  //   function compare(a, b) {
+  //     if (a[key] < b[key]) {
+  //       return 1;
+  //     } else if (a[key] > b[key]) {
+  //       return -1;
+  //     } else {
+  //       return 0;
+  //     }
+  //   }
+  //   return compare;
+  // }
 
-  const compararTituloAsc = compareKeyAsc("title");
-  const compararTituloDes = compareKeyDes("title");
-  const compareHealthScoreAsc = compareKeyAsc("healthScore");
-  const compareHealthScoreDes = compareKeyDes("healthScore");
+  // const compararTituloAsc = compareKeyAsc("title");
+  // const compararTituloDes = compareKeyDes("title");
+  // const compareHealthScoreAsc = compareKeyAsc("healthScore");
+  // const compareHealthScoreDes = compareKeyDes("healthScore");
 
   //?------------------------------------------------------------------------------------------------------------
   //h--- Ordenar por title:
 
-  function orderByTitleExp(array) {
-    console.log(
-      "Se invocó a orderByTitleExp con este array como argumento: ",
-      array
-    );
-    if (array) {
-      let sortedArray = array.sort(compararTituloAsc);
-      let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
-      setLocalState(copySortedArray);
-      console.log(
-        "el localState después de haber sido sorteado por title",
-        localState
-      );
-    } else {
-      console.log(
-        "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
-      );
-    }
-  }
+  // function orderByTitleExp(array) {
+  //   console.log(
+  //     "Se invocó a orderByTitleExp con este array como argumento: ",
+  //     array
+  //   );
+  //   if (array) {
+  //     let sortedArray = array.sort(compararTituloAsc);
+  //     let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
+  //     setLocalState(copySortedArray);
+  //     console.log(
+  //       "el localState después de haber sido sorteado por title",
+  //       localState
+  //     );
+  //   } else {
+  //     console.log(
+  //       "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
+  //     );
+  //   }
+  // }
 
-  function orderByTitleInvertExp(array) {
-    console.log(
-      "Se invocó a orderByTitleInvertExp con este array como argumento: ",
-      array
-    );
-    if (array) {
-      let sortedArray = array.sort(compararTituloDes);
-      let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
-      setLocalState(copySortedArray);
-      console.log(
-        "el localState después de haber sido sorteado por title",
-        localState
-      );
-    } else {
-      console.log(
-        "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
-      );
-    }
-  }
+  // function orderByTitleInvertExp(array) {
+  //   console.log(
+  //     "Se invocó a orderByTitleInvertExp con este array como argumento: ",
+  //     array
+  //   );
+  //   if (array) {
+  //     let sortedArray = array.sort(compararTituloDes);
+  //     let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
+  //     setLocalState(copySortedArray);
+  //     console.log(
+  //       "el localState después de haber sido sorteado por title",
+  //       localState
+  //     );
+  //   } else {
+  //     console.log(
+  //       "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
+  //     );
+  //   }
+  // }
 
   //h--- Ordenar por healthScore:
 
-  function orderByHealthScore(array) {
-    console.log(
-      "Se invocó a orderByHealthScoreInvert con este array como argumento: ",
-      array
-    );
-    if (array) {
-      let sortedArray = array.sort(compareHealthScoreAsc);
-      let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
-      setLocalState(copySortedArray);
-      console.log("el localState después de haber sido sorteado", localState);
-    } else {
-      console.log(
-        "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
-      );
-    }
-  }
+  // function orderByHealthScore(array) {
+  //   console.log(
+  //     "Se invocó a orderByHealthScoreInvert con este array como argumento: ",
+  //     array
+  //   );
+  //   if (array) {
+  //     let sortedArray = array.sort(compareHealthScoreAsc);
+  //     let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
+  //     setLocalState(copySortedArray);
+  //     console.log("el localState después de haber sido sorteado", localState);
+  //   } else {
+  //     console.log(
+  //       "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
+  //     );
+  //   }
+  // }
 
-  function orderByHealthScoreInvert(array) {
-    console.log(
-      "Se invocó a orderByHealthScoreInvert con este array como argumento: ",
-      array
-    );
-    if (array) {
-      let sortedArray = array.sort(compareHealthScoreDes);
-      let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
-      setLocalState(copySortedArray);
-      console.log(
-        "el localState después de haber sido sorteado invert",
-        localState
-      );
-    } else {
-      console.log(
-        "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
-      );
-    }
-  }
+  // function orderByHealthScoreInvert(array) {
+  //   console.log(
+  //     "Se invocó a orderByHealthScoreInvert con este array como argumento: ",
+  //     array
+  //   );
+  //   if (array) {
+  //     let sortedArray = array.sort(compareHealthScoreDes);
+  //     let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
+  //     setLocalState(copySortedArray);
+  //     console.log(
+  //       "el localState después de haber sido sorteado invert",
+  //       localState
+  //     );
+  //   } else {
+  //     console.log(
+  //       "array NO EXISTE en orderByHealthScoreInvert!" //!cambiar esto ya que array siempre va a existir. array.length > 0 podría ser una buena creo
+  //     );
+  //   }
+  // }
 
   //h--- Filter by diets EXPERIMENTAL:
 
-  function callBackFilter(receta, diet) {
-    console.log(`callBackFilter: receta = ${receta} y diet = ${diet}`);
-    if (
-      diet === "vegetarian" ||
-      diet === "vegan" ||
-      diet === "glutenFree" ||
-      diet === "dairyFree" ||
-      diet === "lowFodmap"
-    ) {
-      if (receta[diet] && receta[diet] === true) {
-        return true;
-      }
-    }
-    if (receta.diets && receta.diets.includes(diet)) {
-      return true;
-    }
-    if (receta.diet && receta.diet.includes(diet)) {
-      return true;
-    }
-  }
+  // function callBackFilter(receta, diet) {
+  //   console.log(`callBackFilter: receta = ${receta} y diet = ${diet}`);
+  //   if (
+  //     diet === "vegetarian" ||
+  //     diet === "vegan" ||
+  //     diet === "glutenFree" ||
+  //     diet === "dairyFree" ||
+  //     diet === "lowFodmap"
+  //   ) {
+  //     if (receta[diet] && receta[diet] === true) {
+  //       return true;
+  //     }
+  //   }
+  //   if (receta.diets && receta.diets.includes(diet)) {
+  //     return true;
+  //   }
+  //   if (receta.diet && receta.diet.includes(diet)) {
+  //     return true;
+  //   }
+  // }
 
   //h --- Filter by select option EXPERIMENTAL:
 
@@ -191,10 +191,6 @@ const RenderRecipeCardsAPI = (props) => {
 
   function onFilterOptionChange(e) {
     console.log(`e.target.value: `, e.target.value);
-    // console.log(`e.target: `, e.target);
-    // console.log(e);
-    // setFilterState("Algo!");
-
     let filteredRecipes = recipesSearched.filter((receta) =>
       callBackFilter(receta, e.target.value)
     );
@@ -204,7 +200,6 @@ const RenderRecipeCardsAPI = (props) => {
   }
 
   //h --- Reset filters:
-
   function resetFilter() {
     console.log("Reset filter...");
     setLocalState(recipesSearched);
@@ -220,13 +215,25 @@ const RenderRecipeCardsAPI = (props) => {
       <div className="order-by-container">
         <div className="order-title">
           <span>Order by title: </span>
-          <button onClick={(e) => orderByTitleExp(localState)}>¡</button>
-          <button onClick={(e) => orderByTitleInvertExp(localState)}>!</button>
+          <button onClick={(e) => orderByTitleExp(localState, setLocalState)}>
+            ¡
+          </button>
+          <button
+            onClick={(e) => orderByTitleInvertExp(localState, setLocalState)}
+          >
+            !
+          </button>
         </div>
         <div className="order-healthScore">
           <span>Order by health score: </span>
-          <button onClick={(e) => orderByHealthScore(localState)}>¡</button>
-          <button onClick={(e) => orderByHealthScoreInvert(localState)}>
+          <button
+            onClick={(e) => orderByHealthScore(localState, setLocalState)}
+          >
+            ¡
+          </button>
+          <button
+            onClick={(e) => orderByHealthScoreInvert(localState, setLocalState)}
+          >
             !
           </button>
         </div>
@@ -265,7 +272,7 @@ const RenderRecipeCardsAPI = (props) => {
               );
             })
         ) : (
-          <span key={Math.random()}>No hay recetas para mostrar</span>
+          <span key={Math.random()}>There are no recipes to show yet...</span>
         )}
       </div>
       {/* {localState.length > 9 ? (
