@@ -1,0 +1,12 @@
+.filter-buttons-container {
+  max-width: 80%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+}
+
+button:hover {
+  background-color: rgba(24, 34, 24, 0.404);
+  color: rgba(255, 255, 0, 0.815);
+}

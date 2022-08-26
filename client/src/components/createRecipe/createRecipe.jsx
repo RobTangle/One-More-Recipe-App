@@ -15,6 +15,7 @@ const CreateRecipe = () => {
     summary: "",
     healthScore: 0, //! se lo pongo en null por default?
     steps: "",
+    image: "https://spoonacular.com/recipeImages/157103-312x231.jpg",
     diets: [],
   });
 
@@ -116,13 +117,13 @@ const CreateRecipe = () => {
   //h --- Fin funciones auxiliares ---
 
   return (
-    <div>
+    <div className="create-recipe-container">
       {console.log("En el return del componente. Me rendericé!")}
       <form action="" onSubmit={handleSubmit}>
-        <fieldset>
+        <fieldset className="form-fieldset">
           <legend>Create Recipe: </legend>
-          <div className="createRecipe">
-            <div>
+          <div className="inside-form-container">
+            <div className="form-text-input">
               <label htmlFor="title">Title * </label>
               <input
                 required
@@ -134,7 +135,7 @@ const CreateRecipe = () => {
                 onChange={handleOnChange}
               />
             </div>
-            <div>
+            <div className="form-text-input">
               <label htmlFor="health-score">Health score * </label>
               <input
                 required
@@ -146,7 +147,7 @@ const CreateRecipe = () => {
                 onChange={handleHealthScoreChange}
               />
             </div>
-            <div>
+            <div className="form-text-input">
               <label htmlFor="summary">Summary * </label>
               <textarea
                 required
@@ -160,7 +161,7 @@ const CreateRecipe = () => {
                 onChange={handleOnChange}
               ></textarea>
             </div>
-            <div>
+            <div className="form-text-input">
               <label htmlFor="steps">Step by step </label>
               <textarea
                 name="steps"
@@ -174,12 +175,12 @@ const CreateRecipe = () => {
             </div>
             <div className="check-boxes">
               <div>
-                <label htmlFor="">Vegan</label>
+                <label htmlFor="">Gluten Free</label>
                 <input
                   type="checkbox"
-                  name="vegan"
-                  id="vegan_checkbox"
-                  value="vegan"
+                  name="gluten free"
+                  id="gluten_free_checkbox"
+                  value="gluten free"
                   onClick={handleCheckClick}
                 />
               </div>
@@ -194,33 +195,22 @@ const CreateRecipe = () => {
                 />
               </div>
               <div>
-                <label htmlFor="">Gluten Free</label>
-                <input
-                  type="checkbox"
-                  name="gluten free"
-                  id="gluten_free_checkbox"
-                  value="gluten free"
-                  onClick={handleCheckClick}
-                />
-              </div>
-              <div>
-                <label htmlFor="">Vegeterian</label>
-                <input
-                  type="checkbox"
-                  name="vegetarian"
-                  id="vegetarian_checkbox"
-                  value="vegetarian"
-                  onClick={handleCheckClick}
-                />
-              </div>
-
-              <div>
                 <label htmlFor="">Lacto ovo vegetarian</label>
                 <input
                   type="checkbox"
                   name="lacto ovo vegetarian"
                   id="lacto_ovo_vegetarian_checkbox"
                   value="lacto ovo vegeterian"
+                  onClick={handleCheckClick}
+                />
+              </div>
+              <div>
+                <label htmlFor="">Low FODMAP</label>
+                <input
+                  type="checkbox"
+                  name="lowFodmap"
+                  id="lowFodmap_checkbox"
+                  value="Low FODMAP"
                   onClick={handleCheckClick}
                 />
               </div>
@@ -235,29 +225,6 @@ const CreateRecipe = () => {
                   onClick={handleCheckClick}
                 />
               </div>
-
-              <div>
-                <label htmlFor="">Vegan</label>
-                <input
-                  type="checkbox"
-                  name="vegan"
-                  id="vegan_checkbox"
-                  value="vegan"
-                  onClick={handleCheckClick}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="">Pescetarian</label>
-                <input
-                  type="checkbox"
-                  name="pescatarian"
-                  id="pescatarian_checkbox"
-                  value="pescatarian"
-                  onClick={handleCheckClick}
-                />
-              </div>
-
               <div>
                 <label htmlFor="">Paleolithic</label>
                 <input
@@ -265,6 +232,16 @@ const CreateRecipe = () => {
                   name="paleolithic"
                   id="paleolithic_checkbox"
                   value="paleolithic"
+                  onClick={handleCheckClick}
+                />
+              </div>
+              <div>
+                <label htmlFor="">Pescetarian</label>
+                <input
+                  type="checkbox"
+                  name="pescatarian"
+                  id="pescatarian_checkbox"
+                  value="pescatarian"
                   onClick={handleCheckClick}
                 />
               </div>
@@ -281,16 +258,25 @@ const CreateRecipe = () => {
               </div>
 
               <div>
-                <label htmlFor="">Low FODMAP</label>
+                <label htmlFor="">Vegan</label>
                 <input
                   type="checkbox"
-                  name="lowFodmap"
-                  id="lowFodmap_checkbox"
-                  value="Low FODMAP"
+                  name="vegan"
+                  id="vegan_checkbox"
+                  value="vegan"
                   onClick={handleCheckClick}
                 />
               </div>
-
+              <div>
+                <label htmlFor="">Vegeterian</label>
+                <input
+                  type="checkbox"
+                  name="vegetarian"
+                  id="vegetarian_checkbox"
+                  value="vegetarian"
+                  onClick={handleCheckClick}
+                />
+              </div>
               <div>
                 <label htmlFor="">Whole30</label>
                 <input
@@ -302,7 +288,9 @@ const CreateRecipe = () => {
                 />
               </div>
             </div>
-            <button type="submit">Create Recipe</button>
+            <button type="submit" className="submit-recipe-btn">
+              Create Recipe
+            </button>
           </div>
         </fieldset>
       </form>

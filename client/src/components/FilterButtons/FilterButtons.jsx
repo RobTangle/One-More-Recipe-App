@@ -5,11 +5,11 @@ import "./filterButtons.css";
 const FilterButtons = ({ onFilterOptionChange, resetFilter }) => {
   return (
     <div
-      className="filter-order-container"
-      id="filter-order-container"
+      className="filter-buttons-container"
+      id="filter-buttons-container"
       key={Math.random()}
     >
-      <label htmlFor="filterDiets">
+      <label htmlFor="label-filter-diets">
         <span>Filter by diet</span>
       </label>
 
@@ -71,10 +71,11 @@ const FilterButtons = ({ onFilterOptionChange, resetFilter }) => {
           Omnivore
         </button>
       </div>
-
-      <button className="reset-filter" onClick={resetFilter}>
-        Reset filters
-      </button>
+      <div className="reset-button">
+        <button className="reset-filter" onClick={resetFilter}>
+          Reset filter
+        </button>
+      </div>
     </div>
   );
 };

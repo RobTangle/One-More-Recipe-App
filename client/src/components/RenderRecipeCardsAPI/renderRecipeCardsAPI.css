@@ -3,6 +3,12 @@
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
+  max-width: 80%;
+  margin: auto;
+}
+
+#render-container {
+  font-weight: 700;
 }
 
 .filter-order-container {
@@ -16,9 +22,28 @@
 .render-cards {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .recipeCardAPI {
-  width: 350px;
+  width: 320px;
   height: auto;
+}
+
+#render-container {
+  /* background-image: url("https://images.pexels.com/photos/349608/pexels-photo-349608.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-attachment: fixed;
+  background-size: cover; */
+}
+
+.go-top {
+  padding: 10px;
+  text-decoration: none;
+  border: solid thin;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 700;
+  background-color: rgba(207, 223, 223, 0.411);
+  width: fit-content;
+  margin: 10px auto 20px;
 }

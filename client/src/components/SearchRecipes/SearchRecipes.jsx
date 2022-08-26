@@ -42,7 +42,7 @@ const SearchRecipes = () => {
   return (
     <div>
       <div>
-        <h1>Search recipes by title:</h1>
+        <h1>Search recipes by title</h1>
       </div>
       <label htmlFor="title">&gt; </label>
       <input

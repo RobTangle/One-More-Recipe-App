@@ -35,7 +35,6 @@
 //h * Error handlings
 //h * Hacer ordenamiento por readyInMinutes
 
-//h * Para agregar como imagen a mis recetas posteadas, al momento de renderizar: https://spoonacular.com/recipeImages/157103-312x231.jpg Es la misma que spoonacular. Aunque parece que no se dimensiona bien y sobresale de ancho. O buscar cualquier otra que vaya bien con mis estilos.
 //? IDEAS: -----------------------------------------------------------------------------------------
 //? Poner botón en el pie de página para que vaya arriba del todo con un click
 //? 1* Podría hacer un ordenamiento según el readyInMinutes!

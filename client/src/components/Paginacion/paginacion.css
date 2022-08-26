@@ -5,7 +5,7 @@
   gap: 15px;
 }
 button {
-  background-color: #5a595944;
+  background-color: #ecebeb69;
   border: solid thin;
   padding: 1px 10px;
   border-radius: 3px;
@@ -15,6 +15,7 @@ button {
   align-items: center;
   justify-content: center; */
   cursor: pointer;
+  font-weight: 700;
 }
 
 svg {

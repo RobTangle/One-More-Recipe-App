@@ -1,4 +1,37 @@
-/* This is our style for the invalid fields */
+.inside-form-container {
+  display: flex;
+  flex-direction: column;
+}
+.inside-form-container > .form-text-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-text-input > label {
+  font-weight: 700;
+}
+
+.form-fieldset {
+  margin: 30px auto;
+}
+
+.create-recipe-container {
+  width: 80%;
+  margin: auto;
+}
+
+.submit-recipe-btn {
+  width: 50%;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: medium;
+  text-align: center;
+}
+
 input:invalid {
   border-color: rgba(153, 0, 0, 0.329);
   background-color: #fdd;
@@ -21,6 +54,10 @@ textarea:invalid {
   background-color: #fdd;
 }
 
+/* input:user-invalid {
+  background-color: rgba(240, 16, 16, 0.322);
+} */
+
 textarea:focus:invalid {
   outline: non;
 }
@@ -30,11 +67,16 @@ textarea:focus:invalid {
   background-color: greenyellow;
 } */
 
+.check-boxes > div {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
 .check-boxes {
   display: flex;
   /* border: solid black thin; */
   flex-wrap: wrap;
   justify-content: center;
+  /* background-color: rgba(255, 255, 255, 0.116); */
 }
 
 .check-boxes > div {

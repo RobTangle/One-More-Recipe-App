@@ -41,7 +41,7 @@ const RecipeDetail = (props) => {
   }
 
   return (
-    <div key={Math.random()}>
+    <div key={Math.random()} className="recipe-detail-container">
       <img
         src={
           recipeDetailRedux.image == null
@@ -50,48 +50,65 @@ const RecipeDetail = (props) => {
         }
         alt="Recipe ilustration"
       />
-      <h2>{recipeDetailRedux.title}</h2>
-      <div>id: {recipeDetailRedux.id}</div>
-      <div>Health score: {recipeDetailRedux.healthScore}</div>
-      <div>
-        Dish type:
+      <h2 className="detail-title">{recipeDetailRedux.title}</h2>
+      <div className="detail-div">
+        <div className="detail-div-key">id</div>
+        {recipeDetailRedux.id}
+      </div>
+      <div className="detail-div">
+        <div className="detail-div-key">Health score</div>
+        <div>{recipeDetailRedux.healthScore}</div>
+      </div>
+      <div className="detail-div">
+        <div className="detail-div-key">Dish type</div>
+
         <ul>
-          {recipeDetailRedux?.dishTypes?.map((dish) => {
+          {recipeDetailRedux?.dishTypes?.length > 0 ? (
+            recipeDetailRedux?.dishTypes?.map((dish) => {
+              return <li key={Math.random()}>{dish}</li>;
+            })
+          ) : (
+            <li>No data</li>
+          )}
+          {/* {recipeDetailRedux?.dishTypes?.map((dish) => {
             return <li key={Math.random()}>{dish}</li>;
+          })} */}
+        </ul>
+      </div>
+      <div className="detail-div">
+        <div className="detail-div-key">Type of diets</div>
+
+        <ul>
+          {checkDietsAndListThem(recipeDetailRedux)?.map((el) => {
+            return <li key={Math.random()}>{el}</li>;
           })}
         </ul>
       </div>
-      <div>Type of diets:</div>
-      <ul>
-        {checkDietsAndListThem(recipeDetailRedux)?.map((el) => {
-          return <li key={Math.random()}>{el}</li>;
-        })}
-      </ul>
-      <div>
-        Summary:
-        {/* <>{recipeDetailRedux.summary}</> */}
+      <div className="detail-div">
+        <div className="detail-div-key">Summary</div>
+
         <div
+          className="detail-summary"
           dangerouslySetInnerHTML={{ __html: recipeDetailRedux.summary }}
           //! Esto es peligroso!! Debería arreglarlo!! Puedo con npmodulos tipo html to parse o algo así?
         ></div>
-        <div>
-          <div>Step by step: </div>
-          {typeof recipeDetailRedux.steps == "string" ? (
-            recipeDetailRedux.steps
-          ) : (
-            <div>No data</div>
-          )}
-          {Array.isArray(recipeDetailRedux.steps) ? (
-            <ol>
-              {recipeDetailRedux.steps.map((step) => {
-                return <li key={Math.random()}>{step.step}</li>;
-              })}
-            </ol>
-          ) : (
-            <span></span>
-          )}
-        </div>
-        <hr />
+      </div>
+      <div className="detail-div">
+        <div className="detail-div-key">Step by step: </div>
+        {typeof recipeDetailRedux.steps == "string" ? (
+          <div className="detail-steps">{recipeDetailRedux.steps}</div>
+        ) : (
+          <div>No data</div>
+        )}
+        {Array.isArray(recipeDetailRedux.steps) ? (
+          <ol>
+            {recipeDetailRedux.steps.map((step) => {
+              return <li key={Math.random()}>{step.step}</li>;
+            })}
+          </ol>
+        ) : (
+          <span></span>
+        )}
       </div>
     </div>
   );

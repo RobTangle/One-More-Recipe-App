@@ -6,7 +6,7 @@ const LandingPage = () => {
   return (
     <div className="container">
       <Link to="/home">
-        <div className="header">
+        <div className="header" id="landing-page-header">
           <h1 className="title">Welcome to one more food related web page!</h1>
           <h3>
             Here you will find not only the most awesome and delicious recipes,

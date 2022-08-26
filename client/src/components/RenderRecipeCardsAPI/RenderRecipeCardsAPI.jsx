@@ -207,7 +207,7 @@ const RenderRecipeCardsAPI = (props) => {
   }
 
   return (
-    <div key={Math.random()}>
+    <div key={Math.random()} id="render-container">
       <FilterButtons
         onFilterOptionChange={onFilterOptionChange}
         resetFilter={resetFilter}
@@ -279,9 +279,9 @@ const RenderRecipeCardsAPI = (props) => {
         <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
       ) : null} */}
       {localState.length > 3 ? (
-        <a href="#filter-order-container">
-          Go to the top at the speed of light!
-        </a>
+        <div className="go-top">
+          <a href="#render-container">Go to the top at the speed of light!</a>
+        </div>
       ) : null}
     </div>
   );

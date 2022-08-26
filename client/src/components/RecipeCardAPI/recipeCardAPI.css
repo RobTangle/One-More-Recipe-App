@@ -1,17 +1,36 @@
 .recipeCardAPI {
-  background-color: rgba(244, 245, 245, 0.938);
+  background-color: rgba(244, 245, 245, 0.699);
   border: solid black;
   border-radius: 5px;
   margin-top: 20px;
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: 2%;
+  margin-right: 2%;
   padding-top: 15px;
   padding-bottom: 15px;
+  text-decoration: none;
+  overflow-wrap: break-word;
+}
+
+.recipeCardAPI > h3 {
+  text-decoration: none;
+  /* overflow-wrap: break-word; */
+}
+
+.recipe-card-diets {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .ul-diets {
   width: fit-content;
   /* text-align: center; */
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: auto;
+  margin-right: auto; */
+}
+
+.card-img {
+  width: 95%;
+  height: auto;
+  border-radius: 5px;
 }

@@ -21,7 +21,7 @@ function App() {
       <Route path="/home/expRender" component={ExpRender} />
 
       <Route exact path="/home/createRecipe/" component={createRecipe} />
-      <Route exact path="/home/recipesInDataBase/" component={DBRecipes} />
+      {/* <Route exact path="/home/recipesInDataBase/" component={DBRecipes} /> */}
     </div>
   );
 }

@@ -118,7 +118,7 @@ export function orderByHealthScoreInvert(array, cb) {
   }
 }
 
-//h--- Filter by diets EXPERIMENTAL:
+//h--- Filter by diets:
 
 export function callBackFilter(receta, diet) {
   console.log(`callBackFilter: receta = ${receta} y diet = ${diet}`);
