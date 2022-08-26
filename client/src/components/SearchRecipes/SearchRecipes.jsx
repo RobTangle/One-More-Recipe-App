@@ -14,10 +14,6 @@ const SearchRecipes = () => {
   const recipesSearched = useSelector((state) => state.recipes);
   const dispatch = useDispatch();
 
-  // React.useEffect(() => {
-  //   dispatch(actions.getRecipesByTitle);
-  // }, [dispatch]);
-
   //h-------------------------------
   function fromQueryToURL(obj) {
     let urleado = "";
@@ -26,17 +22,6 @@ const SearchRecipes = () => {
     }
     return urleado;
   }
-  //h------------------------------
-
-  // function handleSubmitTitle(e) {
-  //   e.preventDefault();
-  //   dispatch(actions.getRecipesByTitle(localState.query));
-  // }
-
-  // function handleSubmitDiet(e) {
-  //   e.preventDefault();
-  //   dispatch(actions.getRecipesByDiet(localState.diet));
-  // }
 
   function handleSubmitAll(e) {
     e.preventDefault();
@@ -47,15 +32,29 @@ const SearchRecipes = () => {
     setlocalState({ ...localState, [e.target.name]: e.target.value });
   }
 
+  function onKeyDown(e) {
+    if (e.keyCode === 13) {
+      handleSubmitAll(e);
+    }
+  }
+  //h------------------------------
+
   return (
     <div>
       <div>
-        <h1>Search recipes:</h1>
+        <h1>Search recipes by title:</h1>
       </div>
-      <label htmlFor="">By title </label>
-      <input type="text" name="query" onChange={handleOnChange} /> <br />
-      <label htmlFor="">By diet </label>
-      <input type="text" name="diet" onChange={handleOnChange} />
+      <label htmlFor="title">&gt; </label>
+      <input
+        type="text"
+        name="query"
+        id="title"
+        onChange={handleOnChange}
+        onKeyDown={onKeyDown}
+      />{" "}
+      <br />
+      {/* <label htmlFor="">By diet </label>
+      <input type="text" name="diet" onChange={handleOnChange} /> */}
       <div>
         <button type="submit" onClick={handleSubmitAll}>
           Search
