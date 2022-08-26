@@ -1,6 +1,6 @@
 /* This is our style for the invalid fields */
 input:invalid {
-  border-color: #900;
+  border-color: rgba(153, 0, 0, 0.329);
   background-color: #fdd;
 }
 
@@ -14,6 +14,15 @@ input {
 
 textarea {
   border-radius: 5px;
+}
+
+textarea:invalid {
+  border-color: rgba(153, 0, 0, 0.329);
+  background-color: #fdd;
+}
+
+textarea:focus:invalid {
+  outline: non;
 }
 
 /* input:valid {
