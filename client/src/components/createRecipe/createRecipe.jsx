@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import * as actions from "../../redux/actions/index";
 import "./createRecipe.css";
-// Importar las actions como Object Modules, sino los test no funcionarán!
 
 //  Un formulario controlado con JavaScript con los siguientes campos:
 // Nombre
@@ -147,7 +146,6 @@ const CreateRecipe = () => {
                 onChange={handleHealthScoreChange}
               />
             </div>
-            {/* hacer validaciones de min=0 y max=100 */}
             <div>
               <label htmlFor="summary">Summary * </label>
               <textarea
