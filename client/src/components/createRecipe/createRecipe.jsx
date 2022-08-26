@@ -21,31 +21,6 @@ const CreateRecipe = () => {
 
   const dispatch = useDispatch();
 
-  //h --- función de validación de createRecipe:
-  //h La idea es que me devuelva true si todo está ok, o false si hay un error.
-
-  // function validateForm(obj) {
-  //   if (
-  //     typeof obj.title !== "string" ||
-  //     obj.title.length <= 2 ||
-  //     obj.title.length > 70
-  //   ) {
-  //     return false;
-  //   }
-  //   if (obj.title) {
-  //   }
-  // }
-
-  // function check_if_input_has_special_chars(element) {
-  //   let textInput = element.value;
-  //   let pattern = /[^a-zA-Z0-9 ]+$/gm;
-  //   if (pattern.test(textInput)) {
-  //     console.log("String contains special characters.");
-  //   }
-
-  //   element.value = textInput;
-  // }
-
   //h ------------------------------
   //! Hacer funcionamiento para que cada checkbox me pushee/mande al dietId un número según la dieta.
   //! El objetivo es postear un array con números.
@@ -75,9 +50,9 @@ const CreateRecipe = () => {
         "Invalid recipe title. Please, don't introduce simbols nor more than 100 characters"
       );
     }
-    if (localState.summary.length > 500) {
+    if (localState.summary.length > 500 || localState.summary.length < 1) {
       return alert(
-        `Characters exceeded. Maximum length for summary is 500 characters. Actual length: ${localState.summary.length}`
+        `Summary must have between 1 and 500 characters. Actual length: ${localState.summary.length}`
       );
     }
     if (userIntroducedProhibitedSimbols(localState.summary)) {
@@ -94,9 +69,10 @@ const CreateRecipe = () => {
 
     console.log("Despues del validate. Despachando la action...");
     dispatch(actions.createRecipe(localState));
+    alert("Request sent. Search it by it's title in the /home search input.");
   }
 
-  //h --- función validadora:
+  //h --- funciones auxiliares:
   function violatedTitleLength(title) {
     if (title.length > 100 || title.length < 1) {
       alert("The must have between 1 and 100 characters");
@@ -138,6 +114,7 @@ const CreateRecipe = () => {
       }
     }
   }
+  //h --- Fin funciones auxiliares ---
 
   return (
     <div>
@@ -153,8 +130,8 @@ const CreateRecipe = () => {
                 type="text"
                 id="title"
                 name="title"
-                minlength="1"
-                maxLength={100} //! testear estas dos
+                minLength={1}
+                maxLength={100}
                 onChange={handleOnChange}
               />
             </div>
@@ -177,7 +154,7 @@ const CreateRecipe = () => {
                 required
                 name="summary"
                 minLength="1"
-                maxlength="500"
+                maxLength="500"
                 id="summary"
                 placeholder="Don't introduce simbols like ' ; @ ! { } > < ', nor more than 500 characters"
                 cols="30"
