@@ -4,6 +4,20 @@ import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../redux/actions";
 import "./renderRecipeCardsAPI.css";
 import { Paginacion } from "../Paginacion/Paginacion";
+import FilterButtons from "../FilterButtons/FilterButtons";
+// import {
+//   callBackFilter,
+//   orderByHealthScore,
+//   orderByHealthScoreInvert,
+//   orderByTitleInvertExp,
+//   orderByTitleExp,
+//   compararTituloAsc,
+//   compararTituloDes,
+//   compareHealthScoreAsc,
+//   compareHealthScoreDes,
+//   compareKeyDes,
+//   compareKeyAsc,
+// } from "../../auxiliaryModules/functions";
 
 const RenderRecipeCardsAPI = (props) => {
   const recipesSearched = useSelector((state) => state.recipes);
@@ -71,7 +85,7 @@ const RenderRecipeCardsAPI = (props) => {
 
   function orderByTitleExp(array) {
     console.log(
-      "Se invocó a orderByHealthTitleExp con este array como argumento: ",
+      "Se invocó a orderByTitleExp con este array como argumento: ",
       array
     );
     if (array) {
@@ -199,96 +213,22 @@ const RenderRecipeCardsAPI = (props) => {
 
   return (
     <div key={Math.random()}>
-      <div className="filter-order-container">
-        <label htmlFor="filterDiets">
-          <span>Filter by diet</span>
-        </label>
-
-        <div className="filter-buttons">
-          <button
-            onClick={onFilterOptionChange}
-            value="gluten free"
-            id="glutenFree"
-          >
-            Gluten Free
-          </button>
-          <button
-            value="dairyFree"
-            id="dairyFree"
-            onClick={onFilterOptionChange}
-          >
-            Dairy Free
-          </button>
-          <button value="vegan" id="vegan" onClick={onFilterOptionChange}>
-            Vegan
-          </button>
-          <button
-            value="vegetarian"
-            id="vegetarian"
-            onClick={onFilterOptionChange}
-          >
-            Vegetarian
-          </button>
-          <button
-            value="lacto ovo vegetarian"
-            id="lacto-ovo-vegetarian"
-            onClick={onFilterOptionChange}
-          >
-            Lacto ovo vegetarian
-          </button>
-          <button
-            value="pescetarian"
-            id="pescetarian"
-            onClick={onFilterOptionChange}
-          >
-            Pescetarian
-          </button>
-          <button
-            value="ketogenic"
-            id="ketogenic"
-            onClick={onFilterOptionChange}
-          >
-            Ketogenic
-          </button>
-          <button value="paleo" id="paleo" onClick={onFilterOptionChange}>
-            Paleo
-          </button>
-          <button value="primal" id="primal" onClick={onFilterOptionChange}>
-            Primal
-          </button>
-          <button
-            value="lowFodmap"
-            id="low FODMAP"
-            onClick={onFilterOptionChange}
-          >
-            Low FODMAP
-          </button>
-          <button value="whole30" id="whole30" onClick={onFilterOptionChange}>
-            Whole30
-          </button>
-          <button value="omnivore" id="omnivore" onClick={onFilterOptionChange}>
-            Omnivore
-          </button>
+      <FilterButtons
+        onFilterOptionChange={onFilterOptionChange}
+        resetFilter={resetFilter}
+      />
+      <div className="order-by-container">
+        <div className="order-title">
+          <span>Order by title: </span>
+          <button onClick={(e) => orderByTitleExp(localState)}>¡</button>
+          <button onClick={(e) => orderByTitleInvertExp(localState)}>!</button>
         </div>
-
-        <button className="reset-filter" onClick={resetFilter}>
-          Reset filters
-        </button>
-        <div className="order-by-container">
-          <div className="order-title">
-            <span>Order by title: </span>
-            <button onClick={(e) => orderByTitleExp(localState)}>¡</button>
-            <button onClick={(e) => orderByTitleInvertExp(localState)}>
-              !
-            </button>
-          </div>
-          <div className="order-healthScore">
-            <span>Order by health score: </span>
-            <button onClick={(e) => orderByHealthScore(localState)}>¡</button>
-            <button onClick={(e) => orderByHealthScoreInvert(localState)}>
-              !
-            </button>
-          </div>
+        <div className="order-healthScore">
+          <span>Order by health score: </span>
+          <button onClick={(e) => orderByHealthScore(localState)}>¡</button>
+          <button onClick={(e) => orderByHealthScoreInvert(localState)}>
+            !
+          </button>
         </div>
       </div>
       {localState.length > 9 ? (
@@ -307,27 +247,35 @@ const RenderRecipeCardsAPI = (props) => {
           `${localState.length} recipes found...`
         )}{" "}
       </div>{" "}
-      {Array.isArray(localState) && localState.length > 0 ? (
-        localState
-          .slice((page - 1) * quantity, (page - 1) * quantity + quantity)
-          .map((recipeAPI) => {
-            return (
-              <RecipeCardAPI
-                key={recipeAPI.id}
-                id={recipeAPI.id}
-                title={recipeAPI.title}
-                image={recipeAPI.image}
-                diets={recipeAPI.diets}
-                healthScore={recipeAPI.healthScore}
-              />
-            );
-          })
-      ) : (
-        <span key={Math.random()}>No hay recetas para mostrar</span>
-      )}
+      <span id="arriba"></span>
+      <div className="render-cards">
+        {Array.isArray(localState) && localState.length > 0 ? (
+          localState
+            .slice((page - 1) * quantity, (page - 1) * quantity + quantity)
+            .map((recipeAPI) => {
+              return (
+                <RecipeCardAPI
+                  key={recipeAPI.id}
+                  id={recipeAPI.id}
+                  title={recipeAPI.title}
+                  image={recipeAPI.image}
+                  diets={recipeAPI.diets}
+                  healthScore={recipeAPI.healthScore}
+                />
+              );
+            })
+        ) : (
+          <span key={Math.random()}>No hay recetas para mostrar</span>
+        )}
+      </div>
       {/* {localState.length > 9 ? (
         <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
       ) : null} */}
+      {localState.length > 3 ? (
+        <a href="#filter-order-container">
+          Go to the top at the speed of light!
+        </a>
+      ) : null}
     </div>
   );
 };

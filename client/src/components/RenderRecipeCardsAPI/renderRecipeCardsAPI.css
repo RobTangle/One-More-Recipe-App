@@ -12,3 +12,13 @@
   justify-content: center;
   align-items: center;
 }
+
+.render-cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.recipeCardAPI {
+  width: 350px;
+  height: auto;
+}
