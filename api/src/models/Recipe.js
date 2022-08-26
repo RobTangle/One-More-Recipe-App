@@ -12,11 +12,11 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     title: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false,
     },
     summary: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(500),
       allowNull: false,
     },
     healthScore: {
@@ -28,7 +28,7 @@ module.exports = (sequelize) => {
       },
     },
     steps: {
-      type: DataTypes.TEXT,
+      type: DataTypes.TEXT(3000),
     },
     image: {
       type: DataTypes.STRING,
