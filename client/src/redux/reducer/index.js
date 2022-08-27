@@ -10,7 +10,7 @@ import {
 } from "../actions/index";
 
 const initialState = {
-  recipes: [],
+  recipes: { pure: true }, //! 27/08 02:20am, cambié de un array vacío a un obj vacío para ver si funciona lo del loading.....
   recipeDetail: {},
   newRecipe: {},
   allFromDB: [],
