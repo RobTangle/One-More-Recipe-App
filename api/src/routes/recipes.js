@@ -10,7 +10,8 @@ const router = Router();
 
 const addRecipeInfoTrue = "addRecipeInformation=true";
 const NUMBER = "number=39";
-//h-------------------------------
+
+//h--- Funciones auxiliares: ----------------------------
 function fromQueryToURL(obj) {
   let urleado = "";
   for (const [key, value] of Object.entries(obj)) {
@@ -29,181 +30,6 @@ function userIntroducedProhibitedSimbols(inputString) {
     return false;
   }
 }
-
-//h------------------------------
-
-//---------------------------------------------------------------------
-
-//* --- GET sólo de DB:
-router.get("/getAllFromDB", async (req, res) => {
-  console.log("Entré a /getAllFromDB");
-  try {
-    let recetasFromDB = await Recipe.findAll();
-    res.status(200).send(recetasFromDB);
-  } catch (error) {
-    console.log("Error en getAllFromDB!");
-    console.log(error.message);
-    res.status(402).send(error.message);
-  }
-});
-
-//* EXPERIMENTACIÓN:
-
-//*------------------------------------------------------------------------------------------------------
-
-//* POST
-router.post("/", async (req, res) => {
-  console.log("Entré al post");
-  const { title, summary, healthScore, diets, steps, image } = req.body;
-  console.log(`Title: ${title}`);
-  try {
-    // --- VALIDACIONES:
-    if (!title || !summary) {
-      return res
-        .status(400)
-        .send({ error: "title and summary are mandatory." });
-    }
-    if (title.length > 100 || title.length < 1) {
-      return res.status(400).send({
-        error: `Title length must be between 1 and 100 characters. It has ${title.length}.`,
-      });
-    }
-    if (userIntroducedProhibitedSimbols(title)) {
-      return res
-        .status(400)
-        .send({ error: `The title has prohibited simbols.` });
-    }
-    if (summary.length > 500 || summary.length < 1) {
-      return res.status(400).send({
-        error: `Summary has ${summary.length} characters. Max: 500, Min: 1`,
-      });
-    }
-    if (userIntroducedProhibitedSimbols(summary)) {
-      return res.status(400).send({
-        error: `Summary has prohibited simbols.`,
-      });
-    }
-    if (healthScore) {
-      if (typeof healthScore !== "number") {
-        return res.status(400).send({
-          error: `HealthScore must be a number.`,
-        });
-      }
-      if (healthScore > 100 || healthScore < 0) {
-        return res.status(400).send({
-          error: `Health score ${healthScore}must be between 0 and 100.`,
-        });
-      }
-    }
-    if (steps && steps.length > 3000) {
-      return res.status(400).send({
-        error: `Steps exceeded the maximum 3000 characters. Actual length: ${steps.length}`,
-      });
-    }
-    // --- FIN VALIDACIONES ---
-    //! Que desde el front se ocupen de ponerle una imagen al momento de renderizarla en caso de que no tengan una.
-    let newRecipe = await Recipe.create({
-      title: title.charAt(0).toUpperCase() + title.slice(1),
-      summary,
-      healthScore,
-      steps,
-      image,
-    });
-
-    // let dietsToSet = await Promise.all(
-    //   diets.map((d) => Diet.findOne({ where: { name: d } }))
-    // );
-
-    let dietsToSet = await Diet.findAll({
-      where: { name: diets },
-    });
-
-    console.log("dietsToSet: " + dietsToSet);
-    newRecipe.addDiets(dietsToSet);
-
-    console.log("Nueva receta creada!");
-    return res.status(200).send(newRecipe);
-  } catch (error) {
-    console.log(error.message);
-    return res.status(403).send(error);
-  }
-});
-//*----------------------------------------------------------------
-
-//* EXPERIMENTACIÓN CON GET BY ID:
-router.get("/:idReceta", async (req, res) => {
-  const { idReceta } = req.params;
-  console.log(req.params);
-  console.log(typeof idReceta);
-  console.log("idReceta: ", idReceta);
-  //creo objeto para responder en caso de error:
-  let errorObject = {
-    title: "Recipe not found",
-    summary: "Nothing to show here...",
-    healthScore: 0,
-    steps: [],
-    image: "https://clipground.com/images/avoid-junk-food-clipart-7.jpg",
-    diets: ["null"],
-  };
-  // console.log("errorObject :", errorObject);
-  try {
-    if (idReceta.length > 30) {
-      let recipeDB = await Recipe.findByPk(idReceta, {
-        include: {
-          model: Diet,
-          attributes: ["name"],
-          through: {
-            attributes: [],
-          },
-        },
-      });
-      if (recipeDB) {
-        let recipeObject = {
-          title: recipeDB.title,
-          id: recipeDB.id,
-          summary: recipeDB.summary,
-          healthScore: recipeDB.healthScore,
-          steps: recipeDB.steps,
-          image: recipeDB.image,
-          diets: recipeDB?.diets.map((diet) => diet.name),
-        };
-        return res.status(200).send(recipeObject);
-      } else {
-        return res.status(400).send(errorObject);
-      }
-    } else {
-      console.log(`Buscar en API con id: ${idReceta}`);
-      let axiado = await axios.get(
-        `https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`
-      );
-      let axiData = axiado.data;
-      console.log("Receta buscada en API");
-      console.log(`Receta title: ${axiData?.title}`);
-      let axiadoDetails = {
-        id: axiData.id,
-        title: axiData.title,
-        vegetarian: axiData.vegetarian,
-        vegan: axiData.vegan,
-        glutenFree: axiData.glutenFree,
-        dairyFree: axiData.dairyFree,
-        lowFodmap: axiData.lowFodmap,
-        healthScore: axiData.healthScore,
-        summary: axiData.summary,
-        dishTypes: axiData.dishTypes,
-        image: axiData.image,
-        readyInMinutes: axiData.readyInMinutes,
-        steps: axiData.analyzedInstructions[0]?.steps,
-        // steps: axiData.analyzedInstructions?.[0]?.steps, //Atención a este ?.chain!
-        diets: axiData.diets,
-      };
-      return res.status(200).send(axiadoDetails);
-    }
-  } catch (error) {
-    console.log(`Hubo un error en el catch final del get por ID`);
-    console.log(error.message);
-    return res.status(404).send(errorObject);
-  }
-});
 
 //*--  CREAR MODULARIZACIONES PARA BUSCAR RECETAS EN DB Y API:
 
@@ -386,10 +212,169 @@ const getAllGlobal = async () => {
   }
 };
 
-//! Para poder hacer busqueda por title y por diet, tengo que agregar una función que busque en la DB por diet. Porque por la API sólo tengo que agregar ese string a la URL y listo.
-//! Pero para la DB tengo que hacer un filtro adicional chequeando en diets después de agregar esa propiedad a el objeto. ES FÁCIL!!!!
-//  en el get, if (query && diet) hacer busquedas con funcion getByTitleDietFrom DB/API, y if (diet) hacer bisquedas con funciongetByDietFrom DB/API.
-// Podría incluso modularizarlas más como hice con las de ordenamiento y filter en react.
+//h------------------------------
+
+//* EXPERIMENTACIÓN:
+
+//*------------------------------------------------------------------------------------------------------
+
+//* POST
+router.post("/", async (req, res) => {
+  console.log("Entré al post");
+  const { title, summary, healthScore, diets, steps, image } = req.body;
+  console.log(`Title: ${title}`);
+  try {
+    // --- VALIDACIONES:
+    if (!title || !summary) {
+      return res
+        .status(400)
+        .send({ error: "title and summary are mandatory." });
+    }
+    if (title.length > 100 || title.length < 1) {
+      return res.status(400).send({
+        error: `Title length must be between 1 and 100 characters. It has ${title.length}.`,
+      });
+    }
+    if (userIntroducedProhibitedSimbols(title)) {
+      return res
+        .status(400)
+        .send({ error: `The title has prohibited simbols.` });
+    }
+    if (summary.length > 500 || summary.length < 1) {
+      return res.status(400).send({
+        error: `Summary has ${summary.length} characters. Max: 500, Min: 1`,
+      });
+    }
+    if (userIntroducedProhibitedSimbols(summary)) {
+      return res.status(400).send({
+        error: `Summary has prohibited simbols.`,
+      });
+    }
+    if (healthScore) {
+      if (typeof healthScore !== "number") {
+        return res.status(400).send({
+          error: `HealthScore must be a number.`,
+        });
+      }
+      if (healthScore > 100 || healthScore < 0) {
+        return res.status(400).send({
+          error: `Health score ${healthScore}must be between 0 and 100.`,
+        });
+      }
+    }
+    if (steps && steps.length > 3000) {
+      return res.status(400).send({
+        error: `Steps exceeded the maximum 3000 characters. Actual length: ${steps.length}`,
+      });
+    }
+    // --- FIN VALIDACIONES ---
+    //! Que desde el front se ocupen de ponerle una imagen al momento de renderizarla en caso de que no tengan una.
+    let newRecipe = await Recipe.create({
+      title: title.charAt(0).toUpperCase() + title.slice(1),
+      summary,
+      healthScore,
+      steps,
+      image,
+    });
+
+    // let dietsToSet = await Promise.all(
+    //   diets.map((d) => Diet.findOne({ where: { name: d } }))
+    // );
+
+    let dietsToSet = await Diet.findAll({
+      where: { name: diets },
+    });
+
+    console.log("dietsToSet: " + dietsToSet);
+    newRecipe.addDiets(dietsToSet);
+
+    console.log("Nueva receta creada!");
+    return res.status(200).send(newRecipe);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(403).send(error);
+  }
+});
+//*----------------------------------------------------------------
+
+//* EXPERIMENTACIÓN CON GET BY ID:
+router.get("/:idReceta", async (req, res) => {
+  const { idReceta } = req.params;
+  console.log(req.params);
+  console.log(typeof idReceta);
+  console.log("idReceta: ", idReceta);
+  //creo objeto para responder en caso de error:
+  let errorObject = {
+    title: "Recipe not found",
+    summary: "Nothing to show here...",
+    healthScore: 0,
+    steps: [],
+    dishTypes: [],
+    image: "https://clipground.com/images/avoid-junk-food-clipart-7.jpg",
+    diets: ["null"],
+    error: "Recipe not found",
+  };
+  // console.log("errorObject :", errorObject);
+  try {
+    if (idReceta.length > 30) {
+      let recipeDB = await Recipe.findByPk(idReceta, {
+        include: {
+          model: Diet,
+          attributes: ["name"],
+          through: {
+            attributes: [],
+          },
+        },
+      });
+      if (recipeDB) {
+        let recipeObject = {
+          title: recipeDB.title,
+          id: recipeDB.id,
+          summary: recipeDB.summary,
+          healthScore: recipeDB.healthScore,
+          steps: recipeDB.steps,
+          image: recipeDB.image,
+          diets: recipeDB?.diets.map((diet) => diet.name),
+        };
+        return res.status(200).send(recipeObject);
+      } else {
+        return res.status(400).send(errorObject);
+      }
+    } else {
+      console.log(`Buscar en API con id: ${idReceta}`);
+      let axiado = await axios.get(
+        `https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`
+      );
+      let axiData = axiado.data;
+      console.log("Receta buscada en API");
+      console.log(`Receta title: ${axiData?.title}`);
+      let axiadoDetails = {
+        id: axiData.id,
+        title: axiData.title,
+        vegetarian: axiData.vegetarian,
+        vegan: axiData.vegan,
+        glutenFree: axiData.glutenFree,
+        dairyFree: axiData.dairyFree,
+        lowFodmap: axiData.lowFodmap,
+        healthScore: axiData.healthScore,
+        summary: axiData.summary,
+        dishTypes: axiData.dishTypes,
+        image: axiData.image,
+        readyInMinutes: axiData.readyInMinutes,
+        steps: axiData.analyzedInstructions[0]?.steps,
+        // steps: axiData.analyzedInstructions?.[0]?.steps, //Atención a este ?.chain!
+        diets: axiData.diets,
+      };
+      return res.status(200).send(axiadoDetails);
+    }
+  } catch (error) {
+    console.log(`Hubo un error en el catch final del get por ID`);
+    errorObject.summary = error.message;
+    errorObject.error = error.message;
+    console.log(error.message);
+    return res.status(404).send(errorObject);
+  }
+});
 
 router.get("/", async (req, res) => {
   const { query, diet } = req.query;
@@ -407,9 +392,38 @@ router.get("/", async (req, res) => {
       return res.status(200).send(allGlobal);
     }
   } catch (error) {
+    let errorObject = {
+      title: `There was an error! :( ERROR: ${error.message}`,
+      summary: `ERROR: ${error.message}. Try checking your internet connection.`,
+      healthScore: 0,
+      steps: [],
+      dishTypes: ["null"],
+      image: "https://clipground.com/images/avoid-junk-food-clipart-7.jpg",
+      diets: ["null"],
+      error: error.message,
+    };
     console.log("Error en el get");
     console.log(error.message);
-    return res.status(404).send(error.message);
+    return res.status(404).send(errorObject);
+  }
+});
+
+//! Para poder hacer busqueda por title y por diet, tengo que agregar una función que busque en la DB por diet. Porque por la API sólo tengo que agregar ese string a la URL y listo.
+//! Pero para la DB tengo que hacer un filtro adicional chequeando en diets después de agregar esa propiedad a el objeto. ES FÁCIL!!!!
+//  en el get, if (query && diet) hacer busquedas con funcion getByTitleDietFrom DB/API, y if (diet) hacer bisquedas con funciongetByDietFrom DB/API.
+// Podría incluso modularizarlas más como hice con las de ordenamiento y filter en react.
+//----------------------------------
+
+//* --- GET sólo de DB:
+router.get("/getAllFromDB", async (req, res) => {
+  console.log("Entré a /getAllFromDB");
+  try {
+    let recetasFromDB = await Recipe.findAll();
+    res.status(200).send(recetasFromDB);
+  } catch (error) {
+    console.log("Error en getAllFromDB!");
+    console.log(error.message);
+    res.status(402).send(error.message);
   }
 });
 
