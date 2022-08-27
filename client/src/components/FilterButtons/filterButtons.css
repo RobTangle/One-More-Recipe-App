@@ -6,7 +6,32 @@
   margin: auto;
 }
 
+/* .filter-buttons > button {
+  border: none;
+  box-shadow: 1px 5px 5px black;
+   background-color: rgba(207, 204, 204, 0.466); 
+} */
+
+.filter-buttons > button {
+  background-color: #ecebeb69;
+  border: none;
+  box-shadow: 1px 2px 5px black;
+  border-radius: 3px;
+  padding: 1px 10px;
+  height: 30px;
+  margin: 5px;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  cursor: pointer;
+  font-weight: 700;
+}
+
 button:hover {
   background-color: rgba(24, 34, 24, 0.404);
   color: rgba(255, 255, 0, 0.815);
+}
+
+.reset-filter > button:hover {
+  color: red;
 }

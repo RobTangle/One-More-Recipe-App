@@ -71,7 +71,7 @@ const FilterButtons = ({ onFilterOptionChange, resetFilter }) => {
           Omnivore
         </button>
       </div>
-      <div className="reset-button">
+      <div className="reset-filter">
         <button className="reset-filter" onClick={resetFilter}>
           Reset filter
         </button>
