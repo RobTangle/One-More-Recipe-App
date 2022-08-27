@@ -72,7 +72,7 @@ export const createRecipe = (obj) => {
   };
 };
 
-export const setLoading = () => {
+export const setRecipesToLoading = () => {
   return async function (dispatch) {
     try {
       return dispatch({ type: SET_LOADING, payload: { loading: true } });

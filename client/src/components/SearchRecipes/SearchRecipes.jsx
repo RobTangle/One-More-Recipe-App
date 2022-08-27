@@ -25,8 +25,8 @@ const SearchRecipes = () => {
 
   function handleSubmitAll(e) {
     e.preventDefault();
-    dispatch(actions.setLoading());
-    console.log("Despaché setLoading");
+    dispatch(actions.setRecipesToLoading());
+    console.log("Despaché setRecipesToLoading");
     dispatch(actions.getRecipesByQuery(fromQueryToURL(localState)));
   }
 
@@ -44,7 +44,7 @@ const SearchRecipes = () => {
   return (
     <div>
       <div>
-        <h1>Search recipes by title</h1>
+        <h1>O.M.R.A</h1>
       </div>
       <label htmlFor="title">&gt; </label>
       <input
@@ -53,6 +53,7 @@ const SearchRecipes = () => {
         id="title"
         onChange={handleOnChange}
         onKeyDown={onKeyDown}
+        placeholder="Search recipes by title..."
       />{" "}
       <br />
       {/* <label htmlFor="">By diet </label>
