@@ -292,7 +292,7 @@ router.post("/", async (req, res) => {
     return res.status(200).send(newRecipe);
   } catch (error) {
     console.log(error.message);
-    return res.status(403).send(error);
+    return res.status(404).send({ error: error.message });
   }
 });
 //*----------------------------------------------------------------
