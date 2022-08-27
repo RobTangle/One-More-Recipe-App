@@ -48,7 +48,7 @@ export function orderByTitleExp(array, cb) {
     "Se invocó a orderByTitleExp con este array como argumento: ",
     array
   );
-  if (array) {
+  if (Array.isArray(array)) {
     let sortedArray = array.sort(compararTituloAsc);
     let copySortedArray = [...sortedArray];
     cb(copySortedArray);
@@ -64,7 +64,7 @@ export function orderByTitleInvertExp(array, cb) {
     "Se invocó a orderByTitleInvertExp con este array como argumento: ",
     array
   );
-  if (array) {
+  if (Array.isArray(array)) {
     let sortedArray = array.sort(compararTituloDes);
     let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
     cb(copySortedArray);
@@ -86,7 +86,7 @@ export function orderByHealthScore(array, cb) {
     "Se invocó a orderByHealthScoreInvert con este array como argumento: ",
     array
   );
-  if (array) {
+  if (Array.isArray(array)) {
     let sortedArray = array.sort(compareHealthScoreAsc);
     let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
     cb(copySortedArray);
@@ -103,7 +103,7 @@ export function orderByHealthScoreInvert(array, cb) {
     "Se invocó a orderByHealthScoreInvert con este array como argumento: ",
     array
   );
-  if (array) {
+  if (Array.isArray(array)) {
     let sortedArray = array.sort(compareHealthScoreDes);
     let copySortedArray = [...sortedArray]; //creo una nueva dirección de memoria para poder pasarle al setLocalState y que no piense que es el mismo array que antes.
     cb(copySortedArray);
