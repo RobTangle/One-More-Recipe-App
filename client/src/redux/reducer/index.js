@@ -7,6 +7,7 @@ import {
   GET_ALL_FROM_DB,
   SET_LOADING,
   CLEAR_DETAIL,
+  CLEAR_NEW_RECIPE,
   SET_NEW_RECIPE_TO_LOADING,
 } from "../actions/index";
 
@@ -44,6 +45,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         recipeDetail: {},
+      };
+    case CLEAR_NEW_RECIPE:
+      return {
+        ...state,
+        newRecipe: action.payload,
       };
     case SET_LOADING:
       return {

@@ -7,6 +7,7 @@ export const CREATE_RECIPE = "CREATE_RECIPE";
 export const GET_DIETS = "GET_DIETS";
 export const GET_ALL_FROM_DB = "GET_ALL_FROM_DB";
 export const CLEAR_DETAIL = "CLEAR_DETAIL";
+export const CLEAR_NEW_RECIPE = "CLEAR_NEW_RECIPE";
 export const SET_LOADING = "SET_LOADING";
 export const SET_NEW_RECIPE_TO_LOADING = "SET_NEW_RECIPE_TO_LOADING";
 
@@ -142,6 +143,19 @@ export const clearDetail = () => {
       return dispatch({ type: CLEAR_DETAIL, payload: "" });
     } catch (error) {
       return error.message;
+    }
+  };
+};
+
+export const clearNewRecipe = () => {
+  return async function (dispatch) {
+    try {
+      return dispatch({ type: CLEAR_NEW_RECIPE, payload: { pure: true } });
+    } catch (error) {
+      return dispatch({
+        type: CLEAR_NEW_RECIPE,
+        payload: { error: error.message },
+      });
     }
   };
 };
