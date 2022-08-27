@@ -192,12 +192,14 @@ const RenderRecipeCardsAPI = (props) => {
 
   function onFilterOptionChange(e) {
     console.log(`e.target.value: `, e.target.value);
-    let filteredRecipes = recipesSearched.filter((receta) =>
-      callBackFilter(receta, e.target.value)
-    );
-    console.log(`filteredRecipes: ${filteredRecipes}`);
-    setLocalState([...filteredRecipes]);
-    setPage(1); //! agregué esta linea para solucionar problema de filter + paginado. Quedó bien al parecer.
+    if (Array.isArray(recipesSearched)) {
+      let filteredRecipes = recipesSearched.filter((receta) =>
+        callBackFilter(receta, e.target.value)
+      );
+      console.log(`filteredRecipes: ${filteredRecipes}`);
+      setLocalState([...filteredRecipes]);
+      setPage(1); //! agregué esta linea para solucionar problema de filter + paginado. Quedó bien al parecer.
+    }
   }
 
   //h --- Reset filters:
@@ -240,7 +242,7 @@ const RenderRecipeCardsAPI = (props) => {
           </button>
         </div>
       </div>
-      {localState.length > 9 ? (
+      {localState?.length > 9 ? (
         <Paginacion
           key={Math.random()}
           page={page}
@@ -249,13 +251,13 @@ const RenderRecipeCardsAPI = (props) => {
         />
       ) : null}
 
-      {recipesSearched.loading ? (
+      {recipesSearched?.loading ? (
         <div className="loading-gif">
           <img src={bananaGif} alt="gif de carga" />
         </div>
       ) : null}
 
-      {localState.error ? (
+      {localState?.error ? (
         <div className="error-message">
           Ups! There was an ERROR: "{localState.error}"
           <div>Try checking your internet connection</div>
@@ -267,7 +269,7 @@ const RenderRecipeCardsAPI = (props) => {
       ) : null}
 
       <div className="render-cards">
-        {Array.isArray(localState) && localState.length > 0 && !localState.error
+        {Array.isArray(localState) && localState.length > 0
           ? localState
               .slice((page - 1) * quantity, (page - 1) * quantity + quantity)
               .map((recipeAPI) => {
