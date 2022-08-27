@@ -15,6 +15,8 @@
 
 .form-fieldset {
   margin: 30px auto;
+  box-shadow: 10px 6px 5px rgba(0, 0, 0, 0.548);
+  background-color: rgba(240, 248, 255, 0.247);
 }
 
 .create-recipe-container {
@@ -84,4 +86,26 @@ textarea:focus:invalid {
   border-radius: 5px;
   margin: 5px;
   padding-left: 3px;
+}
+
+.new-recipe-error-message {
+  background-color: rgba(255, 0, 0, 0.301);
+  width: fit-content;
+  margin: 15px auto;
+  padding: 1px 10px;
+  border-radius: 10px;
+  color: white;
+}
+
+.new-recipe-error-message > h4 {
+  color: white;
+}
+
+.new-recipe-ok-message {
+  background-color: rgba(0, 128, 0, 0.301);
+  width: fit-content;
+  margin: 15px auto;
+  padding: 1px 10px;
+  border-radius: 10px;
+  color: white;
 }

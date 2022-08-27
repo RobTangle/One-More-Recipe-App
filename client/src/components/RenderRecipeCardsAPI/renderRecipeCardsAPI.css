@@ -70,3 +70,23 @@
   margin-top: 15px;
   border-radius: 10px;
 }
+
+button {
+  background-color: #ecebeb69;
+  border: none;
+  box-shadow: 1px 2px 5px black;
+  border-radius: 3px;
+  padding: 1px 10px;
+  height: 30px;
+  margin: 5px;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.order-by-container > button:hover {
+  background-color: rgba(24, 34, 24, 0.404);
+  color: rgba(255, 255, 0, 0.815);
+}
