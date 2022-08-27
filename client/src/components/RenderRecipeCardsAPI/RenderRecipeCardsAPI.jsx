@@ -18,6 +18,7 @@ import {
   // compareKeyDes,
   // compareKeyAsc,
 } from "../../auxiliaryModules/functions";
+import bananaGif from "../../assets/470.gif";
 
 const RenderRecipeCardsAPI = (props) => {
   const recipesSearched = useSelector((state) => state.recipes);
@@ -45,7 +46,7 @@ const RenderRecipeCardsAPI = (props) => {
   const [quantity, setQuantity] = React.useState(9);
   let maxPages = localState.length / quantity;
 
-  //h ----- Funciones auxiliares que podría modularizarlas e importarlas:
+  //h ----- Funciones auxiliares ya modularizadas e importadas acá. Puedo sacarlas de este archivo:
 
   //? experimentar modularizar función: ----------------------------------------------
 
@@ -208,6 +209,7 @@ const RenderRecipeCardsAPI = (props) => {
 
   return (
     <div key={Math.random()} id="render-container">
+      <span id="arriba"></span>
       <FilterButtons
         onFilterOptionChange={onFilterOptionChange}
         resetFilter={resetFilter}
@@ -246,34 +248,41 @@ const RenderRecipeCardsAPI = (props) => {
           maxPages={maxPages}
         />
       ) : null}
-      {/* Crear algun tipo de error handler chequeando si localState es un string:  */}
-      <div>
-        {typeof localState == "string" ? (
-          <span>Hubo un error. Lo siento :/</span>
-        ) : (
-          `${localState.length} recipes found...`
-        )}{" "}
-      </div>{" "}
-      <span id="arriba"></span>
+
+      {recipesSearched.loading ? (
+        <div className="loading-gif">
+          <img src={bananaGif} alt="gif de carga" />
+        </div>
+      ) : null}
+
+      {localState.error ? (
+        <div className="error-message">
+          Ups! There was an ERROR: "{localState.error}"
+          <div>Try checking your internet connection</div>
+        </div>
+      ) : null}
+
+      {Array.isArray(localState) && localState.length === 0 ? (
+        <div className="cero-coincidencias"> No hubo coincidencias</div>
+      ) : null}
+
       <div className="render-cards">
-        {Array.isArray(localState) && localState.length > 0 ? (
-          localState
-            .slice((page - 1) * quantity, (page - 1) * quantity + quantity)
-            .map((recipeAPI) => {
-              return (
-                <RecipeCardAPI
-                  key={recipeAPI.id}
-                  id={recipeAPI.id}
-                  title={recipeAPI.title}
-                  image={recipeAPI.image}
-                  diets={recipeAPI.diets}
-                  healthScore={recipeAPI.healthScore}
-                />
-              );
-            })
-        ) : (
-          <span key={Math.random()}>There are no recipes to show yet...</span>
-        )}
+        {Array.isArray(localState) && localState.length > 0 && !localState.error
+          ? localState
+              .slice((page - 1) * quantity, (page - 1) * quantity + quantity)
+              .map((recipeAPI) => {
+                return (
+                  <RecipeCardAPI
+                    key={recipeAPI.id}
+                    id={recipeAPI.id}
+                    title={recipeAPI.title}
+                    image={recipeAPI.image}
+                    diets={recipeAPI.diets}
+                    healthScore={recipeAPI.healthScore}
+                  />
+                );
+              })
+          : null}
       </div>
       {/* {localState.length > 9 ? (
         <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
