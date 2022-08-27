@@ -8,6 +8,7 @@ import LandingPage from "./components/LandingPage/LandingPage";
 import SearchRecipes from "./components/SearchRecipes/SearchRecipes";
 import RenderRecipeCardsAPI from "./components/RenderRecipeCardsAPI/RenderRecipeCardsAPI";
 import ExpRender from "./components/Paginacion/ExpRender";
+import RenderRecipeDetail from "./components/renderRecipeDetails/RenderRecipeDetails";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
       <Route path="/home" component={Nav} />
       <Route exact path="/home" component={SearchRecipes} />
       <Route exact path="/home" component={RenderRecipeCardsAPI} />
-      <Route path="/home/recipes/:id" component={RecipeDetail} />
+      <Route path="/home/recipes/:id" component={RenderRecipeDetail} />
       <Route path="/home/expRender" component={ExpRender} />
 
       <Route exact path="/home/createRecipe/" component={createRecipe} />
