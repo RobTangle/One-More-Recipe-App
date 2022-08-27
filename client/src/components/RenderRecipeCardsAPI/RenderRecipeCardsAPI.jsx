@@ -11,12 +11,6 @@ import {
   orderByHealthScoreInvert,
   orderByTitleInvertExp,
   orderByTitleExp,
-  // compararTituloAsc,
-  // compararTituloDes,
-  // compareHealthScoreAsc,
-  // compareHealthScoreDes,
-  // compareKeyDes,
-  // compareKeyAsc,
 } from "../../auxiliaryModules/functions";
 import bananaGif from "../../assets/470.gif";
 
@@ -265,7 +259,7 @@ const RenderRecipeCardsAPI = (props) => {
       ) : null}
 
       {Array.isArray(localState) && localState.length === 0 ? (
-        <div className="cero-coincidencias"> No hubo coincidencias</div>
+        <div className="cero-coincidencias"> No matches...</div>
       ) : null}
 
       <div className="render-cards">
