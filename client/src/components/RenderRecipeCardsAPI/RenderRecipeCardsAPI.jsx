@@ -26,6 +26,7 @@ const RenderRecipeCardsAPI = (props) => {
       "Soy useEffect despues del setLocalState(recipesSearched)",
       localState
     );
+    dispatch(actions.clearNewRecipe());
     dispatch(actions.clearDetail());
   }, [recipesSearched]);
 
