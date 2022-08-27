@@ -1,12 +1,13 @@
 import axios from "axios";
-// import { response } from "../../../../api/src/app";
 
 export const GET_RECIPES = "GET_RECIPES";
 export const GET_RECIPE_DETAIL = "GET_RECIPE_DETAIL";
 export const DELETE_RECIPE = "DELETE_RECIPE";
 export const CREATE_RECIPE = "CREATE_RECIPE";
+export const GET_DIETS = "GET_DIETS";
 export const GET_ALL_FROM_DB = "GET_ALL_FROM_DB";
 export const CLEAR_DETAIL = "CLEAR_DETAIL";
+export const SET_LOADING = "SET_LOADING";
 
 // export const getRecipeDetail = (id) => {
 //   return async function (dispatch) {
@@ -39,6 +40,17 @@ export const getRecipeDetail = (id) => {
       })
       .catch((error) => {
         console.log(error);
+        let errorObject = {
+          title: `There was an error! :( ERROR: ${error.message}`,
+          summary: `ERROR: ${error.message}. Try checking your internet connection.`,
+          healthScore: 0,
+          steps: [],
+          dishTypes: ["null"],
+          image: "https://clipground.com/images/avoid-junk-food-clipart-7.jpg",
+          diets: ["null"],
+          error: error.message,
+        };
+        dispatch({ type: GET_RECIPE_DETAIL, payload: errorObject });
         return error;
       });
   };
@@ -50,6 +62,16 @@ export const createRecipe = (obj) => {
     try {
       let response = await axios.post(`http://localhost:3001/recipes/`, obj);
       return dispatch({ type: CREATE_RECIPE, payload: response.data });
+    } catch (error) {
+      return error.message;
+    }
+  };
+};
+
+export const setLoading = () => {
+  return async function (dispatch) {
+    try {
+      return dispatch({ type: SET_LOADING, payload: { loading: true } });
     } catch (error) {
       return error.message;
     }
@@ -75,9 +97,20 @@ export const getRecipesByQuery = (query) => {
     try {
       console.log("TRY de getRecipesByQUERY");
       let response = await axios.get(`http://localhost:3001/recipes/?${query}`);
-      return dispatch({ type: GET_RECIPES, payload: response });
+      return dispatch({ type: GET_RECIPES, payload: response.data }); //le acabo de agregar el .data xq le borré el .data al reducer
     } catch (error) {
-      console.log("ERROR AL getRecipesBydiet");
+      let errorObject = {
+        title: `There was an error! :( ERROR: ${error.message}`,
+        summary: `ERROR: ${error.message}. Try checking your internet connection.`,
+        healthScore: 0,
+        steps: [],
+        dishTypes: ["null"],
+        image: "https://clipground.com/images/avoid-junk-food-clipart-7.jpg",
+        diets: ["null"],
+        error: error.message,
+      };
+      dispatch({ type: GET_RECIPES, payload: errorObject });
+      console.log("ERROR AL getRecipesBydiet: " + error.message);
       return error.message;
     }
   };
