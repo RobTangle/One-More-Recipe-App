@@ -248,6 +248,7 @@ const RenderRecipeCardsAPI = (props) => {
 
       {recipesSearched?.loading ? (
         <div className="loading-gif">
+          {/* <span>loading...</span> */}
           <img src={bananaGif} alt="gif de carga" />
         </div>
       ) : null}
@@ -286,7 +287,7 @@ const RenderRecipeCardsAPI = (props) => {
       ) : null} */}
       {localState.length > 3 ? (
         <div className="go-top">
-          <a href="#render-container">Go to the top at the speed of light!</a>
+          <a href="#render-container">Go to the top</a>
         </div>
       ) : null}
     </div>
