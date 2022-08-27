@@ -3,7 +3,9 @@ import {
   GET_RECIPES,
   GET_RECIPE_DETAIL,
   CREATE_RECIPE,
+  GET_DIETS,
   GET_ALL_FROM_DB,
+  SET_LOADING,
   CLEAR_DETAIL,
 } from "../actions/index";
 
@@ -20,7 +22,7 @@ const rootReducer = (state = initialState, action) => {
     case GET_RECIPES:
       return {
         ...state,
-        recipes: action.payload.data, //agregué .data 21/08 20:20hs
+        recipes: action.payload, //agregué .data 21/08 20:20hs //! 27/08 0:31 borro el .data, para que maneje bien en caso de ObjError.
       };
     case GET_RECIPE_DETAIL:
       return {
@@ -42,7 +44,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         recipeDetail: {},
       };
-    case "GET_DIETS":
+    case SET_LOADING:
+      return {
+        ...state,
+        recipes: action.payload,
+      };
+    case GET_DIETS:
       return {
         ...state,
         diets: action.payload,
