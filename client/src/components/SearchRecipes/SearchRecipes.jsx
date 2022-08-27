@@ -25,6 +25,8 @@ const SearchRecipes = () => {
 
   function handleSubmitAll(e) {
     e.preventDefault();
+    dispatch(actions.setLoading());
+    console.log("Despaché setLoading");
     dispatch(actions.getRecipesByQuery(fromQueryToURL(localState)));
   }
 
