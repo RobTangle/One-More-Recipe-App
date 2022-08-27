@@ -8,6 +8,7 @@ export const GET_DIETS = "GET_DIETS";
 export const GET_ALL_FROM_DB = "GET_ALL_FROM_DB";
 export const CLEAR_DETAIL = "CLEAR_DETAIL";
 export const SET_LOADING = "SET_LOADING";
+export const SET_NEW_RECIPE_TO_LOADING = "SET_NEW_RECIPE_TO_LOADING";
 
 // export const getRecipeDetail = (id) => {
 //   return async function (dispatch) {
@@ -56,14 +57,16 @@ export const getRecipeDetail = (id) => {
   };
 };
 
-//!No sé si está bien escrita con el async await y axios:
 export const createRecipe = (obj) => {
   return async function (dispatch) {
     try {
       let response = await axios.post(`http://localhost:3001/recipes/`, obj);
       return dispatch({ type: CREATE_RECIPE, payload: response.data });
     } catch (error) {
-      return error.message;
+      let errorObj = {
+        error: error.message,
+      };
+      return dispatch({ type: CREATE_RECIPE, payload: errorObj });
     }
   };
 };
@@ -73,6 +76,23 @@ export const setLoading = () => {
     try {
       return dispatch({ type: SET_LOADING, payload: { loading: true } });
     } catch (error) {
+      return error.message;
+    }
+  };
+};
+
+export const setNewRecipeToLoading = () => {
+  return async function (dispatch) {
+    try {
+      return dispatch({
+        type: SET_NEW_RECIPE_TO_LOADING,
+        payload: { loading: true },
+      });
+    } catch (error) {
+      dispatch({
+        type: SET_NEW_RECIPE_TO_LOADING,
+        payload: { error: error.message },
+      });
       return error.message;
     }
   };

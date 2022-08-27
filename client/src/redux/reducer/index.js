@@ -7,12 +7,13 @@ import {
   GET_ALL_FROM_DB,
   SET_LOADING,
   CLEAR_DETAIL,
+  SET_NEW_RECIPE_TO_LOADING,
 } from "../actions/index";
 
 const initialState = {
-  recipes: { pure: true }, //! 27/08 02:20am, cambié de un array vacío a un obj vacío para ver si funciona lo del loading.....
+  recipes: { pure: true }, //! 27/08 02:20am, cambié de un array vacío a un obj
   recipeDetail: {},
-  newRecipe: {},
+  newRecipe: { pure: true },
   allFromDB: [],
   diets: [],
 };
@@ -48,6 +49,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         recipes: action.payload,
+      };
+    case SET_NEW_RECIPE_TO_LOADING:
+      return {
+        ...state,
+        newRecipe: action.payload,
       };
     case GET_DIETS:
       return {
