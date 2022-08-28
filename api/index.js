@@ -27,13 +27,12 @@ conn.sync({ force: true }).then(() => {
     console.log("%s listening at 3001"); // eslint-disable-line no-console
     const diets = [
       "dairyFree",
-      "fodmap friendly",
       "gluten free",
       "ketogenic",
       "lacto ovo vegetarian",
       "lowFodmap",
-      "paleolithic",
-      "pescatarian",
+      "paleo",
+      "pescetarian",
       "primal",
       "vegan",
       "vegetarian",
