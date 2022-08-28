@@ -97,9 +97,7 @@ const RecipeDetailCard = ({ objToRender }) => {
               return <li key={Math.random()}>{step.step}</li>;
             })}
           </ol>
-        ) : (
-          <div>null</div>
-        )}
+        ) : null}
       </div>
     </div>
   );
