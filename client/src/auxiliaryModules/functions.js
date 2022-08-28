@@ -140,3 +140,34 @@ export function callBackFilter(receta, diet) {
     return true;
   }
 }
+
+//h --- Have all diets into an array:
+
+export function checkDietsAndListThem(obj) {
+  let dietas = [];
+  if (obj.vegetarian && obj.vegetarian === true) {
+    dietas.push("vegetarian");
+  }
+  if (obj.vegan && obj.vegan === true) {
+    dietas.push("vegan");
+  }
+  if (obj.glutenFree && obj.glutenFree === true) {
+    dietas.push("gluten free");
+  }
+  if (obj.dairyFree && obj.dairyFree === true) {
+    dietas.push("dairy free");
+  }
+  if (obj.lowFodmap && obj.lowFodmap === true) {
+    dietas.push("lowFodmap");
+  }
+  obj?.diets?.forEach((d) => {
+    if (!dietas.includes(d)) {
+      dietas.push(d);
+    }
+  });
+  if (dietas.length === 0) {
+    return ["no data loaded"];
+  } else {
+    return dietas;
+  }
+}
