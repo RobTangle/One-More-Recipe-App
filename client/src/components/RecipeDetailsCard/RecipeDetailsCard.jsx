@@ -1,38 +1,8 @@
 import React from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import * as actions from "../../redux/actions/index";
 import "./recipeDetailsCard.css";
+import { checkDietsAndListThem } from "../../auxiliaryModules/functions";
 
 const RecipeDetailCard = ({ objToRender }) => {
-  function checkDietsAndListThem(obj) {
-    let dietas = [];
-    if (obj.vegetarian && obj.vegetarian === true) {
-      dietas.push("vegetarian");
-    }
-    if (obj.vegan && obj.vegan === true) {
-      dietas.push("vegan");
-    }
-    if (obj.glutenFree && obj.glutenFree === true) {
-      dietas.push("gluten free");
-    }
-    if (obj.dairyFree && obj.dairyFree === true) {
-      dietas.push("dairyFree");
-    }
-    if (obj.lowFodmap && obj.lowFodmap === true) {
-      dietas.push("lowFodmap");
-    }
-    obj?.diets?.forEach((d) => {
-      if (!dietas.includes(d)) {
-        dietas.push(d);
-      }
-    });
-    if (dietas.length === 0) {
-      return ["no data loaded"];
-    } else {
-      return dietas;
-    }
-  }
-
   return (
     <div key={Math.random()} className="recipe-detail-container">
       <img
@@ -63,9 +33,6 @@ const RecipeDetailCard = ({ objToRender }) => {
           ) : (
             <li>No data</li>
           )}
-          {/* {objToRender?.dishTypes?.map((dish) => {
-            return <li key={Math.random()}>{dish}</li>;
-          })} */}
         </ul>
       </div>
       <div className="detail-div">
@@ -83,7 +50,7 @@ const RecipeDetailCard = ({ objToRender }) => {
         <div
           className="detail-summary"
           dangerouslySetInnerHTML={{ __html: objToRender.summary }}
-          //! Esto es peligroso!! Debería arreglarlo!! Puedo con npmodulos tipo html to parse o algo así?
+          //! Esto es peligroso!! Debería arreglarlo!! Tengo permitido usar npmodulos tipo html to parse o algo así?
         ></div>
       </div>
       <div className="detail-div">
@@ -104,10 +71,3 @@ const RecipeDetailCard = ({ objToRender }) => {
 };
 
 export default RecipeDetailCard;
-
-// Ruta de detalle de receta: debe contener
-
-//  Los campos mostrados en la ruta principal para cada receta (imagen, nombre, tipo de plato y tipo de dieta)
-//  Resumen del plato
-//  Nivel de "comida saludable" (health score)
-//  Paso a paso
