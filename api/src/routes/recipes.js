@@ -1,8 +1,7 @@
 const { Router } = require("express");
 const { Recipe, Diet } = require("../db");
 // const Recipe = require("../models/Recipe");
-// const { MY_API_KEY } = process.env;
-const MI_API_KEY = "08627e517b4943fe9b66893317a91541";
+const { MI_API_KEY } = process.env;
 const axios = require("axios");
 const { Op } = require("sequelize");
 
