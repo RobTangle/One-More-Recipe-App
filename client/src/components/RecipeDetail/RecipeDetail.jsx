@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions/index";
 import "./recipeDetail.css";
 
+//! CREO QUE ESTE COMPONENTE QUEDÓ DEPRECADO YA QUE FUE REEMPLAZADO POR RenderRecipeDetails.jsx
 const RecipeDetail = (props) => {
   const recipeDetailRedux = useSelector((state) => state.recipeDetail);
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const RecipeDetail = (props) => {
       dietas.push("gluten free");
     }
     if (obj.dairyFree && obj.dairyFree === true) {
-      dietas.push("dairyFree");
+      dietas.push("dairy free");
     }
     if (obj.lowFodmap && obj.lowFodmap === true) {
       dietas.push("lowFodmap");
