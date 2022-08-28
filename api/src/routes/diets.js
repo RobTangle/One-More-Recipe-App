@@ -111,6 +111,7 @@ router.put("/gtID", async (req, res) => {
 });
 
 //! El bulk se pasa por arriba las validaciones del Model. NO USAR! No es seguro! Puedo agregar una dieta con name: "", lo cual no debería poder. Con el método create() como uso en la ruta post "/", la validación del Model se respeta. Dejo esta ruta comentada sólo para tener la posibilidad de testearla cuando quiera.
+//* POST with bulkCreate
 // router.post("/bulk", async (req, res) => {
 //   console.log(req.body);
 //   try {
