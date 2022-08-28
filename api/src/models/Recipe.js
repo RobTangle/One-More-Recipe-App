@@ -9,15 +9,23 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      allowNull: false,
+      allowNull: false, //! esto creo que puedo borrarlo
     },
     title: {
       type: DataTypes.STRING(100),
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        notNull: true,
+      },
     },
     summary: {
       type: DataTypes.STRING(500),
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        notNull: true,
+      },
     },
     healthScore: {
       type: DataTypes.FLOAT,
