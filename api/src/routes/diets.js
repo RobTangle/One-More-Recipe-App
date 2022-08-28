@@ -26,17 +26,39 @@ router.post("/", async (req, res) => {
           .send({ error: "El objeto recibido no tiene un name." });
       }
     }
+    // Si es un objeto lo que se postea:
     if (req.body.name) {
-      let newDiet = await Diet.create(req.body);
-      console.log("newDiet creada");
-      return res.status(202).send(newDiet);
+      //!--- probando findOrCreate:
+      let newDiet = await Diet.findOrCreate({
+        where: { name: req.body.name },
+      });
+      if (newDiet[1]) {
+        dietsCreated.push(newDiet[0]);
+      }
+      return res.status(202).send({
+        msg: `Cantidad de dietas creadas: ${dietsCreated?.length}`,
+        payload: dietsCreated,
+      });
+      //! -----fin prueba -----
+      // let newDiet = await Diet.create(req.body);
+      // console.log("newDiet creada");
+      // return res.status(202).send(newDiet)
     }
-    //Podría reemplazar lo de abajo con un bulkCreate() ? Creo que sí.
+
+    // Si es un array lo que se postea:
     if (Array.isArray(req.body)) {
       arrDietas = req.body;
       for (let i = 0; i < arrDietas.length; i++) {
-        let newDiet = await Diet.create(arrDietas[i]);
-        dietsCreated.push(newDiet);
+        //!--- probando findOrCreate:
+        let newDiet = await Diet.findOrCreate({
+          where: { name: arrDietas[i].name },
+        });
+        if (newDiet[1]) {
+          dietsCreated.push(newDiet[0]);
+        }
+        //! --- fin prueba ------
+        // let newDiet = await Diet.create(arrDietas[i]);
+        // dietsCreated.push(newDiet);
       }
       return res.status(210).send({
         msg: `Cantidad de dietas creadas: ${dietsCreated?.length}`,
