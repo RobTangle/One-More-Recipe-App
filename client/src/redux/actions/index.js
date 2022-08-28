@@ -10,6 +10,7 @@ export const CLEAR_DETAIL = "CLEAR_DETAIL";
 export const CLEAR_NEW_RECIPE = "CLEAR_NEW_RECIPE";
 export const SET_LOADING = "SET_LOADING";
 export const SET_NEW_RECIPE_TO_LOADING = "SET_NEW_RECIPE_TO_LOADING";
+export const SET_DIETS_TO_LOADING = "SET_DIETS_TO_LOADING";
 
 // export const getRecipeDetail = (id) => {
 //   return async function (dispatch) {
@@ -164,10 +165,26 @@ export const getDiets = () => {
   return async function (dispatch) {
     try {
       let response = await axios.get(`http://localhost:3001/diets`);
-      return dispatch({ type: "GET_DIETS", payload: response.data });
+      return dispatch({ type: GET_DIETS, payload: response.data });
     } catch (error) {
       console.log("En action getDiets: " + error.message);
-      return error.message;
+      return dispatch({ type: GET_DIETS, payload: { error: error.message } });
+    }
+  };
+};
+
+export const setDietsToLoading = () => {
+  return async function (dispatch) {
+    try {
+      return dispatch({
+        type: SET_DIETS_TO_LOADING,
+        payload: { loading: true },
+      });
+    } catch (error) {
+      return dispatch({
+        type: SET_DIETS_TO_LOADING,
+        payload: { error: error.message },
+      });
     }
   };
 };

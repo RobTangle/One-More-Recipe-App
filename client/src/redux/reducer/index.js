@@ -9,6 +9,7 @@ import {
   CLEAR_DETAIL,
   CLEAR_NEW_RECIPE,
   SET_NEW_RECIPE_TO_LOADING,
+  SET_DIETS_TO_LOADING,
 } from "../actions/index";
 
 const initialState = {
@@ -62,6 +63,11 @@ const rootReducer = (state = initialState, action) => {
         newRecipe: action.payload,
       };
     case GET_DIETS:
+      return {
+        ...state,
+        diets: action.payload,
+      };
+    case SET_DIETS_TO_LOADING:
       return {
         ...state,
         diets: action.payload,
