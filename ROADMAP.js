@@ -18,28 +18,45 @@
 
 //*NOTAS: -----------------------------------------------------------------------------------------
 //*Practicar pasar de async await a promesas, ida y vuelta ;)
-//*Pensar bien la estructura de cada app, pensar el rol de cada componente, micro y macro, Detallar y escribir los detalles de cada parte de la app. Esto me va a ayudar a entender bien todo.
+
 //* El archivo app.js importa el objeto de rutas y lo usa como middleware, con un server.use(router)
 
 //! PROBLEMAS DETECTADOS PARA SOLUCIONAR:
 
 //! El input del paginado no funciona si lo intento borrar o escribir otro número!!!
 //! * Creo que no renderizo bien TODAS las diets de las API (las que estan como propiedades creo que no las renderizo)
+
+//! * El createBulk se saltea las validaciones del Model!!!!! Pero el create() no se saltea la validación del Model! INCREÍBLE! Testeado con mis rutas de postman al mandar por /bulk o mandar por / sólo que hace un array de create(). MUCHO MÁS SEGURO ESTO ÚLTIMO!
 //H ITINERARIO: ----------------------------------------------------------------------------------
-
-//H * Hacer CSS
-//h * Poner estados de "loading" o error
-//h * Deshabilitar botón de submit al hacerle click satisfactoriamente. Por ahora sólo hice un alert.
-//h * Validaciones. Listas??? Creo que ya hice todo....
-
-//h * Error handlings
-//h * Hacer ordenamiento por readyInMinutes
-
+//h * Terminar validaciones
+//h * Solucionar PAGINADO input!!!!
+//h * Hacer action para borrar recetas por id mediante sequelize. COPIAR LO QUE YA HICE CON DIETS!
+//h * Mover MI_API_KEY al archivo env
 //? IDEAS: -----------------------------------------------------------------------------------------
-//? Poner botón en el pie de página para que vaya arriba del todo con un click
+
 //? 1* Podría hacer un ordenamiento según el readyInMinutes!
 //? RANDOM:
 
+//---------------
+
+//-----------------------------
+//* PARA LOADING DE RECIPE DETAILS: OK!!!! Terminado y funcionando bien!!!!
+
+//Cuando la persona entra, que se encuentre con un gif de loading.
+// Este componente va a estar escuchando al State.RecipeDetails.
+//El State.RecipeDetails va a recibir un objeto. Ese objeto puede ser la receta con sus detalles, o un error.
+//Si es un error, renderizar el error.
+// Si es un objeto que tiene propiedad title, renderizar ese objeto.
+// Debería crear un componente llamada RecipeDetailCard, que es lo que va a renderizar si llega una receta. Le paso la receta como props.
+//! Al final le envío un objeto que es como una receta, pero con datos onda: Title: "No se encontró la receta", img: IMGdeError.., etc. Lo renderiza como cualquier otra tarjeta.
+
+//! Si !state.RecipeDetail.title, render gif. Si state.RecipeDetail.title existe, renderizá el Componente <RecipeDetailsCard props={recipeDetailsRedux}/> (o algo así las props. Podría dividirla por cada prop que vaya a necesitar la Card y es más facil quizás? O más dificl? jej..)
+
+//* 1)Configurar backend en la ruta de /recipes/:id  que responda con un objeto. Ya sea un objeto {error: "el error que sea"}, o un objeto de una receta.
+//* 2) En la action tmb preparo en caso de que dé error y no llegue al back. El Back, si contesta, va a contestar con un objeto sí o sí. Pero si no hay comunicación con el back, la action se va a dar cuenta y le voy a decir que responda con un objeto que tmb sea del tipo error {error: "El problema que hubo"}.
+//* Y sea lo que sea que obtenga la action, que lo mande al reducer y el reducer asigna ese payload al State.RecipeDetails.
+//* 3) Conseguir gif para que renderice por default al entrar al /home/recipes/234234
+//* 4) Crear Componente de RecipeDetailCard que lo voy a renderizar adentro del RecipeDetails. Y a la card le voy a pasar por props el objeto que llegó al State.recipeDetails, en caso de que no sea un {error: "error"}.
 //?--------------------------------------------------------
 
 //* https://stackoverflow.com/questions/56926282/react-hooks-fetch-wont-stop-fetching
@@ -160,7 +177,7 @@ function dietsToString(diets) {
         </button>
       </div> */
 }
-//!------------------------------------------------------------------
+//!---- En desuso pero guardados por si las dudas.... ---------------------------------
 
 //h --algoritmos EN DESUSO para ordenar por healthScore:
 // function compareHealthScore(a, b) {
