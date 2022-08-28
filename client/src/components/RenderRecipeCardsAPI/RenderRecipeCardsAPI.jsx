@@ -11,6 +11,7 @@ import {
   orderByHealthScoreInvert,
   orderByTitleInvertExp,
   orderByTitleExp,
+  checkDietsAndListThem,
 } from "../../auxiliaryModules/functions";
 import bananaGif from "../../assets/470.gif";
 
@@ -275,7 +276,8 @@ const RenderRecipeCardsAPI = (props) => {
                     id={recipeAPI.id}
                     title={recipeAPI.title}
                     image={recipeAPI.image}
-                    diets={recipeAPI.diets}
+                    diets={checkDietsAndListThem(recipeAPI)}
+                    // diets={recipeAPI.diets}
                     healthScore={recipeAPI.healthScore}
                   />
                 );
