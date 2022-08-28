@@ -1,12 +1,9 @@
 const { Router } = require("express");
 const { Diet } = require("../db");
-// const Recipe = require("../models/Recipe");
-
+const { Op } = require("sequelize");
 const router = Router();
 
 //  GET /diets:
-// Obtener todos los tipos de dieta posibles
-// En una primera instancia, cuando no exista ninguno, deberán precargar la base de datos con los tipos de datos indicados por spoonacular acá(link)
 router.get("/", async (req, res) => {
   try {
     let dietas = await Diet.findAll();
@@ -16,45 +13,119 @@ router.get("/", async (req, res) => {
   }
 });
 
+//* Esta ruta acepta un objeto con key name, o un array de objetos.
 router.post("/", async (req, res) => {
   let arrDietas = [];
+  let dietsCreated = [];
   console.log(req.body);
-  if (!Array.isArray(req.body)) {
-    if (!req.body.name) {
-      return res.status(388).send("El objeto recibido no tiene un name.");
-    }
-  }
   try {
+    if (!Array.isArray(req.body)) {
+      if (!req.body.name) {
+        return res
+          .status(400)
+          .send({ error: "El objeto recibido no tiene un name." });
+      }
+    }
     if (req.body.name) {
       let newDiet = await Diet.create(req.body);
       console.log("newDiet creada");
       return res.status(202).send(newDiet);
     }
     //Podría reemplazar lo de abajo con un bulkCreate() ? Creo que sí.
-    arrDietas = req.body;
-    for (let i = 0; i < arrDietas.length; i++) {
-      let nuevaDieta = await Diet.create(arrDietas[i]);
-      console.log(`recién creada dieta con id: ${nuevaDieta.id}`);
+    if (Array.isArray(req.body)) {
+      arrDietas = req.body;
+      for (let i = 0; i < arrDietas.length; i++) {
+        let newDiet = await Diet.create(arrDietas[i]);
+        dietsCreated.push(newDiet);
+        // console.log(`recién creada dieta con id: ${newDiet.id}`);
+      }
+      return res.status(210).send({
+        msg: `Cantidad de dietas creadas: ${dietsCreated?.length}`,
+        payload: dietsCreated,
+      });
     }
-    return res.status(210).send("Dietas creadas!");
   } catch (error) {
-    return res.status(400).send(error.message);
+    return res
+      .status(400)
+      .send({ error: error.message, dietsCreated: dietsCreated });
   }
 });
 
-//! Creo que esta es uan alternativa que anda bien si me envían un array con varias dietas. No sé por qué dejé este comentado..
-// router.post("/", async (req, res) => {
+router.put("/destroyByName", async (req, res) => {
+  try {
+    if (req.body.name === undefined) {
+      return res.status(400).send({ error: "name of the diet is mandatory" });
+    } else {
+      let numberOfdietsDestroyed = await Diet.destroy({
+        where: { name: req.body.name },
+      });
+      return res.status(200).send({
+        msg: `Diets destroyed: ${numberOfdietsDestroyed}`,
+        numberDestroyed: numberOfdietsDestroyed,
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({ error: error.message });
+  }
+});
+
+router.put("/destroyById", async function (req, res) {
+  try {
+    if (req.body.id === undefined) {
+      return res.status(400).send({ error: `undefined ID received.` });
+    } else {
+      let numberOfdietsDestroyed = await Diet.destroy({
+        where: {
+          id: req.body.id,
+        },
+      });
+      return res.status(200).send({
+        msg: `Diets destroyed: ${numberOfdietsDestroyed}`,
+        numberDestroyed: numberOfdietsDestroyed,
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({ error: error.message });
+  }
+});
+
+router.put("/gtID", async (req, res) => {
+  try {
+    if (req.body.limit === undefined) {
+      return res.status(400).send({ error: `limit is undefined` });
+    } else {
+      let numberOfdietsDestroyed = await Diet.destroy({
+        where: {
+          id: {
+            [Op.gt]: req.body.limit,
+          },
+        },
+      });
+      return res.status(200).send({
+        msg: `Diets destroyed: ${numberOfdietsDestroyed}`,
+        numberDestroyed: numberOfdietsDestroyed,
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({ error: error.message });
+  }
+});
+
+//! El bulk se pasa por arriba las validaciones del Model. NO USAR! No es seguro! Puedo agregar una dieta con name: "", lo cual no debería poder. Con el método create() como uso en la ruta post "/", la validación del Model se respeta. Dejo esta ruta comentada sólo para tener la posibilidad de testearla cuando quiera.
+// router.post("/bulk", async (req, res) => {
 //   console.log(req.body);
-//   if (Array.isArray(req.body)) {
-//     try {
-//       let nuevasRecetas = await Diet.createBulk(req.body);
-//       console.log("nuevasRecetas creadas: ", nuevasRecetas);
-//       return res.status(208).send(nuevasRecetas);
-//     } catch (error) {
-//       return res.status(408).send(error.message);
+//   try {
+//     if (Array.isArray(req.body)) {
+//       let nuevasRecetas = await Diet.bulkCreate(req.body);
+//       return res.status(208).send({
+//         msg: `Cantidad de recetas creadas: ${nuevasRecetas?.length}`,
+//         payload: nuevasRecetas,
+//       });
+//     } else {
+//       return res.status(409).send({ error: "Postee únicamente un array" });
 //     }
-//   } else {
-//     return res.status(409).send("Postee únicamente array");
+//   } catch (error) {
+//     return res.status(408).send({ error: error.message });
 //   }
 // });
 //!----------------------------------------
