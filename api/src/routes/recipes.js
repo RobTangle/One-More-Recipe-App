@@ -4,7 +4,6 @@ const { Recipe, Diet } = require("../db");
 const { MI_API_KEY } = process.env;
 const axios = require("axios");
 const { Op } = require("sequelize");
-
 const router = Router();
 
 const addRecipeInfoTrue = "addRecipeInformation=true";
@@ -267,7 +266,7 @@ router.post("/", async (req, res) => {
       });
     }
     // --- FIN VALIDACIONES ---
-    //! Que desde el front se ocupen de ponerle una imagen al momento de renderizarla en caso de que no tengan una.
+
     let newRecipe = await Recipe.create({
       title: title.charAt(0).toUpperCase() + title.slice(1),
       summary,
