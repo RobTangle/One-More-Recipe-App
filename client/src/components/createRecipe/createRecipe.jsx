@@ -1,16 +1,17 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import "./createRecipe.css";
-import Form from "../CreateRecipeForm/Form";
+// import Form from "../CreateRecipeForm/Form";
 import bananaGif from "../../assets/470.gif";
 import OkSVG from "../../assets/icons8-ok.svg";
+import FormMapDiets from "../CreateRecipeForm/FormMapDiets";
 
 const CreateRecipe = () => {
   const newRecipeState = useSelector((state) => state.newRecipe);
 
   return (
     <div className="createRecipe-container">
-      {newRecipeState.pure ? <Form /> : null}
+      {newRecipeState.pure ? <FormMapDiets /> : null}
       {newRecipeState.loading ? (
         <img src={bananaGif} alt="loading gif" />
       ) : null}
