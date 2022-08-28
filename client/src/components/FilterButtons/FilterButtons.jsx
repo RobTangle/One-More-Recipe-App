@@ -64,11 +64,8 @@ const FilterButtons = ({ onFilterOptionChange, resetFilter }) => {
         >
           Low FODMAP
         </button>
-        <button value="whole30" id="whole30" onClick={onFilterOptionChange}>
-          Whole30
-        </button>
-        <button value="omnivore" id="omnivore" onClick={onFilterOptionChange}>
-          Omnivore
+        <button value="whole 30" id="whole30" onClick={onFilterOptionChange}>
+          Whole 30
         </button>
       </div>
       <div className="reset-filter">
