@@ -37,7 +37,6 @@ router.post("/", async (req, res) => {
       for (let i = 0; i < arrDietas.length; i++) {
         let newDiet = await Diet.create(arrDietas[i]);
         dietsCreated.push(newDiet);
-        // console.log(`recién creada dieta con id: ${newDiet.id}`);
       }
       return res.status(210).send({
         msg: `Cantidad de dietas creadas: ${dietsCreated?.length}`,
