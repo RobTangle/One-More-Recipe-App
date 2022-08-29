@@ -1,9 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import "./createRecipe.css";
-// import Form from "../CreateRecipeForm/Form";
 import bananaGif from "../../assets/470.gif";
-// import cookingPot from "../../assets/icons8-cooking-pot-48.png";
 import zanyFace from "../../assets/icons8-zany-face-48.png";
 import OkSVG from "../../assets/icons8-ok.svg";
 import Form from "../CreateRecipeForm/Form";
