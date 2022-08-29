@@ -13,7 +13,9 @@ const RecipeDetailCard = ({ objToRender }) => {
         }
         alt="Recipe ilustration"
       />
-      <h2 className="detail-title">{objToRender.title}</h2>
+      <h2 className="detail-title">
+        {objToRender.title.charAt(0).toUpperCase() + objToRender.title.slice(1)}
+      </h2>
       <div className="detail-div">
         <div className="detail-div-key">id</div>
         {objToRender.id}

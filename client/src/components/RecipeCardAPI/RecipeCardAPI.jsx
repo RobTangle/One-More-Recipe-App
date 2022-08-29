@@ -11,9 +11,11 @@ const RecipeCardAPI = (props) => {
         alt={`ilustration of recipe id: ${props.id}`}
       />{" "}
       <h3>
-        <Link to={`/home/recipes/${props.id}`}> {props.title} </Link>
+        <Link to={`/home/recipes/${props.id}`}>
+          {" "}
+          {props.title.charAt(0).toUpperCase() + props.title.slice(1)}{" "}
+        </Link>
       </h3>
-      {/* <h3>Diets: {dietsToString(props.diets)} </h3> */}
       <h4>Health score: {props.healthScore}</h4>
       <div className="recipe-card-diets">
         <h4>Diets: </h4>
@@ -23,9 +25,6 @@ const RecipeCardAPI = (props) => {
           ) : (
             <li>no data</li>
           )}
-          {/* {props.diets?.map((dieta) => (
-            <li key={Math.random()}>{dieta}</li>
-          ))} */}
         </ul>
       </div>
     </div>

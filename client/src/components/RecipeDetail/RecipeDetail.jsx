@@ -51,7 +51,10 @@ const RecipeDetail = (props) => {
         }
         alt="Recipe ilustration"
       />
-      <h2 className="detail-title">{recipeDetailRedux.title}</h2>
+      <h2 className="detail-title">
+        {recipeDetailRedux.title.charAt(0).toUpperCase() +
+          recipeDetailRedux.title.slice(1)}
+      </h2>
       <div className="detail-div">
         <div className="detail-div-key">id</div>
         {recipeDetailRedux.id}
