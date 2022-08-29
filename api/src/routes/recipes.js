@@ -88,8 +88,10 @@ const getByTitleFromDB = async (title) => {
     });
     console.log(`allFromDB.length = ${allFromDB.length}`);
     // console.log(allFromDB);
+    // me aseguro que la palabra a buscar está en minúscula ya que en la DB guardo los title en todo minúscula:
+    let titleLowerCase = title.toLowerCase();
     let allFromDBFilteredByTitle = await allFromDB.filter((recipe) =>
-      recipe.title.includes(title)
+      recipe.title.includes(titleLowerCase)
     );
     console.log(
       `allFromDBFilteredByTitle.length = ${allFromDBFilteredByTitle.length}`
@@ -268,7 +270,8 @@ router.post("/", async (req, res) => {
     // --- FIN VALIDACIONES ---
 
     let newRecipe = await Recipe.create({
-      title: title.charAt(0).toUpperCase() + title.slice(1),
+      // title: title.charAt(0).toUpperCase() + title.slice(1),
+      title: title.toLowerCase(),
       summary,
       healthScore,
       steps,
