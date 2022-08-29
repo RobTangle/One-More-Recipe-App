@@ -10,13 +10,13 @@ const addRecipeInfoTrue = "addRecipeInformation=true";
 const NUMBER = "number=39";
 
 //h--- Funciones auxiliares: ----------------------------
-function fromQueryToURL(obj) {
-  let urleado = "";
-  for (const [key, value] of Object.entries(obj)) {
-    urleado += `${key}=${value}&`;
-  }
-  return urleado;
-}
+// function fromQueryToURL(obj) {
+//   let urleado = "";
+//   for (const [key, value] of Object.entries(obj)) {
+//     urleado += `${key}=${value}&`;
+//   }
+//   return urleado;
+// }
 
 function userIntroducedProhibitedSimbols(inputString) {
   let charactersNotAllowed = /[^{};@>!<]*$/g;
@@ -214,8 +214,6 @@ const getAllGlobal = async () => {
 
 //h------------------------------
 
-//* EXPERIMENTACIÓN:
-
 //*------------------------------------------------------------------------------------------------------
 
 //* POST
@@ -298,7 +296,7 @@ router.post("/", async (req, res) => {
 });
 //*----------------------------------------------------------------
 
-//* EXPERIMENTACIÓN CON GET BY ID:
+//* GET BY ID:
 router.get("/:idReceta", async (req, res) => {
   const { idReceta } = req.params;
   console.log(req.params);
@@ -409,12 +407,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-//! Para poder hacer busqueda por title y por diet, tengo que agregar una función que busque en la DB por diet. Porque por la API sólo tengo que agregar ese string a la URL y listo.
-//! Pero para la DB tengo que hacer un filtro adicional chequeando en diets después de agregar esa propiedad a el objeto. ES FÁCIL!!!!
-//  en el get, if (query && diet) hacer busquedas con funcion getByTitleDietFrom DB/API, y if (diet) hacer bisquedas con funciongetByDietFrom DB/API.
-// Podría incluso modularizarlas más como hice con las de ordenamiento y filter en react.
-//----------------------------------
-
 //* --- GET sólo de DB:
 router.get("/getAllFromDB", async (req, res) => {
   console.log("Entré a /getAllFromDB");
@@ -427,5 +419,12 @@ router.get("/getAllFromDB", async (req, res) => {
     res.status(402).send(error.message);
   }
 });
+
+// Comentario para adaptar a query por title y/o diet:
+//Para poder hacer busqueda por title y por diet, tengo que agregar una función que busque en la DB por diet. Porque por la API sólo tengo que agregar ese string a la URL y listo.
+// Pero para la DB tengo que hacer un filtro adicional chequeando en diets después de agregar esa propiedad a el objeto. ES FÁCIL!!!!
+//  en el get, if (query && diet) hacer busquedas con funcion getByTitleDietFrom DB/API, y if (diet) hacer bisquedas con funciongetByDietFrom DB/API.
+// Podría incluso modularizarlas más como hice con las de ordenamiento y filter en react.
+//----------------------------------
 
 module.exports = router;
