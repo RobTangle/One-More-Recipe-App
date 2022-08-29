@@ -6,6 +6,21 @@
   margin: auto;
 }
 
+.filter-buttons-component {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.filter-buttons {
+  max-width: 80%;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin: auto;
+  flex-wrap: wrap;
+}
+
 /* .filter-buttons > button {
   border: none;
   box-shadow: 1px 5px 5px black;
@@ -33,5 +48,5 @@ button:hover {
 }
 
 .reset-filter > button:hover {
-  color: red;
+  color: rgb(240, 100, 6);
 }
