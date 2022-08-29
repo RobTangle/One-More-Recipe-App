@@ -24,14 +24,16 @@
 //! PROBLEMAS DETECTADOS PARA SOLUCIONAR:
 
 //! El input del paginado no funciona si lo intento borrar o escribir otro número!!!
-//! * Creo que no renderizo bien TODAS las diets de las API (las que estan como propiedades creo que no las renderizo)
 
 //! * El createBulk se saltea las validaciones del Model!!!!! Pero el create() no se saltea la validación del Model! INCREÍBLE! Testeado con mis rutas de postman al mandar por /bulk o mandar por / sólo que hace un array de create(). MUCHO MÁS SEGURO ESTO ÚLTIMO!
 //H ITINERARIO: ----------------------------------------------------------------------------------
-//h * Terminar validaciones
+
+//! El search de la database solo da resultado si coincide exactamente! Fijarme bien ese tema!!!!
+
 //h * Solucionar PAGINADO input!!!!
+//h * Cambiar Diet.create() a findOrCreate() OK!!! Testearlo bien!!
 //h * Hacer action para borrar recetas por id mediante sequelize. COPIAR LO QUE YA HICE CON DIETS!
-//h * Mover MI_API_KEY al archivo env
+
 //? IDEAS: -----------------------------------------------------------------------------------------
 
 //? 1* Podría hacer un ordenamiento según el readyInMinutes!
@@ -48,9 +50,9 @@
 //Si es un error, renderizar el error.
 // Si es un objeto que tiene propiedad title, renderizar ese objeto.
 // Debería crear un componente llamada RecipeDetailCard, que es lo que va a renderizar si llega una receta. Le paso la receta como props.
-//! Al final le envío un objeto que es como una receta, pero con datos onda: Title: "No se encontró la receta", img: IMGdeError.., etc. Lo renderiza como cualquier otra tarjeta.
+// Al final le envío un objeto que es como una receta, pero con datos onda: Title: "No se encontró la receta", img: IMGdeError.., etc. Lo renderiza como cualquier otra tarjeta.
 
-//! Si !state.RecipeDetail.title, render gif. Si state.RecipeDetail.title existe, renderizá el Componente <RecipeDetailsCard props={recipeDetailsRedux}/> (o algo así las props. Podría dividirla por cada prop que vaya a necesitar la Card y es más facil quizás? O más dificl? jej..)
+// Si !state.RecipeDetail.title, render gif. Si state.RecipeDetail.title existe, renderizá el Componente <RecipeDetailsCard props={recipeDetailsRedux}/> (o algo así las props. Podría dividirla por cada prop que vaya a necesitar la Card y es más facil quizás? O más dificl? jej..)
 
 //* 1)Configurar backend en la ruta de /recipes/:id  que responda con un objeto. Ya sea un objeto {error: "el error que sea"}, o un objeto de una receta.
 //* 2) En la action tmb preparo en caso de que dé error y no llegue al back. El Back, si contesta, va a contestar con un objeto sí o sí. Pero si no hay comunicación con el back, la action se va a dar cuenta y le voy a decir que responda con un objeto que tmb sea del tipo error {error: "El problema que hubo"}.
