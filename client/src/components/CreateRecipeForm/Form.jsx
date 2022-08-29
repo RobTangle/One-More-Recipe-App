@@ -1,13 +1,7 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions/index";
-// import "./form.css";
-
-//  Un formulario controlado con JavaScript con los siguientes campos:
-// Nombre
-// Resumen del plato
-// Nivel de "comida saludable" (health score)
-// Paso a paso
+import bananaGif from "../../assets/470.gif";
 
 const Form = () => {
   const [localState, setLocalState] = React.useState({
@@ -19,15 +13,9 @@ const Form = () => {
     diets: [],
   });
 
-  //Este componente tiene que escuchar al state.newRecipe.
-  // Según lo que escuche y el valor que tenga ese estado, va a renderizar una cosa u otra.
+  const dietsInState = useSelector((state) => state.diets);
 
   const dispatch = useDispatch();
-
-  //h ------------------------------
-  //! Hacer funcionamiento para que cada checkbox me pushee/mande al dietId un número según la dieta.
-  //! El objetivo es postear un array con números.
-  //! Podría hacer que adentro de el handleSubmit, se chequee cuáles checkboxes están chequeados y ahí pushear esos valores al array.
 
   function handleOnChange(e) {
     setLocalState({ ...localState, [e.target.name]: e.target.value });
@@ -118,6 +106,12 @@ const Form = () => {
       }
     }
   }
+
+  function getDietsFromDB() {
+    dispatch(actions.setDietsToLoading());
+    dispatch(actions.getDiets());
+    console.log("dispatched getDiets()");
+  }
   //h --- Fin funciones auxiliares ---
 
   return (
@@ -177,121 +171,48 @@ const Form = () => {
                 onChange={handleOnChange}
               ></textarea>
             </div>
-            <div className="check-boxes">
-              <div>
-                <label htmlFor="">Gluten Free</label>
-                <input
-                  type="checkbox"
-                  name="gluten free"
-                  id="gluten_free_checkbox"
-                  value="gluten free"
-                  onClick={handleCheckClick}
-                />
-              </div>
-              <div>
-                <label htmlFor="">Ketogenic</label>
-                <input
-                  type="checkbox"
-                  name="ketogenic"
-                  id="ketogenic_checkbox"
-                  value="ketogenic"
-                  onClick={handleCheckClick}
-                />
-              </div>
-              <div>
-                <label htmlFor="">Lacto ovo vegetarian</label>
-                <input
-                  type="checkbox"
-                  name="lacto ovo vegetarian"
-                  id="lacto_ovo_vegetarian_checkbox"
-                  value="lacto ovo vegeterian"
-                  onClick={handleCheckClick}
-                />
-              </div>
-              <div>
-                <label htmlFor="">Low FODMAP</label>
-                <input
-                  type="checkbox"
-                  name="lowFodmap"
-                  id="lowFodmap_checkbox"
-                  value="Low FODMAP"
-                  onClick={handleCheckClick}
-                />
-              </div>
+            <div className="check-boxes-mapped">
+              {dietsInState?.loading ? (
+                <div className="loading-gif">
+                  {/* <span>loading...</span> */}
+                  <img src={bananaGif} alt="gif de carga" />
+                </div>
+              ) : null}
 
-              <div>
-                <label htmlFor="">Ovo Vegetarian</label>
-                <input
-                  type="checkbox"
-                  name="ovo vegetarian"
-                  id="ovovegetarian_checkbox"
-                  value="Ovo-Vegeterian"
-                  onClick={handleCheckClick}
-                />
-              </div>
-              <div>
-                <label htmlFor="">Paleolithic</label>
-                <input
-                  type="checkbox"
-                  name="paleolithic"
-                  id="paleolithic_checkbox"
-                  value="paleolithic"
-                  onClick={handleCheckClick}
-                />
-              </div>
-              <div>
-                <label htmlFor="">Pescetarian</label>
-                <input
-                  type="checkbox"
-                  name="pescatarian"
-                  id="pescatarian_checkbox"
-                  value="pescatarian"
-                  onClick={handleCheckClick}
-                />
-              </div>
+              {dietsInState.length > 0 ? (
+                <div className="check-boxes">
+                  {" "}
+                  {dietsInState.map((diet) => (
+                    <div key={diet.id}>
+                      <label htmlFor={diet.name}>{diet.name}</label>
+                      <input
+                        type="checkbox"
+                        name={diet.name}
+                        value={diet.name}
+                        onClick={handleCheckClick}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-diets">
+                  <div>No diets loaded to the state</div>
+                  <div className="get-diets-btn">
+                    <button type="button" onClick={getDietsFromDB}>
+                      Get diets
+                    </button>
+                  </div>
+                </div>
+              )}
 
-              <div>
-                <label htmlFor="">Primal</label>
-                <input
-                  type="checkbox"
-                  name="primal"
-                  id="primal_checkbox"
-                  value="primal"
-                  onClick={handleCheckClick}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="">Vegan</label>
-                <input
-                  type="checkbox"
-                  name="vegan"
-                  id="vegan_checkbox"
-                  value="vegan"
-                  onClick={handleCheckClick}
-                />
-              </div>
-              <div>
-                <label htmlFor="">Vegeterian</label>
-                <input
-                  type="checkbox"
-                  name="vegetarian"
-                  id="vegetarian_checkbox"
-                  value="vegetarian"
-                  onClick={handleCheckClick}
-                />
-              </div>
-              <div>
-                <label htmlFor="">Whole30</label>
-                <input
-                  type="checkbox"
-                  name="whole 30"
-                  id="whole30_checkbox"
-                  value="whole 30"
-                  onClick={handleCheckClick}
-                />
-              </div>
+              {dietsInState?.error ? (
+                <div className="error-message">
+                  Ups! There was an ERROR: "{dietsInState.error}"
+                  <div>Try checking your internet connection</div>
+                </div>
+              ) : null}
             </div>
+
             <button type="submit" className="submit-recipe-btn">
               Create Recipe
             </button>
