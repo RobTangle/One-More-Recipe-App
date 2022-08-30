@@ -1,5 +1,4 @@
 // API Key de Spoontacular:
-// 08627e517b4943fe9b66893317a91541
 
 //* Enunciado
 // La idea general es crear una aplicación en la cual se puedan ver distintas recetas de comida junto con información relevante de las mismas utilizando la api externa spoonacular y a partir de ella poder, entre otras cosas:
@@ -18,25 +17,15 @@
 
 //*NOTAS: -----------------------------------------------------------------------------------------
 //*Practicar pasar de async await a promesas, ida y vuelta ;)
-
 //* El archivo app.js importa el objeto de rutas y lo usa como middleware, con un server.use(router)
 
 //! PROBLEMAS DETECTADOS PARA SOLUCIONAR:
 
-//! El input del paginado no funciona si lo intento borrar o escribir otro número!!!
-
-//! * El createBulk se saltea las validaciones del Model!!!!! Pero el create() no se saltea la validación del Model! INCREÍBLE! Testeado con mis rutas de postman al mandar por /bulk o mandar por / sólo que hace un array de create(). MUCHO MÁS SEGURO ESTO ÚLTIMO!
 //H ITINERARIO: ----------------------------------------------------------------------------------
-
-//! El search de la database solo da resultado si coincide exactamente! Fijarme bien ese tema!!!!
-
-//h * Solucionar PAGINADO input!!!!
-//h * Cambiar Diet.create() a findOrCreate() OK!!! Testearlo bien!!
-//h * Hacer action para borrar recetas por id mediante sequelize. COPIAR LO QUE YA HICE CON DIETS!
 
 //? IDEAS: -----------------------------------------------------------------------------------------
 
-//? 1* Podría hacer un ordenamiento según el readyInMinutes!
+//? 1* Podría hacer un ordenamiento según el readyInMinutes.
 //? RANDOM:
 
 //---------------
