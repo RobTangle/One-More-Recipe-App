@@ -119,7 +119,7 @@ export const getRecipesByQuery = (query) => {
     try {
       console.log("TRY de getRecipesByQUERY");
       let response = await axios.get(`http://localhost:3001/recipes/?${query}`);
-      return dispatch({ type: GET_RECIPES, payload: response.data }); //le acabo de agregar el .data xq le borré el .data al reducer
+      return dispatch({ type: GET_RECIPES, payload: response.data });
     } catch (error) {
       let errorObject = {
         title: `There was an error! :( ERROR: ${error.message}`,

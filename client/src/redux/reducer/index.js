@@ -13,7 +13,7 @@ import {
 } from "../actions/index";
 
 const initialState = {
-  recipes: { pure: true }, //! 27/08 02:20am, cambié de un array vacío a un obj
+  recipes: { pure: true },
   recipeDetail: {},
   newRecipe: { pure: true },
   allFromDB: [],
@@ -25,7 +25,7 @@ const rootReducer = (state = initialState, action) => {
     case GET_RECIPES:
       return {
         ...state,
-        recipes: action.payload, //agregué .data 21/08 20:20hs //! 27/08 0:31 borro el .data, para que maneje bien en caso de ObjError.
+        recipes: action.payload,
       };
     case GET_RECIPE_DETAIL:
       return {
