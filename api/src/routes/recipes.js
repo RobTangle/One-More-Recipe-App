@@ -268,17 +268,12 @@ router.post("/", async (req, res) => {
     // --- FIN VALIDACIONES ---
 
     let newRecipe = await Recipe.create({
-      // title: title.charAt(0).toUpperCase() + title.slice(1),
       title: title.toLowerCase(),
       summary,
       healthScore,
       steps,
       image,
     });
-
-    // let dietsToSet = await Promise.all(
-    //   diets.map((d) => Diet.findOne({ where: { name: d } }))
-    // );
 
     let dietsToSet = await Diet.findAll({
       where: { name: diets },
