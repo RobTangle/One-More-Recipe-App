@@ -9,13 +9,13 @@ import Nav from "./components/Nav/Nav";
 import Form from "./components/CreateRecipeForm/Form";
 // import * as actions from "./redux/actions/index";
 import axios from "axios";
-//! para que corregir CORS:
+//! para corregir CORS:
 if (typeof process != "undefined") {
   axios.defaults.adapter = require("axios/lib/adapters/http");
 }
 //!------
 
-test("renders learn react link", () => {
+test("renders the string 'Home'", () => {
   render(
     <Provider store={store}>
       <BrowserRouter>
