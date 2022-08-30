@@ -37,6 +37,10 @@ module.exports = (sequelize) => {
     },
     steps: {
       type: DataTypes.TEXT,
+      allowNull: true,
+      validate: {
+        len: [0, 3000],
+      },
     },
     image: {
       type: DataTypes.STRING,
