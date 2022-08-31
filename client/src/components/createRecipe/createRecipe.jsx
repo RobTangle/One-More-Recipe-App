@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./createRecipe.css";
 import bananaGif from "../../assets/470.gif";
@@ -8,6 +9,10 @@ import Form from "../CreateRecipeForm/Form";
 
 const CreateRecipe = () => {
   const newRecipeState = useSelector((state) => state.newRecipe);
+  const history = useHistory();
+  const redirect = () => {
+    history.push("/home");
+  };
 
   return (
     <div className="createRecipe-container">
@@ -19,6 +24,7 @@ const CreateRecipe = () => {
         <div className="new-recipe-ok-message">
           <img src={OkSVG} alt="" />
           <h2>Recipe with title "{newRecipeState.title}" created!</h2>
+          <button onClick={redirect}>Go to home</button>
         </div>
       ) : null}
       {newRecipeState.error ? (
@@ -30,6 +36,7 @@ const CreateRecipe = () => {
           </h4>
 
           <img src={zanyFace} alt="zani face" />
+          <button onClick={redirect}>Go to home</button>
         </div>
       ) : null}
     </div>
