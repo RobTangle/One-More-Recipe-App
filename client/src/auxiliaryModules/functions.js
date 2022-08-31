@@ -121,7 +121,7 @@ export function orderByHealthScoreInvert(array, cb) {
 //h--- Filter by diets:
 
 export function callBackFilter(receta, diet) {
-  console.log(`callBackFilter: receta = ${receta} y diet = ${diet}`);
+  // console.log(`callBackFilter: receta = ${receta} y diet = ${diet}`);
   if (
     diet === "vegetarian" ||
     diet === "vegan" ||
