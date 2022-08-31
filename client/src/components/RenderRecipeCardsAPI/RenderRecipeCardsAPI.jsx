@@ -17,12 +17,23 @@ import bananaGif from "../../assets/470.gif";
 
 const RenderRecipeCardsAPI = (props) => {
   const recipesSearched = useSelector((state) => state.recipes);
+  const newRecipeState = useSelector((state) => state.newRecipe);
+  const recipeDetailState = useSelector((state) => state.recipeDetail);
+
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     setLocalState(recipesSearched);
-    dispatch(actions.clearNewRecipe());
-    dispatch(actions.clearDetail());
+    if (
+      recipeDetailState.pure ||
+      recipeDetailState.title ||
+      recipeDetailState.error
+    ) {
+      dispatch(actions.clearDetail());
+    }
+    if (newRecipeState.title || newRecipeState.error) {
+      dispatch(actions.clearNewRecipe());
+    }
   }, [recipesSearched]);
 
   const [localState, setLocalState] = React.useState([]);
@@ -37,20 +48,21 @@ const RenderRecipeCardsAPI = (props) => {
   let maxPages = localState.length / quantity;
 
   function onFilterOptionChange(e) {
-    console.log(`e.target.value: `, e.target.value);
+    // console.log(`e.target.value: `, e.target.value);
     if (Array.isArray(recipesSearched)) {
       let filteredRecipes = recipesSearched.filter((receta) =>
         callBackFilter(receta, e.target.value)
       );
-      console.log(`filteredRecipes: ${filteredRecipes}`);
+      // console.log(`filteredRecipes: ${filteredRecipes}`);
       setLocalState([...filteredRecipes]);
-      setPage(1); //! agregué esta linea para solucionar problema de filter + paginado. Quedó bien al parecer.
+      // agregué esta linea para solucionar problema de filter + paginado. Quedó bien:
+      setPage(1);
     }
   }
 
   //h --- Reset filters:
   function resetFilter() {
-    console.log("Reset filter...");
+    // console.log("Reset filter...");
     setLocalState(recipesSearched);
     setPage(1);
   }
