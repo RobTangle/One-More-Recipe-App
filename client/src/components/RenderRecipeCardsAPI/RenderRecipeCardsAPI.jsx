@@ -27,7 +27,7 @@ const RenderRecipeCardsAPI = (props) => {
   React.useEffect(() => {
     setLocalState(recipesSearched);
     console.log(
-      "setLocalState re valorizado por cambio en recipesSearched o por remontada. Resetea los filtros asi figuran todas las tarjetas."
+      "setLocalState re valorizado por cambio en recipesSearched o por remontada."
     );
   }, [recipesSearched]);
 
