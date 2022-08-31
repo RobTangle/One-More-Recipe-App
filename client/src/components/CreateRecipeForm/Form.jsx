@@ -116,7 +116,7 @@ const Form = () => {
 
   return (
     <div className="create-recipe-container">
-      {console.log("En el return del componente. Me rendericé!")}
+      {/* {console.log("En el return del componente. Me rendericé!")} */}
       <form action="" onSubmit={handleSubmit}>
         <fieldset className="form-fieldset">
           <legend>Create Recipe: </legend>
