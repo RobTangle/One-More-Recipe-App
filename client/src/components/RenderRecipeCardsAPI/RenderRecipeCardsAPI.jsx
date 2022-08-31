@@ -20,22 +20,16 @@ const RenderRecipeCardsAPI = (props) => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    console.log("Me monté o refresqué con [recipesSearched]");
-    console.log("Soy recipesSearched: ", recipesSearched);
     setLocalState(recipesSearched);
-    console.log(
-      "Soy useEffect despues del setLocalState(recipesSearched)",
-      localState
-    );
     dispatch(actions.clearNewRecipe());
     dispatch(actions.clearDetail());
   }, [recipesSearched]);
 
   const [localState, setLocalState] = React.useState([]);
 
-  React.useEffect(() => {
-    console.log("Soy el useEffect, localState: ", localState);
-  }, [localState]);
+  // React.useEffect(() => {
+  //   console.log("Soy el useEffect, localState: ", localState);
+  // }, [localState]);
 
   //h Para paginado:
   const [page, setPage] = React.useState(1);
@@ -96,10 +90,12 @@ const RenderRecipeCardsAPI = (props) => {
       </div>
       {localState?.length > 9 ? (
         <Paginacion
-          key={Math.random()}
+          // key={Math.random()}
           page={page}
           setPage={setPage}
           maxPages={maxPages}
+          localState={localState}
+          quantity={quantity}
         />
       ) : null}
 
@@ -141,7 +137,7 @@ const RenderRecipeCardsAPI = (props) => {
           : null}
       </div>
       {/* {localState.length > 9 ? (
-        <Paginacion page={page} setPage={setPage} maxPages={maxPages} />
+        <Paginacion page={page} setPage={setPage} maxPages={maxPages} localState={localState} quantity={quantity} />
       ) : null} */}
       {localState.length > 3 ? (
         <div className="go-top">
