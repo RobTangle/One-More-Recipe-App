@@ -22,40 +22,47 @@ const RenderRecipeCardsAPI = (props) => {
 
   const dispatch = useDispatch();
 
+  const [localState, setLocalState] = React.useState([]);
+
   React.useEffect(() => {
     setLocalState(recipesSearched);
+    console.log(
+      "setLocalState re valorizado por cambio en recipesSearched o por remontada. Resetea los filtros asi figuran todas las tarjetas."
+    );
+  }, [recipesSearched]);
+
+  //h Cuando se monta el componente chequea recipeDetail y newRecipe para limpiarlos si hace falta:
+  React.useEffect(() => {
+    console.log("Me monté y chequeo recipeDetail y newRecipe");
     if (
       recipeDetailState.pure ||
       recipeDetailState.title ||
       recipeDetailState.error
     ) {
       dispatch(actions.clearDetail());
+      console.log("despaché el clearDetail");
     }
     if (newRecipeState.title || newRecipeState.error) {
       dispatch(actions.clearNewRecipe());
+      console.log("despaché el clearNewRecipe");
     }
-  }, [recipesSearched]);
-
-  const [localState, setLocalState] = React.useState([]);
-
-  // React.useEffect(() => {
-  //   console.log("Soy el useEffect, localState: ", localState);
-  // }, [localState]);
+  }, []);
 
   //h Para paginado:
   const [page, setPage] = React.useState(1);
   const [quantity, setQuantity] = React.useState(9);
   let maxPages = localState.length / quantity;
 
+  //h Cuando aprieto un botón de filtrado:
   function onFilterOptionChange(e) {
     // console.log(`e.target.value: `, e.target.value);
     if (Array.isArray(recipesSearched)) {
       let filteredRecipes = recipesSearched.filter((receta) =>
         callBackFilter(receta, e.target.value)
       );
-      // console.log(`filteredRecipes: ${filteredRecipes}`);
+
       setLocalState([...filteredRecipes]);
-      // agregué esta linea para solucionar problema de filter + paginado. Quedó bien:
+      // setea la Page a 1 cuando filtro así no queda con un valor inapropiado:
       setPage(1);
     }
   }
