@@ -11,7 +11,7 @@ const SearchRecipes = () => {
   });
   // const [localStateDiet, setLocalStateDiet] = React.useState("");
 
-  const recipesSearched = useSelector((state) => state.recipes);
+  // const recipesSearched = useSelector((state) => state.recipes);
   const dispatch = useDispatch();
 
   //h-------------------------------
