@@ -1,4 +1,16 @@
-.paginacion {
+/* .paginacion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+} */
+
+.page-number-buttons {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pagination-buttons {
   display: flex;
   align-items: center;
   justify-content: center;
