@@ -7,7 +7,7 @@ const { Op } = require("sequelize");
 const router = Router();
 
 const addRecipeInfoTrue = "addRecipeInformation=true";
-const NUMBER = "number=39";
+const NUMBER = "number=100";
 
 //h--- Funciones auxiliares: ----------------------------
 // function fromQueryToURL(obj) {
