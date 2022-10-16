@@ -10,6 +10,15 @@ module.exports = (sequelize: any, DataTypes: any) => {
     healthSchore?: number;
     steps?: string;
     image?: string;
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models: any) {
+      // define association here
+      Recipe.belongsToMany(models.Diet, { through: "DietsXRecipes" });
+    }
   }
   Recipe.init(
     {
