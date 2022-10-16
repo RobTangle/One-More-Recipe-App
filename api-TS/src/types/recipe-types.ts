@@ -21,7 +21,7 @@ export interface IRecipeFromApi {
   dishTypes: string[];
   image: string;
   readyInMinutes: number;
-  analyzedInstruction: IAnalyzedInstruction[];
+  analyzedInstructions: IAnalyzedInstruction[];
   steps: IAnalyzedInstruction[];
   // steps: axiData.analyzedInstructions?.[0]?.steps, //Atención a este ?.chain!
   diets: string[];

@@ -145,10 +145,10 @@ router.get("/:idReceta", async (req, res) => {
       }
     } else {
       console.log(`Buscar en API con id: ${idReceta}`);
-      let axiado: IRecipeFromApi = await axios.get(
+      let axiado = await axios.get(
         `https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`
-      ).data;
-      let axiData = axiado;
+      );
+      let axiData: IRecipeFromApi = axiado.data;
       console.log("Receta buscada en API");
       console.log(`Receta title: ${axiData?.title}`);
       let axiadoDetails = {
@@ -164,7 +164,7 @@ router.get("/:idReceta", async (req, res) => {
         dishTypes: axiData.dishTypes,
         image: axiData.image,
         readyInMinutes: axiData.readyInMinutes,
-        steps: axiData.analyzedInstruction[0]?.steps,
+        steps: axiData.analyzedInstructions[0]?.steps,
         diets: axiData.diets,
       };
       return res.status(200).send(axiadoDetails);
