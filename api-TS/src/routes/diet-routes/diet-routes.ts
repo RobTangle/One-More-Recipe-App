@@ -1,12 +1,13 @@
 import { Router } from "express";
-const { Diet } = require("../db");
+// const { Diet } = require("../db");
 const { Op } = require("sequelize");
 const router = Router();
+import db from "../../models";
 
 //  GET /diets:
 router.get("/", async (req, res) => {
   try {
-    let dietas = await Diet.findAll();
+    let dietas = await db.Diet.findAll();
     res.status(200).send(dietas);
   } catch (error: any) {
     return res.status(404).send(error.message);
@@ -29,7 +30,7 @@ router.post("/", async (req, res) => {
     // Si es un objeto lo que se postea:
     if (req.body.name) {
       //!--- probando findOrCreate:
-      let newDiet = await Diet.findOrCreate({
+      let newDiet = await db.Diet.findOrCreate({
         where: { name: req.body.name },
       });
       if (newDiet[1]) {
@@ -50,7 +51,7 @@ router.post("/", async (req, res) => {
       arrDietas = req.body;
       for (let i = 0; i < arrDietas.length; i++) {
         //!--- probando findOrCreate:
-        let newDiet = await Diet.findOrCreate({
+        let newDiet = await db.Diet.findOrCreate({
           where: { name: arrDietas[i].name },
         });
         if (newDiet[1]) {
@@ -77,7 +78,7 @@ router.put("/destroyByName", async (req, res) => {
     if (req.body.name === undefined) {
       return res.status(400).send({ error: "name of the diet is mandatory" });
     } else {
-      let numberOfdietsDestroyed = await Diet.destroy({
+      let numberOfdietsDestroyed = await db.Diet.destroy({
         where: { name: req.body.name },
       });
       return res.status(200).send({
@@ -95,7 +96,7 @@ router.put("/destroyById", async function (req, res) {
     if (req.body.id === undefined) {
       return res.status(400).send({ error: `undefined ID received.` });
     } else {
-      let numberOfdietsDestroyed = await Diet.destroy({
+      let numberOfdietsDestroyed = await db.Diet.destroy({
         where: {
           id: req.body.id,
         },
@@ -115,7 +116,7 @@ router.put("/gtID", async (req, res) => {
     if (req.body.limit === undefined) {
       return res.status(400).send({ error: `limit is undefined` });
     } else {
-      let numberOfdietsDestroyed = await Diet.destroy({
+      let numberOfdietsDestroyed = await db.Diet.destroy({
         where: {
           id: {
             [Op.gt]: req.body.limit,
