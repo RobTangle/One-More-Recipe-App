@@ -1,6 +1,6 @@
 const { MI_API_KEY } = process.env;
 const axios = require("axios");
-const { Op } = require("sequelize");
+// const { Op } = require("sequelize");
 import { Router } from "express";
 const router = Router();
 
@@ -16,70 +16,64 @@ import {
   getByTitleFromDB,
 } from "./recipe-r-fns";
 import db from "../../models";
-
-const addRecipeInfoTrue = "addRecipeInformation=true";
-const NUMBER = "number=20";
+import { checkNewRecipe } from "../../validators/recipeValidators";
 
 // -------- ROUTES : ----------------------------
 
-//* POST
+// POST RECIPE
 router.post("/", async (req, res) => {
   console.log("Entré al post");
   const { title, summary, healthScore, diets, steps, image } = req.body;
   console.log(`Title: ${title}`);
   try {
     // --- VALIDACIONES:
-    if (!title || !summary) {
-      return res
-        .status(400)
-        .send({ error: "title and summary are mandatory." });
-    }
-    if (title.length > 100 || title.length < 1) {
-      return res.status(400).send({
-        error: `Title length must be between 1 and 100 characters. It has ${title.length}.`,
-      });
-    }
-    if (userIntroducedProhibitedSimbols(title)) {
-      return res
-        .status(400)
-        .send({ error: `The title has prohibited simbols.` });
-    }
-    if (summary.length > 500 || summary.length < 1) {
-      return res.status(400).send({
-        error: `Summary has ${summary.length} characters. Max: 500, Min: 1`,
-      });
-    }
-    if (userIntroducedProhibitedSimbols(summary)) {
-      return res.status(400).send({
-        error: `Summary has prohibited simbols.`,
-      });
-    }
-    if (healthScore) {
-      if (typeof healthScore !== "number") {
-        return res.status(400).send({
-          error: `HealthScore must be a number.`,
-        });
-      }
-      if (healthScore > 100 || healthScore < 0) {
-        return res.status(400).send({
-          error: `Health score ${healthScore}must be between 0 and 100.`,
-        });
-      }
-    }
-    if (steps && steps.length > 3000) {
-      return res.status(400).send({
-        error: `Steps exceeded the maximum 3000 characters. Actual length: ${steps.length}`,
-      });
-    }
+    // if (!title || !summary) {
+    //   return res
+    //     .status(400)
+    //     .send({ error: "title and summary are mandatory." });
+    // }
+    // if (title.length > 100 || title.length < 1) {
+    //   return res.status(400).send({
+    //     error: `Title length must be between 1 and 100 characters. It has ${title.length}.`,
+    //   });
+    // }
+    // if (userIntroducedProhibitedSimbols(title)) {
+    //   return res
+    //     .status(400)
+    //     .send({ error: `The title has prohibited simbols.` });
+    // }
+    // if (summary.length > 500 || summary.length < 1) {
+    //   return res.status(400).send({
+    //     error: `Summary has ${summary.length} characters. Max: 500, Min: 1`,
+    //   });
+    // }
+    // if (userIntroducedProhibitedSimbols(summary)) {
+    //   return res.status(400).send({
+    //     error: `Summary has prohibited simbols.`,
+    //   });
+    // }
+    // if (healthScore) {
+    //   if (typeof healthScore !== "number") {
+    //     return res.status(400).send({
+    //       error: `HealthScore must be a number.`,
+    //     });
+    //   }
+    //   if (healthScore > 100 || healthScore < 0) {
+    //     return res.status(400).send({
+    //       error: `Health score ${healthScore} must be between 0 and 100.`,
+    //     });
+    //   }
+    // }
+    // if (steps && steps.length > 3000) {
+    //   return res.status(400).send({
+    //     error: `Steps exceeded the maximum 3000 characters. Actual length: ${steps.length}`,
+    //   });
+    // }
     // --- FIN VALIDACIONES ---
 
-    let newRecipe = await db.Recipe.create({
-      title: title.toLowerCase(),
-      summary,
-      healthScore,
-      steps,
-      image,
-    });
+    const validatedNewRecipe: IRecipeFromDB = checkNewRecipe(req.body);
+
+    let newRecipe = await db.Recipe.create(validatedNewRecipe);
 
     let dietsToSet = await db.Diet.findAll({
       where: { name: diets },
@@ -95,9 +89,8 @@ router.post("/", async (req, res) => {
     return res.status(404).send({ error: error.message });
   }
 });
-//*----------------------------------------------------------------
 
-//* GET BY ID:
+// GET BY ID:
 router.get("/:idReceta", async (req, res) => {
   const { idReceta } = req.params;
   console.log(req.params);
@@ -130,7 +123,7 @@ router.get("/:idReceta", async (req, res) => {
         }
       );
       if (recipeDB) {
-        let recipeObject = {
+        let recipeObject: IRecipeFromDB = {
           title: recipeDB.title,
           id: recipeDB.id,
           summary: recipeDB.summary,
