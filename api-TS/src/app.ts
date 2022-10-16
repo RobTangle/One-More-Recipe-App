@@ -11,11 +11,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(cors());
 
+const routes = require("./routes/index");
+app.use("/", routes);
 // app.use("/users", usersRouter);
-app.get("/", (req, res) => {
-  console.log(`Hola!`);
-  return res.status(200).send(`Acá estoy!!!!`);
-});
+// app.get("/", (req, res) => {
+//   console.log(`Hola!`);
+//   return res.status(200).send(`Acá estoy!!!!`);
+// });
 
 module.exports = app;
 

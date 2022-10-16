@@ -1,10 +1,10 @@
 import { Router } from "express";
 const router = Router();
 
-const recetaRouter = require("./recipes");
-const dietsRouter = require("./diets");
+const recipeRouter = require("./recipe-routes/recipe-routes");
+const dietsRouter = require("./diet-routes/diet-routes");
 
-router.use("/recipes", recetaRouter);
+router.use("/recipes", recipeRouter);
 router.use("/diets", dietsRouter);
 
 module.exports = router;
