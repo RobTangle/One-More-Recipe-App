@@ -1,15 +1,24 @@
 import { Model } from "sequelize";
-import { IRecipe } from "../types/recipe-types";
+import { IRecipeFromDB } from "../types/recipe-types";
 // Exportamos una funcion que define el modelo
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize: any, DataTypes: any) => {
-  class Recipe extends Model<IRecipe> implements IRecipe {
+  class Recipe extends Model<IRecipeFromDB> implements IRecipeFromDB {
     id?: string;
     title!: string;
     summary!: string;
     healthSchore?: number;
     steps?: string;
     image?: string;
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models: any) {
+      // define association here
+      Recipe.belongsToMany(models.Diet, { through: "DietsXRecipes" });
+    }
   }
   Recipe.init(
     {
