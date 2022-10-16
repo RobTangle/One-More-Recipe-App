@@ -21,18 +21,8 @@ const recipe_AuxFns_1 = require("../../auxiliaryFns/recipe-AuxFns");
 const recipe_r_fns_1 = require("./recipe-r-fns");
 const models_1 = __importDefault(require("../../models"));
 const addRecipeInfoTrue = "addRecipeInformation=true";
-const NUMBER = "number=100";
-//h--- Funciones auxiliares: ----------------------------
-// function fromQueryToURL(obj) {
-//   let urleado = "";
-//   for (const [key, value] of Object.entries(obj)) {
-//     urleado += `${key}=${value}&`;
-//   }
-//   return urleado;
-// }
-//*--  CREAR MODULARIZACIONES PARA BUSCAR RECETAS EN DB Y API:
-//h------------------------------
-//*------------------------------------------------------------------------------------------------------
+const NUMBER = "number=20";
+// -------- ROUTES : ----------------------------
 //* POST
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Entré al post");
@@ -183,8 +173,9 @@ router.get("/:idReceta", (req, res) => __awaiter(void 0, void 0, void 0, functio
         return res.status(404).send(errorObject);
     }
 }));
+// GET BY QUERY TITLE
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const query = req.query;
+    const query = req.query.query;
     console.log(`Entré al get. query = ${query}`);
     try {
         if (query) {
@@ -217,7 +208,7 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(404).send(errorObject);
     }
 }));
-//* --- GET sólo de DB:
+//* --- GET ALL FROM DB:
 router.get("/getAllFromDB", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Entré a /getAllFromDB");
     try {

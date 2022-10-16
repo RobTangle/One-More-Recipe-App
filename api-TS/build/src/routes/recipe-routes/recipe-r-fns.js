@@ -32,6 +32,13 @@ function userIntroducedProhibitedSimbols(inputString) {
     }
 }
 exports.userIntroducedProhibitedSimbols = userIntroducedProhibitedSimbols;
+// function fromQueryToURL(obj) {
+//   let urleado = "";
+//   for (const [key, value] of Object.entries(obj)) {
+//     urleado += `${key}=${value}&`;
+//   }
+//   return urleado;
+// }
 const getByTitleFromAPI = (title) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const axiosFromApi = yield axios.get(`https://api.spoonacular.com/recipes/complexSearch?${NUMBER}&query=${title}&${addRecipeInfoTrue}&apiKey=${MI_API_KEY}`);

@@ -8,15 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const { Diet } = require("../db");
+// const { Diet } = require("../db");
 const { Op } = require("sequelize");
 const router = (0, express_1.Router)();
+const models_1 = __importDefault(require("../../models"));
 //  GET /diets:
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let dietas = yield Diet.findAll();
+        let dietas = yield models_1.default.Diet.findAll();
         res.status(200).send(dietas);
     }
     catch (error) {
@@ -39,7 +43,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         // Si es un objeto lo que se postea:
         if (req.body.name) {
             //!--- probando findOrCreate:
-            let newDiet = yield Diet.findOrCreate({
+            let newDiet = yield models_1.default.Diet.findOrCreate({
                 where: { name: req.body.name },
             });
             if (newDiet[1]) {
@@ -59,7 +63,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             arrDietas = req.body;
             for (let i = 0; i < arrDietas.length; i++) {
                 //!--- probando findOrCreate:
-                let newDiet = yield Diet.findOrCreate({
+                let newDiet = yield models_1.default.Diet.findOrCreate({
                     where: { name: arrDietas[i].name },
                 });
                 if (newDiet[1]) {
@@ -87,7 +91,7 @@ router.put("/destroyByName", (req, res) => __awaiter(void 0, void 0, void 0, fun
             return res.status(400).send({ error: "name of the diet is mandatory" });
         }
         else {
-            let numberOfdietsDestroyed = yield Diet.destroy({
+            let numberOfdietsDestroyed = yield models_1.default.Diet.destroy({
                 where: { name: req.body.name },
             });
             return res.status(200).send({
@@ -107,7 +111,7 @@ router.put("/destroyById", function (req, res) {
                 return res.status(400).send({ error: `undefined ID received.` });
             }
             else {
-                let numberOfdietsDestroyed = yield Diet.destroy({
+                let numberOfdietsDestroyed = yield models_1.default.Diet.destroy({
                     where: {
                         id: req.body.id,
                     },
@@ -129,7 +133,7 @@ router.put("/gtID", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             return res.status(400).send({ error: `limit is undefined` });
         }
         else {
-            let numberOfdietsDestroyed = yield Diet.destroy({
+            let numberOfdietsDestroyed = yield models_1.default.Diet.destroy({
                 where: {
                     id: {
                         [Op.gt]: req.body.limit,
