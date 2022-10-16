@@ -18,7 +18,7 @@ import {
 import db from "../../models";
 
 const addRecipeInfoTrue = "addRecipeInformation=true";
-const NUMBER = "number=100";
+const NUMBER = "number=20";
 
 //h--- Funciones auxiliares: ----------------------------
 // function fromQueryToURL(obj) {
@@ -192,7 +192,7 @@ router.get("/:idReceta", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const query: any = req.query;
+  const query: any = req.query.query;
   console.log(`Entré al get. query = ${query}`);
   try {
     if (query) {
