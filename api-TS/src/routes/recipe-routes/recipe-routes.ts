@@ -20,20 +20,7 @@ import db from "../../models";
 const addRecipeInfoTrue = "addRecipeInformation=true";
 const NUMBER = "number=20";
 
-//h--- Funciones auxiliares: ----------------------------
-// function fromQueryToURL(obj) {
-//   let urleado = "";
-//   for (const [key, value] of Object.entries(obj)) {
-//     urleado += `${key}=${value}&`;
-//   }
-//   return urleado;
-// }
-
-//*--  CREAR MODULARIZACIONES PARA BUSCAR RECETAS EN DB Y API:
-
-//h------------------------------
-
-//*------------------------------------------------------------------------------------------------------
+// -------- ROUTES : ----------------------------
 
 //* POST
 router.post("/", async (req, res) => {
@@ -191,6 +178,7 @@ router.get("/:idReceta", async (req, res) => {
   }
 });
 
+// GET BY QUERY TITLE
 router.get("/", async (req, res) => {
   const query: any = req.query.query;
   console.log(`Entré al get. query = ${query}`);
@@ -224,7 +212,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-//* --- GET sólo de DB:
+//* --- GET ALL FROM DB:
 router.get("/getAllFromDB", async (req, res) => {
   console.log("Entré a /getAllFromDB");
   try {

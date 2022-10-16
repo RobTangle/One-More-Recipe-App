@@ -25,6 +25,14 @@ export function userIntroducedProhibitedSimbols(inputString: string) {
   }
 }
 
+// function fromQueryToURL(obj) {
+//   let urleado = "";
+//   for (const [key, value] of Object.entries(obj)) {
+//     urleado += `${key}=${value}&`;
+//   }
+//   return urleado;
+// }
+
 export const getByTitleFromAPI = async (title: string) => {
   try {
     const axiosFromApi = await axios.get(
