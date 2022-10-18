@@ -88,7 +88,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 // GET BY ID:
 router.get("/:idReceta", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     const { idReceta } = req.params;
     console.log(req.params);
     console.log(typeof idReceta);
@@ -116,7 +116,11 @@ router.get("/:idReceta", (req, res) => __awaiter(void 0, void 0, void 0, functio
                     },
                 },
             });
+            console.log(`if idReceta.length > 30... recipeDB =`);
+            console.log(recipeDB);
             if (recipeDB) {
+                console.log(`if (recipeDB)... recipeDB =`);
+                console.log(recipeDB);
                 let recipeObject = {
                     title: recipeDB.title,
                     id: recipeDB.id,
@@ -124,7 +128,7 @@ router.get("/:idReceta", (req, res) => __awaiter(void 0, void 0, void 0, functio
                     healthScore: recipeDB.healthScore,
                     steps: recipeDB.steps,
                     image: recipeDB.image,
-                    diets: recipeDB === null || recipeDB === void 0 ? void 0 : recipeDB.diets.map((diet) => diet.name),
+                    diets: (_a = recipeDB === null || recipeDB === void 0 ? void 0 : recipeDB.diets) === null || _a === void 0 ? void 0 : _a.map((diet) => diet.name),
                 };
                 return res.status(200).send(recipeObject);
             }
@@ -151,7 +155,7 @@ router.get("/:idReceta", (req, res) => __awaiter(void 0, void 0, void 0, functio
                 dishTypes: axiData.dishTypes,
                 image: axiData.image,
                 readyInMinutes: axiData.readyInMinutes,
-                steps: (_a = axiData.analyzedInstructions[0]) === null || _a === void 0 ? void 0 : _a.steps,
+                steps: (_b = axiData.analyzedInstructions[0]) === null || _b === void 0 ? void 0 : _b.steps,
                 diets: axiData.diets,
             };
             return res.status(200).send(axiadoDetails);
