@@ -123,6 +123,9 @@ router.get("/:idReceta", async (req, res) => {
         }
       );
       if (recipeDB) {
+        console.log(`recipeDB = `);
+        console.log(recipeDB);
+
         let recipeObject: IRecipeFromDB = {
           title: recipeDB.title,
           id: recipeDB.id,
@@ -130,7 +133,7 @@ router.get("/:idReceta", async (req, res) => {
           healthScore: recipeDB.healthScore,
           steps: recipeDB.steps,
           image: recipeDB.image,
-          diets: recipeDB?.diets.map((diet) => diet.name),
+          diets: recipeDB?.diets?.map((diet) => diet.name),
         };
         return res.status(200).send(recipeObject);
       } else {
