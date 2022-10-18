@@ -39,7 +39,7 @@ const FilterButtons = ({ onFilterOptionChange, resetFilter }) => {
           <div className="filter-buttons-container">
             <div className="filter-buttons">
               {" "}
-              {dietsInState.map((diet) => (
+              {dietsInState?.map((diet) => (
                 <div key={diet.id}>
                   <button
                     key={Math.random()}
