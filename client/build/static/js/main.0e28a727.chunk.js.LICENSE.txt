@@ -1,0 +1,5 @@
+//! -----------------
+
+//! experimentar con mapeo de botones:
+
+//! se lo pongo en null por default?

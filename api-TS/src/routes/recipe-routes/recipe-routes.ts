@@ -126,7 +126,9 @@ router.get("/:idReceta", async (req, res) => {
       console.log(recipeDB);
 
       if (recipeDB) {
+
         console.log(`if (recipeDB)... recipeDB =`);
+
         console.log(recipeDB);
 
         let recipeObject: IRecipeFromDB = {
@@ -136,7 +138,9 @@ router.get("/:idReceta", async (req, res) => {
           healthScore: recipeDB.healthScore,
           steps: recipeDB.steps,
           image: recipeDB.image,
+
           diets: recipeDB?.Diets?.map((diet) => diet.name),
+
         };
         console.log("recipeObject =");
         console.log(recipeObject);
