@@ -14,72 +14,65 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const { MI_API_KEY } = process.env;
 const axios = require("axios");
-const { Op } = require("sequelize");
+// const { Op } = require("sequelize");
 const express_1 = require("express");
 const router = (0, express_1.Router)();
-const recipe_AuxFns_1 = require("../../auxiliaryFns/recipe-AuxFns");
 const recipe_r_fns_1 = require("./recipe-r-fns");
 const models_1 = __importDefault(require("../../models"));
-const addRecipeInfoTrue = "addRecipeInformation=true";
-const NUMBER = "number=20";
+const recipeValidators_1 = require("../../validators/recipeValidators");
 // -------- ROUTES : ----------------------------
-//* POST
+// POST RECIPE
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Entré al post");
     const { title, summary, healthScore, diets, steps, image } = req.body;
     console.log(`Title: ${title}`);
     try {
         // --- VALIDACIONES:
-        if (!title || !summary) {
-            return res
-                .status(400)
-                .send({ error: "title and summary are mandatory." });
-        }
-        if (title.length > 100 || title.length < 1) {
-            return res.status(400).send({
-                error: `Title length must be between 1 and 100 characters. It has ${title.length}.`,
-            });
-        }
-        if ((0, recipe_AuxFns_1.userIntroducedProhibitedSimbols)(title)) {
-            return res
-                .status(400)
-                .send({ error: `The title has prohibited simbols.` });
-        }
-        if (summary.length > 500 || summary.length < 1) {
-            return res.status(400).send({
-                error: `Summary has ${summary.length} characters. Max: 500, Min: 1`,
-            });
-        }
-        if ((0, recipe_AuxFns_1.userIntroducedProhibitedSimbols)(summary)) {
-            return res.status(400).send({
-                error: `Summary has prohibited simbols.`,
-            });
-        }
-        if (healthScore) {
-            if (typeof healthScore !== "number") {
-                return res.status(400).send({
-                    error: `HealthScore must be a number.`,
-                });
-            }
-            if (healthScore > 100 || healthScore < 0) {
-                return res.status(400).send({
-                    error: `Health score ${healthScore}must be between 0 and 100.`,
-                });
-            }
-        }
-        if (steps && steps.length > 3000) {
-            return res.status(400).send({
-                error: `Steps exceeded the maximum 3000 characters. Actual length: ${steps.length}`,
-            });
-        }
+        // if (!title || !summary) {
+        //   return res
+        //     .status(400)
+        //     .send({ error: "title and summary are mandatory." });
+        // }
+        // if (title.length > 100 || title.length < 1) {
+        //   return res.status(400).send({
+        //     error: `Title length must be between 1 and 100 characters. It has ${title.length}.`,
+        //   });
+        // }
+        // if (userIntroducedProhibitedSimbols(title)) {
+        //   return res
+        //     .status(400)
+        //     .send({ error: `The title has prohibited simbols.` });
+        // }
+        // if (summary.length > 500 || summary.length < 1) {
+        //   return res.status(400).send({
+        //     error: `Summary has ${summary.length} characters. Max: 500, Min: 1`,
+        //   });
+        // }
+        // if (userIntroducedProhibitedSimbols(summary)) {
+        //   return res.status(400).send({
+        //     error: `Summary has prohibited simbols.`,
+        //   });
+        // }
+        // if (healthScore) {
+        //   if (typeof healthScore !== "number") {
+        //     return res.status(400).send({
+        //       error: `HealthScore must be a number.`,
+        //     });
+        //   }
+        //   if (healthScore > 100 || healthScore < 0) {
+        //     return res.status(400).send({
+        //       error: `Health score ${healthScore} must be between 0 and 100.`,
+        //     });
+        //   }
+        // }
+        // if (steps && steps.length > 3000) {
+        //   return res.status(400).send({
+        //     error: `Steps exceeded the maximum 3000 characters. Actual length: ${steps.length}`,
+        //   });
+        // }
         // --- FIN VALIDACIONES ---
-        let newRecipe = yield models_1.default.Recipe.create({
-            title: title.toLowerCase(),
-            summary,
-            healthScore,
-            steps,
-            image,
-        });
+        const validatedNewRecipe = (0, recipeValidators_1.checkNewRecipe)(req.body);
+        let newRecipe = yield models_1.default.Recipe.create(validatedNewRecipe);
         let dietsToSet = yield models_1.default.Diet.findAll({
             where: { name: diets },
         });
@@ -93,8 +86,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(404).send({ error: error.message });
     }
 }));
-//*----------------------------------------------------------------
-//* GET BY ID:
+// GET BY ID:
 router.get("/:idReceta", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { idReceta } = req.params;
@@ -142,8 +134,8 @@ router.get("/:idReceta", (req, res) => __awaiter(void 0, void 0, void 0, functio
         }
         else {
             console.log(`Buscar en API con id: ${idReceta}`);
-            let axiado = yield axios.get(`https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`).data;
-            let axiData = axiado;
+            let axiado = yield axios.get(`https://api.spoonacular.com/recipes/${idReceta}/information?apiKey=${MI_API_KEY}`);
+            let axiData = axiado.data;
             console.log("Receta buscada en API");
             console.log(`Receta title: ${axiData === null || axiData === void 0 ? void 0 : axiData.title}`);
             let axiadoDetails = {
@@ -159,7 +151,7 @@ router.get("/:idReceta", (req, res) => __awaiter(void 0, void 0, void 0, functio
                 dishTypes: axiData.dishTypes,
                 image: axiData.image,
                 readyInMinutes: axiData.readyInMinutes,
-                steps: (_a = axiData.analyzedInstruction[0]) === null || _a === void 0 ? void 0 : _a.steps,
+                steps: (_a = axiData.analyzedInstructions[0]) === null || _a === void 0 ? void 0 : _a.steps,
                 diets: axiData.diets,
             };
             return res.status(200).send(axiadoDetails);

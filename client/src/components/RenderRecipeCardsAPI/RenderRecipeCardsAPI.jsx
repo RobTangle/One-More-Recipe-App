@@ -46,12 +46,15 @@ const RenderRecipeCardsAPI = (props) => {
       dispatch(actions.clearNewRecipe());
       console.log("despaché el clearNewRecipe");
     }
+    // eslint-disable-next-line
   }, []);
 
   //h Para paginado:
   const [page, setPage] = React.useState(1);
+  // eslint-disable-next-line
   const [quantity, setQuantity] = React.useState(9);
   let maxPages = localState.length / quantity;
+  // console.log(setQuantity);
 
   //h Cuando aprieto un botón de filtrado:
   function onFilterOptionChange(e) {
