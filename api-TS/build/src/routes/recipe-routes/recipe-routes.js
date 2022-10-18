@@ -128,8 +128,10 @@ router.get("/:idReceta", (req, res) => __awaiter(void 0, void 0, void 0, functio
                     healthScore: recipeDB.healthScore,
                     steps: recipeDB.steps,
                     image: recipeDB.image,
-                    diets: (_a = recipeDB === null || recipeDB === void 0 ? void 0 : recipeDB.diets) === null || _a === void 0 ? void 0 : _a.map((diet) => diet.name),
+                    diets: (_a = recipeDB === null || recipeDB === void 0 ? void 0 : recipeDB.Diets) === null || _a === void 0 ? void 0 : _a.map((diet) => diet.name),
                 };
+                console.log("recipeObject =");
+                console.log(recipeObject);
                 return res.status(200).send(recipeObject);
             }
             else {
