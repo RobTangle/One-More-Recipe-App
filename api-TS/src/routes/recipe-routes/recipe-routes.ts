@@ -138,6 +138,9 @@ router.get("/:idReceta", async (req, res) => {
           image: recipeDB.image,
           diets: recipeDB?.Diets?.map((diet) => diet.name),
         };
+        console.log("recipeObject =");
+        console.log(recipeObject);
+
         return res.status(200).send(recipeObject);
       } else {
         return res.status(400).send(errorObject);
