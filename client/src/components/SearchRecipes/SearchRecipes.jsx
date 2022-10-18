@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+// eslint-disable-next-line
 import { useSelector } from "react-redux";
 import "./searchRecipes.css";
 import * as actions from "../../redux/actions/index";

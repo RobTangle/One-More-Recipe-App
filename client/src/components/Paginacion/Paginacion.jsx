@@ -1,4 +1,6 @@
+// eslint-disable-next-line
 import React, { useState } from "react";
+// eslint-disable-next-line
 import styles from "./paginacion.css";
 
 export const Paginacion = ({
