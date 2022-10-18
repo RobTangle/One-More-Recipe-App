@@ -1,7 +1,7 @@
 import "./App.css";
 import { Route } from "react-router-dom";
 import Nav from "./components/Nav/Nav.jsx";
-import createRecipe from "./components/createRecipe/CreateRecipe";
+import CreateRecipe from "./components/createRecipe/CreateRecipe";
 import LandingPage from "./components/LandingPage/LandingPage";
 import SearchRecipes from "./components/SearchRecipes/SearchRecipes";
 import RenderRecipeCardsAPI from "./components/RenderRecipeCardsAPI/RenderRecipeCardsAPI";
@@ -19,7 +19,7 @@ function App() {
       <Route exact path="/home" component={RenderRecipeCardsAPI} />
       <Route path="/home/recipes/:id" component={RenderRecipeDetail} />
       {/* <Route path="/home/expRender" component={ExpRender} /> */}
-      <Route exact path="/home/createRecipe/" component={createRecipe} />
+      <Route exact path="/home/createRecipe/" component={CreateRecipe} />
       {/* <Route exact path="/home/recipesInDataBase/" component={DBRecipes} /> */}
     </div>
   );
