@@ -136,7 +136,7 @@ router.get("/:idReceta", async (req, res) => {
           healthScore: recipeDB.healthScore,
           steps: recipeDB.steps,
           image: recipeDB.image,
-          diets: recipeDB?.diets?.map((diet) => diet.name),
+          diets: recipeDB?.Diets?.map((diet) => diet.name),
         };
         return res.status(200).send(recipeObject);
       } else {
