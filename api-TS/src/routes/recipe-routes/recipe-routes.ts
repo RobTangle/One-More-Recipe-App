@@ -122,8 +122,11 @@ router.get("/:idReceta", async (req, res) => {
           },
         }
       );
+      console.log(`if idReceta.length > 30... recipeDB =`);
+      console.log(recipeDB);
+
       if (recipeDB) {
-        console.log(`recipeDB =`);
+        console.log(`if (recipeDB)... recipeDB =`);
         console.log(recipeDB);
 
         let recipeObject: IRecipeFromDB = {
