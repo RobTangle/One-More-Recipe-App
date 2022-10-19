@@ -33,6 +33,6 @@ Para ser honesto, lo visual no es lo mío, por lo que decidí dejar ese aspecto 
 
 ### <h2> Deploy: </h2>
 
-<a href="https://omra-full-deploy-robtangle.vercel.app/" target="_blanck"> <h3>One More Recipe App </h3> </a>
+<a href="https://omra-full-deploy-robtangle.vercel.app/" target="_blank"> <h3>One More Recipe App </h3> </a>
 
 <hr>
