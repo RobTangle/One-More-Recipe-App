@@ -122,8 +122,13 @@ router.get("/:idReceta", async (req, res) => {
           },
         }
       );
+      console.log(`if idReceta.length > 30... recipeDB =`);
+      console.log(recipeDB);
+
       if (recipeDB) {
-        console.log(`recipeDB = `);
+
+        console.log(`if (recipeDB)... recipeDB =`);
+
         console.log(recipeDB);
 
         let recipeObject: IRecipeFromDB = {
@@ -133,8 +138,13 @@ router.get("/:idReceta", async (req, res) => {
           healthScore: recipeDB.healthScore,
           steps: recipeDB.steps,
           image: recipeDB.image,
-          diets: recipeDB?.diets?.map((diet) => diet.name),
+
+          diets: recipeDB?.Diets?.map((diet) => diet.name),
+
         };
+        console.log("recipeObject =");
+        console.log(recipeObject);
+
         return res.status(200).send(recipeObject);
       } else {
         return res.status(400).send(errorObject);

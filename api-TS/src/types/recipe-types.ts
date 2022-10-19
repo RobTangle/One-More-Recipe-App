@@ -34,7 +34,7 @@ export interface IRecipeFromDBPlusDietModel {
   healthScore?: number;
   steps?: string;
   image?: string;
-  diets: any[];
+  Diets: any[];
 }
 
 export interface IAnalyzedInstruction {

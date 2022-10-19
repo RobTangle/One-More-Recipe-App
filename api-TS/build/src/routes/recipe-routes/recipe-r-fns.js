@@ -108,7 +108,7 @@ const getByTitleFromDB = (title) => __awaiter(void 0, void 0, void 0, function* 
                 healthScore: recipe.healthScore,
                 steps: recipe.steps,
                 image: recipe.image,
-                diets: (_a = recipe.diets) === null || _a === void 0 ? void 0 : _a.map((diet) => diet.name),
+                diets: (_a = recipe.Diets) === null || _a === void 0 ? void 0 : _a.map((diet) => diet.name),
             };
         });
         console.log(`allFromDBFilteredPlusDiets.length = ${allFromDBFilteredPlusDiets.length}`);
@@ -145,7 +145,7 @@ const getAllFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
                 healthScore: recipe.healthScore,
                 steps: recipe.steps,
                 image: recipe.image,
-                diets: (_a = recipe.diets) === null || _a === void 0 ? void 0 : _a.map((diet) => diet.name),
+                diets: (_a = recipe.Diets) === null || _a === void 0 ? void 0 : _a.map((diet) => diet.name),
             };
         });
         return recipesDBPlusDiets;

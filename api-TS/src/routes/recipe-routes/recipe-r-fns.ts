@@ -109,7 +109,7 @@ export const getByTitleFromDB = async (title: string) => {
         healthScore: recipe.healthScore,
         steps: recipe.steps,
         image: recipe.image,
-        diets: recipe.diets?.map((diet) => diet.name),
+        diets: recipe.Diets?.map((diet) => diet.name),
       };
     });
     console.log(
@@ -148,7 +148,7 @@ export const getAllFromDB = async () => {
           healthScore: recipe.healthScore,
           steps: recipe.steps,
           image: recipe.image,
-          diets: recipe.diets?.map((diet) => diet.name),
+          diets: recipe.Diets?.map((diet) => diet.name),
         };
       }
     );
